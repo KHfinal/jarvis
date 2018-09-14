@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.ys</groupId> <!-- 패키지의 1, 2레벨을 의미 -->
-	<artifactId>spring</artifactId> <!-- 패키지의 3레벨을 의미 -->
-	<name>01_HelloSpring</name>
+	<groupId>kh.mark</groupId> <!-- 패키지의 1, 2레벨을 의미 -->
+	<artifactId>jarvis</artifactId> <!-- 패키지의 3레벨을 의미 -->
+	<name>jarvisProject</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties> <!-- property파일과 같이 key, value방식 -->
