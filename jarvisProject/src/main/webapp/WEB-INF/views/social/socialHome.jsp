@@ -510,23 +510,123 @@ function fn_postLike(e) { /* 좋아요 전송 */
 
 </div>
 <script>
+/* function searchsearch(){
+
+var searchKeyword = $('#searchKeyword').val();
+var searchType = $('#searchType').val();
+
+alert("searchKeyword : "+ searchKeyword);
+alert("searchType : "+ searchType);
+$.ajax({
+	url:"${path }/friend/friendSearch.do",
+	type:"get",
+	data:{searchKeyword : searchKeyword,searchType:searchType },
+	dataType:"json",
+	success : function(data){
+		$.each(data,function(i,item){
+			var searchList = item.memberEmail; 
+			
+			console.log("searchList : " + searchList);
+		});
+		
+	}, error : function(data){
+		console.log(data);
+	}
+});
+
+} */
 function searchsearch(){
-	var searchKeyword = $('#searchKeyword').val();
-	var searchType = $('#searchType').val();
-	alert("searchKeyword : "+ searchKeyword);
-	alert("searchType : "+ searchType);
+	ajax();
+var myEmail = '${memberLoggedIn.memberEmail}';
+var searchKeyword = $('#searchKeyword').val();
+var searchType = $('#searchType').val();
+var friendConcernTag;
+var tr="";
+alert(searchType);
+if(searchType != 'MEMBER_CONCERN'){
+
 	$.ajax({
 		url:"${path }/friend/friendSearch.do",
-		type:"get",
+		type:"post",
 		data:{searchKeyword : searchKeyword,searchType:searchType },
 		dataType:"json",
 		success : function(data){
-			alert(data);
-		    	
+			
+			friendConcernTag;
+			console.log("friendList : " + friendList);
+			$.each(data,function(i,item){
+				
+				var searchEmail = item.memberEmail; 
+				
+				console.log("가져온 이메일 : " +searchEmail);
+				for(var i =0; i<friendList.length;i++){
+					friendConcernTag ="";
+					if(friendList[i]==searchEmail ){
+						friendConcernTag ;
+						break;
+					}if(friendList[i]==searchEmail){
+						break;
+					}
+					if(i==friendList.length-1){
+						if(searchEmail==myEmail){
+							break;
+						}
+					 friendConcernTag = "<tr><td>"+"</td><td>"+searchEmail+"</td><td>"+'<button type="button" id="friend_add" onclick="fn_friendAdd('+"'"+searchEmail+"'"+');">친추</button></td></tr>'; 
+					 $('.tablefriend').append(friendConcernTag);
+					 break;
+					}	
+				}
+				
+			});
 		}
 	});
 	
+};
+
+/* if(searchType == "member_concern"){
+	alert("관심사");
+	
+	$.ajax({
+		url:"${path}/friend/friednRecommendList.do",
+		type:"GET",
+		data:{email:myEmail},
+		dataType:"json",
+		success : function(data){
+			
+			var friendConcernTag;
+			var tr="";
+			$.each(data.concernCompareList,function(i,item){
+				var f_email2 = item;
+				
+				
+				for(var i =0; i<friendList.length;i++){
+					friendConcernTag ="";
+					
+					
+					if(friendList[i]==f_email2 ){
+						
+						break;
+					}if(friendList[i]==f_email2){
+						break;
+					}
+					if(i==friendList.length-1){
+						if(f_email2==email2){
+							break;
+						}
+						 friendConcernTag = "<tr><td>"+f_email2+"</td><td>"+'<button type="button" id="friend_add" onclick="fn_friendAdd('+"'"+f_email2+"'"+');">친추</button></td></tr>'; 
+						 console.log("관심사 friendConcernTag : " + friendConcernTag);
+						 $('.tablefriend').append(friendConcernTag);
+						 break;
+					}	
+				}
+			}); 
+		}
+	});
+} */
+
 }
+
+
 </script>
 
 

@@ -5,19 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import kh.mark.jarvis.friend.model.service.FriendService;
-import kh.mark.jarvis.friend.model.vo.Friend;
 import kh.mark.jarvis.member.model.service.MemberService;
 import kh.mark.jarvis.member.model.vo.Member;
 
@@ -92,19 +94,40 @@ public class FriendController{
 		
 		return mv;
 	}
-	@RequestMapping("/friend/friendSearch.do")
+	/*@RequestMapping("/friend/friendSearch.do")
 	public ModelAndView friendSearch(String searchType,String searchKeyword ,ModelAndView mv) {
 		System.out.println("searchType : " + searchType);
 		System.out.println("searchKeyword : " + searchKeyword);
-		Map<String,Object> map=new HashMap();
+		Map<String,Object> map=new HashMap<String,Object>();
 		map.put("searchType", searchType);
 		map.put("searchKeyword", searchKeyword);
-		
-		List<Map<String,String>> list=friendService.selectSearch2(map);
+		List<Member> list= friendService.selectSearch2(map);
 		System.out.println("list : " + list);
 		mv.addObject("list",list);
 		mv.setViewName("jsonView");
 		return mv;
+	}*/
+	
+	@RequestMapping("/friend/friendSearch.do")
+	public @ResponseBody String friendSearch(String searchType,String searchKeyword) {
+		System.out.println("searchType : " + searchType);
+		System.out.println("searchKeyword : " + searchKeyword);
+		ObjectMapper mapper=new ObjectMapper();
+		Map<String,String> map=new HashMap<String,String>();
+		map.put("searchType", searchType);
+		map.put("searchKeyword", searchKeyword);
+		List<Member> list= friendService.selectSearch2(map);
+		String a ="";
+		 try {
+			 a = mapper.writeValueAsString(list);
+			 logger.debug(a);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return a;
 	}
 	
 	
