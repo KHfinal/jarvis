@@ -26,7 +26,7 @@ public class FriendDaoImpl implements FriendDao{
 	
 
 	@Override
-	public List<Map<String, String>> selectSearch2(SqlSessionTemplate session, Map<String, Object> map) {
+	public List<Member> selectSearch2(SqlSessionTemplate session, Map<String, String> map) {
 		// TODO Auto-generated method stub
 		return session.selectList("friend.keywordSearch",map);
 	}
