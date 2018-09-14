@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="friend">
+<resultMap type="map" id="friendMap">
+   <result column="f_member_email" property="f_member_email"/>
+   <result column="f_friend_email" property="f_friend_email"/>
+   <result column="f_status" property="f_status"/>
+</resultMap>
+<resultMap type="member" id="memberMap">
+   <!-- column은 데이터베이스명칭 priperty는 vo명칭 -->   
+   <result column="member_email" property="memberEmail" />
+   <result column="member_pw" property="memberPw" />
+   <result column="member_name" property="memberName" />
+   <result column="member_nickname" property="memberNickname" />
+   <result column="member_phone" property="phone" />
+   <result column="reg_date" property="reg_date" />
+   <result column="member_pfp" property="memberPFP" />
+   <result column="member_concern" property="memberConcern" typeHandler="strArr"/>
+   <result column="member_gender" property="memberGender" />
+   <result column="member_birth" property="memberBirthday" />
+   <result column="addr1" property="addr1" />
+   <result column="addr2" property="addr2" />
+   <result column="addr3" property="addr3" />
+   <result column="addinfo" property="addInfo"/>
+   <result column="verify" property="verify"/>  
+</resultMap>
+   
+   <select id="selectFriendListJson" resultType="string" parameterType="map">
+      <if test="title=='F_MEMBER_EMAIL'">
+           SELECT f_friend_email FROM FRIEND WHERE ${title}=#{email} AND F_STATUS='Y'
+         </if>
+         <if test="title=='F_FRIEND_EMAIL'">
+           SELECT f_member_email FROM FRIEND WHERE ${title}=#{email} AND F_STATUS='Y'
+         </if>
+   </select>
+   <select id="selectConcernList" resultType="string">
+      SELECT MEMBER_CONCERN FROM MEMBER WHERE MEMBER_EMAIL = #{email}
+   </select>
+   <select id="selectMemberConcernList" resultMap="memberMap">
+      SELECT MEMBER_EMAIL FROM MEMBER WHERE MEMBER_CONCERN like '%'||#{concern}||'%'
+   </select>
+   
+   <select id="keywordSearch" parameterType="map" resultMap="memberMap">
+   SELECT * FROM MEMBER WHERE 1=1 <if test="searchType != null and searchType != ''"> AND ${searchType} LIKE '%'||#{searchKeyword}||'%'</if>
+   </select>
+   
+   
+   
+   <select id="requestList" resultType="string" parameterType="map">
+      <if test="title=='F_MEMBER_EMAIL'">
+         SELECT f_friend_email FROM FRIEND WHERE ${title}=#{email} AND F_STATUS='P'
+      </if>
+      <if test="title=='F_FRIEND_EMAIL'">
+         SELECT f_member_email FROM FRIEND WHERE ${title}=#{email} AND F_STATUS='P'
+      </if>
+   </select>
+
+   <select id="friendList" resultType="string" parameterType="map">
+      <if test="title=='F_MEMBER_EMAIL'">
+         SELECT f_friend_email FROM FRIEND WHERE ${title}=#{email} AND F_STATUS='Y'
+      </if>
+      <if test="title=='F_FRIEND_EMAIL'">
+         SELECT f_member_email FROM FRIEND WHERE ${title}=#{email} AND F_STATUS='Y'
+      </if>
+   </select>
+
+   <insert id="friendRequest" parameterType="map">
+      INSERT INTO FRIEND VALUES(#{email},#{fEmail},#{p})
+   </insert>
+   
+   <update id="friendAgree" parameterType="map">
+      UPDATE FRIEND SET F_STATUS=#{y} WHERE F_MEMBER_EMAIL=#{mEmail} AND F_FRIEND_EMAIL=#{email}
+   </update>
+   
+   <delete id="friendRefuse" parameterType="map">
+      DELETE FROM FRIEND WHERE F_MEMBER_EMAIL=#{email} AND F_FRIEND_EMAIL=#{fEmail}
+   </delete>
+   
+   <select id="friendOne" resultMap="friendMap" parameterType="string">
+      SELECT * FROM FRIEND WHERE F_FRIEND_EMAIL=#{fEmail} AND F_STATUS='Y'
+   </select>
+      
+</mapper>

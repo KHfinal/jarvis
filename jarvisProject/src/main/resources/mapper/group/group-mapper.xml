@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="group">
+	<resultMap type="group" id="groupMap">
+		<result column="g_category" property="g_category" typeHandler="strArr"/>
+	</resultMap>
+	
+	<select id="myGroupList" parameterType="string" resultMap="groupMap">
+		SELECT * FROM GROUP_LIST JOIN GROUP_MEMBER USING(G_NO) WHERE MEMBER_EMAIL=#{mEmail} ORDER BY G_DATE DESC 
+	</select>
+	
+	<select id="selectGroupList" resultMap="groupMap">
+		SELECT * FROM GROUP_LIST ORDER BY G_DATE DESC
+	</select>
+	
+	<insert id="groupInsert" parameterType="group">
+  		INSERT INTO GROUP_LIST VALUES(GROUP_LIST_SEQ.NEXTVAL,#{g_name},#{g_master},#{g_intro},DEFAULT,#{g_originalFilename},#{g_renamedFilename})
+  		<selectKey keyProperty="g_no" resultType="_int" order="AFTER">
+  			select GROUP_LIST_SEQ.currval from dual
+  		</selectKey>
+  	</insert>
+	
+	<insert id="categoryInsert" parameterType="map">
+		INSERT INTO GROUP_CATEGORY VALUES(#{g_no},#{g_category})
+	</insert>
+	<insert id="groupMasterInsert" parameterType="map">
+		INSERT INTO GROUP_MEMBER VALUES(GROUP_MEMBER_SEQ.NEXTVAL,#{g_no},#{member_email})
+	</insert>
+	
+	<select id="groupSearch" parameterType="string" resultMap="groupMap">
+		SELECT * FROM GROUP_LIST WHERE G_NAME=#{titleSearch} ORDER BY G_DATE DESC
+	</select>
+	
+	<select id="groupFilter" parameterType="string" resultMap="groupMap">
+		SELECT * FROM GROUP_LIST WHERE G_NO IN(SELECT G_NO FROM GROUP_CATEGORY WHERE C_KEY=#{category})
+	</select>
+	
+	<select id="groupView" parameterType="_int" resultType="groupPost">
+		SELECT * FROM GROUP_POST WHERE G_NO=#{groupNo} ORDER BY G_POST_DATE DESC
+	</select>
+	<select id="selectAttachList" parameterType="_int" resultType="groupAttach">
+		SELECT G_ATTACHMENT_NO, G_POST_NO, G_ORIGINAL_FILENAME, G_RENAMED_FILENAME, G_UPLOAD_DATE FROM GROUP_ATTACHMENT JOIN GROUP_POST USING(G_POST_NO) WHERE G_NO=#{groupNo} 
+	</select>
+	
+	<select id="selectCategory" resultType="map">
+		SELECT * FROM GROUP_CATEGORY JOIN CATEGORY USING(C_KEY)
+	</select>
+	
+	<insert id="insertGroupPost" parameterType="groupPost">
+		INSERT INTO GROUP_POST VALUES(GROUP_POST_SEQ.NEXTVAL,#{g_post_contents},#{g_no},#{g_post_writer},SYSTIMESTAMP)
+		<selectKey keyProperty="g_post_no" resultType="_int" order="AFTER">
+			SELECT GROUP_POST_SEQ.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	<insert id="insertAttach" parameterType="groupAttach">
+		INSERT INTO GROUP_ATTACHMENT VALUES(GROUP_ATTACHMENT_SEQ.NEXTVAL,#{g_post_no},#{g_original_filename},#{g_renamed_filename},SYSTIMESTAMP)
+	</insert>
+	
+	<insert id="insertComment" parameterType="groupComment">
+		INSERT INTO GROUP_COMMENT VALUES(GROUP_COMMENT_SEQ.NEXTVAL, #{g_comment_writer}, #{g_comment_contents}, #{g_comment_level}, #{g_post_ref}, #{g_comment_ref}, SYSTIMESTAMP)
+	</insert>
+	
+	<select id="selectCommentList" resultType="groupComment">
+		SELECT * FROM GROUP_COMMENT ORDER BY G_COMMENT_DATE DESC
+	</select>
+	
+	<select id="selectGroupMember" parameterType="_int" resultType="map">
+		SELECT MEMBER_EMAIL FROM GROUP_MEMBER WHERE G_NO=#{groupNo}
+	</select>
+	
+	<select id="groupViewDetail" parameterType="_int" resultType="group">
+		SELECT * FROM GROUP_LIST WHERE G_NO=#{groupNo}
+	</select>
+	
+	<insert id="insertGroupPostLike" parameterType="groupLike">
+		INSERT INTO GROUP_LIKE VALUES(GROUP_LIKE_SEQ.NEXTVAL, #{g_like_member}, #{g_post_ref}, #{g_like_check})
+	</insert>
+	<insert id="insertGroupCommentLike" parameterType="groupLike">
+		INSERT INTO GROUP_LIKE VALUES(GROUP_LIKE_SEQ.NEXTVAL, #{g_like_member}, #{g_post_ref}, #{g_comment_ref}, #{g_like_check})
+	</insert>
+	<select id="selectGroupPostLike" parameterType="groupLike" resultType="groupLike">
+		SELECT * FROM GROUP_LIKE WHERE G_POST_REF = #{g_post_ref}
+	</select>
+	<select id="selectGroupPostLikeCount" parameterType="groupLike" resultType="_int">
+		SELECT COUNT(*) FROM GROUP_LIKE WHERE G_POST_REF = #{g_post_ref} AND G_LIKE_CHECK = #{g_like_check}
+	</select>
+	<select id="selectGroupCommentLike" parameterType="groupLike" resultType="groupLike">
+		SELECT * FROM GROUP_LIKE WHERE G_COMMENT_REF = #{g_comment_ref}
+	</select>
+	<select id="selectGroupCommentLikeCount" parameterType="groupLike" resultType="_int">
+		SELECT COUNT(*) FROM GROUP_LIKE WHERE G_COMMENT_REF = #{g_comment_ref} AND G_LIKE_CHECK = #{g_like_check}
+	</select>
+	
+	<insert id="groupMemberInsert" parameterType="map">
+		INSERT INTO GROUP_MEMBER VALUES(GROUP_MEMBER_SEQ.NEXTVAL,#{groupNo},#{mEmail})
+	</insert>
+	
+	<select id="selectMemberList" resultType="member" resultMap="memberMap">
+		SELECT * FROM MEMBER
+	</select>
+	
+	<delete id="deleteGroupPost" parameterType="_int">
+		DELETE FROM GROUP_POST WHERE G_POST_NO=#{postNo}
+	</delete>
+	
+	
+	
+	
+	
+	<resultMap type="member" id="memberMap">
+		<result column="member_email" property="memberEmail" />
+		<result column="member_pw" property="memberPw" />
+		<result column="member_name" property="memberName" />
+		<result column="member_nickname" property="memberNickname" />
+		<result column="member_phone" property="phone" />
+		<result column="reg_date" property="reg_date" />
+		<result column="member_pfp" property="memberPFP" />
+		<result column="member_concern" property="memberConcern" typeHandler="strArr"/>
+		<result column="member_gender" property="memberGender" />
+		<result column="member_birth" property="memberBirthday" />
+		<result column="addr1" property="addr1" />
+		<result column="addr2" property="addr2" />
+		<result column="addr3" property="addr3" />
+		<result column="addinfo" property="addInfo"/>
+		<result column="verify" property="verify"/>  
+	</resultMap>
+  
+</mapper>

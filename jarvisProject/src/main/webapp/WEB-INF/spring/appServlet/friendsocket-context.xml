@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd">
+
+    <!-- handler객체 bean으로 등록 -->
+    <beans:bean id="friendHandler" class="kh.mark.jarvis.websocket.controller.SocketHandler"/>
+
+	<websocket:handlers>
+        <!--
+			만들어진 handler객체과 mapping시켜주는 구문
+            view에서 socketJS생성시 경로가 아래 path경로와 같아야 mapping 됨!!
+        -->
+		<websocket:mapping handler="friendHandler" path="/friendInList"/>
+		
+        <!--애플리케이션의 session저장공간을 활용하기 위한 구문 -->
+		<websocket:handshake-interceptors>
+			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"/>
+		</websocket:handshake-interceptors>
+        <!--sockjs 이용선언 -->
+		<websocket:sockjs/>
+	</websocket:handlers>
+	
+</beans>

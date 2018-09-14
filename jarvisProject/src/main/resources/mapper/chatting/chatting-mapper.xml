@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="chatting">
+	<resultMap type="chattingRoom" id="chattingRoom">
+	</resultMap>
+	
+	<select id="selectRoom" resultMap="chattingRoom" parameterType="map">
+		<if test="mytitle=='MY_EMAIL' and ftitle=='FRIEND_EMAIL'">
+			SELECT * FROM CHATTING_ROOM WHERE ${mytitle}=#{myEmail} AND ${ftitle}=#{fEmail}
+		</if>
+		<if test="mytitle=='FRIEND_EMAIL' and ftitle=='MY_EMAIL'">
+			SELECT * FROM CHATTING_ROOM WHERE ${mytitle}=#{fEmail} AND ${ftitle}=#{myEmail}
+		</if>
+	</select>
+	
+	<insert id="roomCreate" parameterType="map">
+		INSERT INTO CHATTING_ROOM VALUES(chatting_room_SEQ.NEXTVAL, NULL, #{my_email}, #{friend_email})
+	</insert>
+</mapper>

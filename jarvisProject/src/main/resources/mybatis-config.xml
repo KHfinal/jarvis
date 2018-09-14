@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<typeAliases>
+		<typeAlias type="kh.mark.jarvis.friend.model.vo.Friend" alias="friend"/>
+		<typeAlias type="kh.mark.jarvis.member.model.vo.Member" alias="member"/>
+		<typeAlias type="kh.mark.jarvis.conversation.model.vo.Conversation" alias="conversation"/>
+
+		<typeAlias type="kh.mark.jarvis.post.model.vo.Post" alias="post"/>
+		<typeAlias type="kh.mark.jarvis.post.model.vo.Attachment" alias="attach"/>
+		<typeAlias type="kh.mark.jarvis.post.model.vo.JarvisComment" alias="comment"/>
+		<typeAlias type="kh.mark.jarvis.post.model.vo.JarvisLike" alias="like"/>
+
+		<typeAlias type="kh.mark.jarvis.schedule.model.vo.Schedule" alias="schedule"/>
+		
+ 		<typeAlias type="kh.mark.jarvis.group.model.vo.Group" alias="group"/>
+ 		<typeAlias type="kh.mark.jarvis.common.StringArrayType" alias="strArr"/>
+ 		<typeAlias type="kh.mark.jarvis.group.model.vo.GroupPost" alias="groupPost"/>
+		<typeAlias type="kh.mark.jarvis.group.model.vo.GroupAttachment" alias="groupAttach"/>
+		<typeAlias type="kh.mark.jarvis.group.model.vo.GroupComment" alias="groupComment"/>
+		<typeAlias type="kh.mark.jarvis.group.model.vo.GroupLike" alias="groupLike"/>
+ 		
+ 		<typeAlias type="kh.mark.jarvis.chatting.model.vo.ChattingRoom" alias="chattingRoom"/>
+
+	</typeAliases>
+</configuration>
