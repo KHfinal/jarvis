@@ -208,8 +208,7 @@
 		data:{email:email},
 		dataType:"json",
 		success : function(data){
-	    	$('#myDropdown').append('<input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">');
-	    	$('#myDropdown').append('<button id="refresh" onclick="reFresh()">새로고침</button><br>');
+	    	$('#myDropdown').append('<input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()" style="width:100%">');
 	    	su=0;
 			var friendListTag;
 			friendList=[];
