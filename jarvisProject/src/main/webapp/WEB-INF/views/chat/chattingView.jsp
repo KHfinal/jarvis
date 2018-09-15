@@ -36,13 +36,6 @@
 		height: 100%;
 	}
 </style>
-<script>
-$(document).ready(function(){
-    $("#searchBtn").click(function(){
-        $("#m_search").slideToggle();
-    });
-});
-</script>
 <div class="w3-col m9">
 <div class="w3-card w3-round w3-white">
 	<div class="w3-container">
@@ -58,30 +51,57 @@ $(document).ready(function(){
 			<div class="chatting-cintainer col-8">
 				<div class="chatInput-container">
 					<div class="list-group">
-						<a href="#" class="list-group-item list-group-item-action">
-							채팅방1
-						</a>
-						<a href="#" class="list-group-item list-group-item-action">
-							채팅방2
-						</a>
+						<c:forEach items="${roomList }" var="r">
+							<a href="${path}/chat/createRoom?fEmail=${r.MEMBER_EMAIL}" class="list-group-item list-group-item-action">
+								<img src="${path}/resources/profileImg/${r.MEMBER_PFP}" class="w3-circle" style="height: 40px; width: 40px" title="${r.MEMBER_NAME }">
+								${r.MEMBER_NAME}
+							</a>
+						</c:forEach>
+						<c:forEach items="${roomList1 }" var="r1">
+							<a href="${path}/chat/createRoom?fEmail=${r1.MEMBER_EMAIL}" class="list-group-item list-group-item-action">
+								<img src="${path}/resources/profileImg/${r1.MEMBER_PFP}" class="w3-circle" style="height: 40px; width: 40px" title="${r1.MEMBER_NAME }">
+								${r1.MEMBER_NAME}
+							</a>
+						</c:forEach>
 					</div>
 				</div>
 
 			</div>
-			<!-- 친구목록 -->
+			<!-- 채팅방, 친구목록 -->
 			<div class="chatting-cintainer col-4 pl-2 pr-2 pt-3" style="overflow:auto; height:760px;">
 				<form action="${path}/friend/selectOneFriend.do">
-					<input type="text" id="friendSearch"
-						class="form-control form-control-sm mb-2" placeholder="친구검색">
-					<input type="submit" value="검색" />
+					<input type="text" id="friendSearch" class="form-control form-control-sm mb-2" placeholder="친구검색">
 				</form>
 				<div class="list-group">
-					<c:forEach items="${friendList}" var="f">
-						<a href="${path}/chat/createRoom?fEmail=${f}" class="list-group-item list-group-item-action">
-							<img src="${path}/resources/upload/profileImg/defaultmen.PNG" class="w3-circle" style="height: 23px; width: 23px" alt="Avatar">&nbsp;
-							${f}
+					<c:forEach items="${roomList }" var="r">
+						<a href="${path}/chat/createRoom?fEmail=${r.MEMBER_EMAIL}" class="list-group-item list-group-item-action">
+							<img src="${path}/resources/profileImg/${r.MEMBER_PFP}" class="w3-circle" style="height: 40px; width: 40px" title="${r.MEMBER_NAME }">
+							${r.MEMBER_NAME}
 						</a>
 					</c:forEach>
+					<c:forEach items="${roomList1 }" var="r1">
+						<a href="${path}/chat/createRoom?fEmail=${r1.MEMBER_EMAIL}" class="list-group-item list-group-item-action">
+							<img src="${path}/resources/profileImg/${r1.MEMBER_PFP}" class="w3-circle" style="height: 40px; width: 40px" title="${r1.MEMBER_NAME }">
+							${r1.MEMBER_NAME}
+						</a>
+					</c:forEach>
+					
+					<!-- 친구리스트 -->
+					<%-- <c:if test="${roomList.MEMBER_EMAIL!=friendList.MEMBER_EMAIL }"> --%>
+					<c:forEach items="${friendList}" var="f">
+						<a href="${path}/chat/createRoom?fEmail=${f.MEMBER_EMAIL}" class="list-group-item list-group-item-action">
+							<img src="${path}/resources/profileImg/${f.MEMBER_PFP}" class="w3-circle" style="height: 40px; width: 40px" alt="Avatar">&nbsp;
+							${f.MEMBER_NAME}
+						</a>
+					</c:forEach>
+					<c:forEach items="${friendList1}" var="f1">
+						<a href="${path}/chat/createRoom?fEmail=${f1.MEMBER_EMAIL}" class="list-group-item list-group-item-action">
+							<img src="${path}/resources/profileImg/${f1.MEMBER_PFP}" class="w3-circle" style="height: 40px; width: 40px" alt="Avatar">&nbsp;
+							${f1.MEMBER_NAME}
+						</a>
+					</c:forEach>
+					<%-- </c:if> --%>
+					
 				</div>
 			</div>
 

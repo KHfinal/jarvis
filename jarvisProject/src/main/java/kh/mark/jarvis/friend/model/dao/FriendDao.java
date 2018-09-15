@@ -14,9 +14,10 @@ public interface FriendDao {
 	List<Member> selectMemberConcernList(SqlSessionTemplate sqlSession,String concern);
 	List<Member> selectSearch2(SqlSessionTemplate session, Map<String,String> map);
 	int friendRequest(SqlSessionTemplate sqlSession, Map<String, String> fr);
-	List<String> requestList(SqlSessionTemplate sqlSession, Map<String,String> map);
+	List<Map<String,Object>> requestList(SqlSessionTemplate sqlSession, Map<String,String> map);
 	int friendAgree(SqlSessionTemplate sqlSession, Map<String,String> fr);
 	int friendRefuse(SqlSessionTemplate sqlSession, Map<String,String> fr);
-	List<String> friendList(SqlSessionTemplate sqlSession, Map map);
+	List<Map<String,Object>> friendList(SqlSessionTemplate sqlSession, Map<String,String> map);
 	String friendOne(SqlSessionTemplate sqlSession, String fEmail);
+
 }

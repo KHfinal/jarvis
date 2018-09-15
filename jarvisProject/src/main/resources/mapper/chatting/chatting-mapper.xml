@@ -4,16 +4,47 @@
 	<resultMap type="chattingRoom" id="chattingRoom">
 	</resultMap>
 	
+	<select id="roomList" resultType="map" parameterType="map">
+		<if test="title=='MY_EMAIL'">
+			SELECT * FROM CHATTING_ROOM C JOIN MEMBER M ON(C.FRIEND_EMAIL=M.MEMBER_EMAIL) WHERE MY_EMAIL=#{email}
+		</if>
+		<if test="title=='FRIEND_EMAIL'">
+			SELECT * FROM CHATTING_ROOM C JOIN MEMBER M ON(C.MY_EMAIL=M.MEMBER_EMAIL) WHERE friend_email=#{email}
+		</if>
+	</select>
+	
 	<select id="selectRoom" resultMap="chattingRoom" parameterType="map">
 		<if test="mytitle=='MY_EMAIL' and ftitle=='FRIEND_EMAIL'">
 			SELECT * FROM CHATTING_ROOM WHERE ${mytitle}=#{myEmail} AND ${ftitle}=#{fEmail}
 		</if>
 		<if test="mytitle=='FRIEND_EMAIL' and ftitle=='MY_EMAIL'">
-			SELECT * FROM CHATTING_ROOM WHERE ${mytitle}=#{fEmail} AND ${ftitle}=#{myEmail}
+			SELECT * FROM CHATTING_ROOM WHERE ${mytitle}=#{myEmail} AND ${ftitle}=#{fEmail}
 		</if>
 	</select>
 	
 	<insert id="roomCreate" parameterType="map">
 		INSERT INTO CHATTING_ROOM VALUES(chatting_room_SEQ.NEXTVAL, NULL, #{my_email}, #{friend_email})
 	</insert>
+	
+	
+	<!-- 채팅컨텐츠 부분 -->
+	<resultMap type="chattingContents" id="chattingContents">
+	</resultMap>
+	
+	<insert id="saveMessage" parameterType="map">
+		INSERT INTO CHATTING_CONTENTS VALUES(CHATTING_CONTENTS_SEQ.NEXTVAL, #{room_no}, #{writer}, #{message}, SYSTIMESTAMP)
+	</insert>
+	
+	<select id="chattingList" resultMap="chattingContents" parameterType="map">
+		SELECT * FROM CHATTING_CONTENTS WHERE ROOM_NO=#{room_no} ORDER BY CHAT_NO
+	</select>
+	
+	<select id="lastChat" resultType="string" parameterType="map">
+		<if test="mytitle=='MY_EMAIL' and ftitle=='FRIEND_EMAIL'">
+			SELECT MESSAGE FROM CHATTING_CONTENTS C JOIN CHATTING_ROOM R ON(C.ROOM_NO=R.ROOM_NO) WHERE ${mytitle}=#{myEmail} AND ${ftitle}=#{fEmail}
+		</if>
+		<if test="mytitle=='FRIEND_EMAIL' and ftitle=='MY_EMAIL'">
+			SELECT MESSAGE FROM CHATTING_CONTENTS C JOIN CHATTING_ROOM R ON(C.ROOM_NO=R.ROOM_NO) WHERE ${mytitle}=#{MYemail} AND ${ftitle}=#{FEmail}
+		</if>
+	</select>
 </mapper>
