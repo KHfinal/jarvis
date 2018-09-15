@@ -373,7 +373,7 @@ public class MemberController {
 		  @RequestMapping("/member/pwUpdate.do")
 		  public ModelAndView pwUpdate(Member m,HttpServletRequest request) {
 			  
-			  logger.debug("유저가 이메일 변경 시도 "+m.getMemberEmail());
+			 // logger.debug("유저가 이메일 변경 시도 "+m.getMemberEmail());
 			 
 				//암호화하기
 				String oriPw=m.getMemberPw(); //암호화 전
@@ -411,6 +411,7 @@ public class MemberController {
 			  
 		  }
 		  
+		  //로그아웃
 		  @RequestMapping("/member/logout.do")
 		  public String logout(SessionStatus ss) {
 			  if(!ss.isComplete()) ss.setComplete();
@@ -419,28 +420,29 @@ public class MemberController {
 		  }
 	  
 		//내 정보 보기 - 메인 상단바에서 클릭시 정보보기 페이지로 이동
-        @RequestMapping("/memberView.do")
+        @RequestMapping(value="/myInfoView.do" )
          public ModelAndView memberView(Member m) 
          {
-              ModelAndView mv = new ModelAndView();
-            mv.addObject("m",m);
-            System.out.println("정보보기 페이지아이디: "+m.getMemberEmail());
-            mv.setViewName("member/memberInfoView");
             
-            return mv; //--->폴더이름/jsp명 
+        	System.out.println("페이지까지 오나?");
+        	//List<Member> m= (List<Member>) memberService.selectLogin(memberEmail); //xml까지 보낸 후 
+        	
+        	ModelAndView mv = new ModelAndView();
+        	mv.addObject("myinfo",m.equals(sessionList)); //m을 내 정보에 담아서 
+            mv.setViewName("member/myInfoView"); //--->폴더이름/jsp명
+            
+            return mv;  
          }
            
         
            //내 정보 수정 - memberinfoview에서 클릭시 
-           @RequestMapping("/memberUpdateView.do")
-         public ModelAndView memberUpdateView(Member m) 
+           @RequestMapping(value="/memberUpdateView.do", method=RequestMethod.POST)
+         public ModelAndView memberUpdateView(Member m,HttpServletRequest request) 
          {
-              ModelAndView mv = new ModelAndView();
-            mv.addObject("m",m);
-            System.out.println("정보수정 페이지아이디: "+m.getMemberEmail());
-            mv.setViewName("member/memberUpdateView");
-            
-            return mv; //--->폴더이름/jsp명 
+           
+        	ModelAndView mv = new ModelAndView(); //mv 생성하시고
+            mv.setViewName("member/myinfoUpdateView"); //jsp로 쏘세요 //--->폴더이름/jsp명 
+            return mv; 
          }
 	  
 }
