@@ -21,6 +21,6 @@
 		<typeAlias type="kh.mark.jarvis.group.model.vo.GroupLike" alias="groupLike"/>
  		
  		<typeAlias type="kh.mark.jarvis.chatting.model.vo.ChattingRoom" alias="chattingRoom"/>
-
+		<typeAlias type="kh.mark.jarvis.chatting.model.vo.ChattingContents" alias="chattingContents"/>
 	</typeAliases>
 </configuration>

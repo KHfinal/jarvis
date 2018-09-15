@@ -46,8 +46,8 @@ public class FriendServiceImpl implements FriendService{
 	}
 
 	@Override
-	public List<String> requestList(Map<String,String> map) {
-		// TODO Auto-generated method stub
+	public List<Map<String,Object>> requestList(Map<String,String> map) {
+		System.out.println("service : "+map);
 		return dao.requestList(sqlSession, map);
 	}
 
@@ -64,7 +64,7 @@ public class FriendServiceImpl implements FriendService{
 	}
 
 	@Override
-	public List<String> friendList(Map map) {
+	public List<Map<String,Object>> friendList(Map<String,String> map) {
 		// TODO Auto-generated method stub
 		return dao.friendList(sqlSession, map);
 	}
@@ -72,7 +72,7 @@ public class FriendServiceImpl implements FriendService{
 	@Override
 	public String friendOne(String fEmail) {
 		return dao.friendOne(sqlSession, fEmail);
-	};
+	}
 
 	
 

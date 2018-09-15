@@ -12,9 +12,10 @@ public interface FriendService {
 	List<Member> selectMemberConcernList(String concern);
 	List<Member> selectSearch2(Map<String,String> map);
 	int friendRequest(Map<String, String> fr);
-	List<String> requestList(Map<String,String> map);
+	List<Map<String,Object>> requestList(Map<String,String> map);
 	int friendAgree(Map<String, String> fr);
 	int friendRefuse(Map<String, String> fr);
-	List<String> friendList(Map map);
+	List<Map<String,Object>> friendList(Map<String,String> map);
 	String friendOne(String fEmail);
+
 }

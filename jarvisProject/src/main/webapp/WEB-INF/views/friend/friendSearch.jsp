@@ -30,27 +30,20 @@
 		<div class="list-group">
 			<table id="tbl-board" class="table table-striped table-hover">
             <tr>
+                <th></th>
                 <th>ID</th>
                 <th>이름</th>
                 <th>닉네임</th>
-                <th>연락처</th>
                 <th></th>
             </tr>
             <c:forEach items="${list}" var="m"> 
-            <%-- <c:forEach items="${requestList }" var="re"> || m.memberEmail!=re.f_friend_email --%>
             <c:if test="${m.memberEmail!=memberLoggedIn.memberEmail&&m.memberEmail!='admin' }">
             <tr>
-                <td>${m.memberEmail}<input type="hidden" class="fri" value="${m.memberEmail}"/></td>
+                <td><img src="${path}/resources/profileImg/${m.memberPFP}" class="w3-circle" style="height: 40px; width: 40px" title="${m.memberName }"></td>
+                <td>${m.memberEmail}</td>
                 <td>${m.memberName}</td>
                 <td>${m.memberNickname}</td>
-                <td>${m.phone}</td>
-                <td><button type="button" id="friend_add" onclick="friend_request('${m.memberEmail}')">친구추가</button></td>
-	              	<%-- <c:if test="${m.memberEmail!=requestList1 }">
-	                	<td><button type="button" id="friend_add" onclick="friend_request('${m.memberEmail}')">친구추가</button></td>
-	             	</c:if> 
-	                <c:if test="${m.memberEmail==requestList1 }">
-	                	<td>요청중</td>
-	            	</c:if>   --%>
+                <td><button type="button" class="btn btn-primary" id="friend_add" onclick="friend_request('${m.memberEmail}')">친구추가</button></td>
             </tr>
             </c:if>
             <%-- </c:forEach> --%>
@@ -59,22 +52,37 @@
 		</div>
 	</div>
 	<div class="col-4">
-		<div class="list-group">
+		<div class="list-group" style="overflow:auto; height:500px;">
 			<table id="tbl-board" class="table table-striped table-hover">
-            <tr>
-                <th colspan="2">친구목록</th>
-            </tr>
-            <c:if test="${friendList.size()==0 }">
+	            <tr>
+	                <th colspan="3">친구목록</th>
+	            </tr>
+	            
+	            <c:if test="${friendList.size()==0 && friendList1.size()==0}">
             	<tr>
-            		<td colspan="2">친구가 없습니다</td>
+            		<td colspan="3">친구가 없습니다</td>
             	</tr>
-            </c:if>
-            <c:forEach items="${friendList}" var="f"> 
-            <tr>
-                <td>${f}</td>
-                <td><button type="button" id="friend_delete" onclick="friend_refuse('${f}');">친구삭제</button></td>
-            </tr>
-            </c:forEach>
+	            </c:if>
+	            
+	            <c:if test="${friendList!=null }">
+	            <c:forEach items="${friendList}" var="f"> 			<!-- f_member_email일때 -->
+		            <tr>
+		            	<td><img src="${path}/resources/profileImg/${f.MEMBER_PFP}" class="w3-circle" style="height: 40px; width: 40px" title="${f.MEMBER_NAME }"></td>
+		                <td>${f.MEMBER_NAME}</td>
+		                <td><button type="button" id="friend_delete" class="btn btn-primary" onclick="friend_refuse('${f.MEMBER_EMAIL}');">친구삭제</button></td>
+		            </tr>
+	            </c:forEach>
+	            </c:if>
+	            
+	            <c:if test="${friendList1!=null }">
+	            <c:forEach items="${friendList1}" var="f1">		<!-- f_friend_email일때 -->
+	            <tr>
+	            	<td><img src="${path}/resources/profileImg/${f1.MEMBER_PFP}" class="w3-circle" style="height: 40px; width: 40px" title="${f1.MEMBER_NAME }"></td>
+	                <td>${f1.MEMBER_NAME}</td>
+	                <td><button type="button" id="friend_delete" class="btn btn-primary" onclick="friend_refuse('${f1.MEMBER_EMAIL}');">친구삭제</button></td>
+	            </tr>
+	            </c:forEach>
+	            </c:if>
         	</table>
 		</div>
 
@@ -84,21 +92,30 @@
                 <th>친구요청</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
+            <c:if test="${requestList.size()==0 && requestList1.size()==0}">
+            	<tr>
+            		<td colspan="3">요청이 없습니다</td>
+            	</tr>
+            </c:if>
             <c:if test="${requestList1!=null }">
             <c:forEach items="${requestList1}" var="r1">		<!-- f_friend_email일때 -->
 	            <tr>
-	                <td>${r1}</td>
-	                <td><button type="button" id="friend_agree" onclick="friend_agree('${r1}');">수락</button></td>
-	                <td><button type="button" id="friend_refuse1" onclick="friend_refuse('${r1}');">거절</button></td>
+	            	<td><img src="${path}/resources/profileImg/${r1.MEMBER_PFP}" class="w3-circle" style="height: 40px; width: 40px" title="${r1.MEMBER_NAME }"></td>
+	                <td>${r1.MEMBER_NAME}</td>
+	                <td><button type="button" id="friend_agree" class="btn btn-primary" onclick="friend_agree('${r1.MEMBER_EMAIL}');">수락</button></td>
+	                <td><button type="button" id="friend_refuse1" class="btn btn-primary" onclick="friend_refuse('${r1}');">거절</button></td>
 	            </tr>
             </c:forEach>
+            <hr>
             </c:if>
             <c:if test="${requestList!=null }">
             <c:forEach items="${requestList}" var="r"> 			<!-- f_member_email일때 -->
 	            <tr>
-	                <td>${r}</td>
-	                <td><button type="button" id="friend_refuse2" onclick="friend_refuse('${r}');">요청취소</button></td>
+	            	<td><img src="${path}/resources/profileImg/${r.MEMBER_PFP}" class="w3-circle" style="height: 40px; width: 40px" title="${r.MEMBER_NAME }"></td>
+	                <td>${r.MEMBER_NAME}</td>
+	                <td colspan='2'><button type="button" id="friend_refuse2" class="btn btn-primary" onclick="friend_refuse('${r.MEMBER_EMAIL}');">요청취소</button></td>
 	            </tr>
             </c:forEach>
             </c:if>

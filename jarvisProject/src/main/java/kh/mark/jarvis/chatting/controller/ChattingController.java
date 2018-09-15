@@ -32,29 +32,28 @@ public class ChattingController {
 	{
 		Member m = (Member)hs.getAttribute("memberLoggedIn");
 		String email = m.getMemberEmail();
+		Map<String,String> roomMap=new HashMap();
+		roomMap.put("title", "MY_EMAIL");
+		roomMap.put("email", email);
+		List<Map<String,Object>> roomList=chattingService.roomList(roomMap);
+		String last_chat=chattingService.lastChatting(roomMap);
+		roomMap.put("title", "FRIEND_EMAIL");
+		List<Map<String,Object>> roomList1=chattingService.roomList(roomMap);
+		String last_chat1=chattingService.lastChatting(roomMap);
 		
 		Map<String,String> map=new HashMap();
 		map.put("title", "F_MEMBER_EMAIL");
 		map.put("email", email);
-		List<String> friendList=friendService.friendList(map);
+		List<Map<String,Object>> friendList=friendService.friendList(map);
 		map.put("title", "F_FRIEND_EMAIL");
-		List<String> friendList1=friendService.friendList(map);
+		List<Map<String,Object>> friendList1=friendService.friendList(map);
 
-		if(friendList.size()>0) {
-			for(int i=0;i<friendList1.size();i++)
-			{
-				if(!friendList.contains(friendList1.get(i)))
-				{
-					friendList.add(friendList1.get(i));	
-				}
-			}
-		}
-		else
-		{
-			friendList=friendList1;
-		}
+		model.addAttribute("roomList",roomList);
+		model.addAttribute("roomList1",roomList1);
 		model.addAttribute("friendList",friendList);
-		
+		model.addAttribute("friendList1",friendList1);
+		model.addAttribute("last_chat",last_chat);
+		model.addAttribute("last_chat1",last_chat1);
 		
 		return "chat/chattingView";
 	}
@@ -64,28 +63,20 @@ public class ChattingController {
 	{
 		Member m = (Member)hs.getAttribute("memberLoggedIn");
 		String email = m.getMemberEmail();
-		
 		/*친구목록-----------------------------------------------------*/
+		Map<String,String> chattingMap=new HashMap();
+		chattingMap.put("title", "MY_EMAIL");
+		chattingMap.put("email", email);
+		List<Map<String,Object>> roomList=chattingService.roomList(chattingMap);
+		chattingMap.put("title", "FRIEND_EMAIL");
+		List<Map<String,Object>> roomList1=chattingService.roomList(chattingMap);
+		
 		Map<String,String> map=new HashMap();
 		map.put("title", "F_MEMBER_EMAIL");
 		map.put("email", email);
-		List<String> friendList=friendService.friendList(map);
+		List<Map<String,Object>> friendList=friendService.friendList(map);
 		map.put("title", "F_FRIEND_EMAIL");
-		List<String> friendList1=friendService.friendList(map);
-
-		if(friendList.size()>0) {
-			for(int i=0;i<friendList1.size();i++)
-			{
-				if(!friendList.contains(friendList1.get(i)))
-				{
-					friendList.add(friendList1.get(i));	
-				}
-			}
-		}
-		else
-		{
-			friendList=friendList1;
-		}
+		List<Map<String,Object>> friendList1=friendService.friendList(map);
 
 		
 		/*채팅방찾기-----------------------------------------------------*/
@@ -112,8 +103,11 @@ public class ChattingController {
 			int result=chattingService.createRoom(roomMap);
 		}
 		
+		model.addAttribute("roomList",roomList);
+		model.addAttribute("roomList1",roomList1);
 		model.addAttribute("selectRoom",selectRoom);
 		model.addAttribute("friendList",friendList);
+		model.addAttribute("friendList1",friendList1);
 		model.addAttribute("chat/friendChatting");
 		model.addAttribute("host",request.getRemoteAddr());
 		return "chat/friendChatting";

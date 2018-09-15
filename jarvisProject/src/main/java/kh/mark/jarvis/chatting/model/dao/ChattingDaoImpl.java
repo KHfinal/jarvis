@@ -12,6 +12,12 @@ import kh.mark.jarvis.chatting.model.vo.ChattingRoom;
 public class ChattingDaoImpl implements ChattingDao {
 
 	
+	
+	@Override
+	public List<Map<String,Object>> roomList(SqlSessionTemplate sqlSession, Map<String, String> roomMap) {
+		return sqlSession.selectList("chatting.roomList",roomMap);
+	}
+
 	@Override
 	public ChattingRoom selectRoom(SqlSessionTemplate sqlSession, Map<String, String> roomMap) {
 		return sqlSession.selectOne("chatting.selectRoom",roomMap);
@@ -21,5 +27,22 @@ public class ChattingDaoImpl implements ChattingDao {
 	public int createRoom(SqlSessionTemplate sqlSession, Map<String, String> roomMap) {
 		return sqlSession.insert("chatting.roomCreate",roomMap);
 	}
+
+	@Override
+	public int saveMessage(SqlSessionTemplate sqlSession, Map<String, String> map) {
+		return sqlSession.insert("chatting.saveMessage",map);
+	}
+
+	@Override
+	public List<Map<String, String>> chattingList(SqlSessionTemplate sqlSession, Map<String, String> map) {
+		return sqlSession.selectList("chatting.chattingList", map);
+	}
+
+	@Override
+	public String lastChatting(SqlSessionTemplate sqlSession, Map<String, String> roomMap) {
+		return sqlSession.selectOne("chatting.lastChat",roomMap);
+	}
+	
+	
 
 }

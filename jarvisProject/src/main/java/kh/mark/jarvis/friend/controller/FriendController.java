@@ -141,16 +141,18 @@ public class FriendController{
 		Map<String,String> map=new HashMap();
 		map.put("title", "F_MEMBER_EMAIL");
 		map.put("email", email);
-		List<String> requestList=friendService.requestList(map);
-		List<String> friendList=friendService.friendList(map);
+		List<Map<String,Object>> requestList=friendService.requestList(map);
+		List<Map<String,Object>> friendList=friendService.friendList(map);
 		map.put("title", "F_FRIEND_EMAIL");
-		List<String> requestList1=friendService.requestList(map);
-		List<String> friendList1=friendService.friendList(map);
+		List<Map<String,Object>> requestList1=friendService.requestList(map);
+		List<Map<String,Object>> friendList1=friendService.friendList(map);
 		
 		mv.addObject("requestList",requestList);		//본인 이메일이 f_member_email일때
 		mv.addObject("requestList1",requestList1);		//본인 이메일이 f_friend_email일때
 
-		if(friendList.size()>0) {
+		mv.addObject("friendList",friendList);
+		mv.addObject("friendList1",friendList1);
+		/*if(friendList.size()>0) {
 			for(int i=0;i<friendList1.size();i++)
 			{
 				if(!friendList.contains(friendList1.get(i)))
@@ -162,10 +164,9 @@ public class FriendController{
 		else
 		{
 			friendList=friendList1;
-		}
+		}*/
+		System.out.println("asdasdasdasdasdasdasdasda"+friendList);
 		mv.addObject("list",list);
-		//mv.addObject("requestList",requestList);
-		mv.addObject("friendList",friendList);
 		mv.setViewName("friend/friendSearch");
 		
 		return mv;

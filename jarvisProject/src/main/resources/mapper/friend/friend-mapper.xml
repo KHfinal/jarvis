@@ -46,21 +46,21 @@
    
    
    
-   <select id="requestList" resultType="string" parameterType="map">
+   <select id="requestList" resultType="map" parameterType="map">
       <if test="title=='F_MEMBER_EMAIL'">
-         SELECT f_friend_email FROM FRIEND WHERE ${title}=#{email} AND F_STATUS='P'
+         SELECT * FROM FRIEND F JOIN MEMBER M ON(F.F_FRIEND_EMAIL=M.MEMBER_EMAIL) WHERE ${title}=#{email} AND F_STATUS='P'
       </if>
       <if test="title=='F_FRIEND_EMAIL'">
-         SELECT f_member_email FROM FRIEND WHERE ${title}=#{email} AND F_STATUS='P'
+         SELECT * FROM FRIEND F JOIN MEMBER M ON(F.F_MEMBER_EMAIL=M.MEMBER_EMAIL) WHERE ${title}=#{email} AND F_STATUS='P'
       </if>
    </select>
 
-   <select id="friendList" resultType="string" parameterType="map">
+   <select id="friendList" resultType="map" parameterType="map">
       <if test="title=='F_MEMBER_EMAIL'">
-         SELECT f_friend_email FROM FRIEND WHERE ${title}=#{email} AND F_STATUS='Y'
+         SELECT * FROM FRIEND F JOIN MEMBER M ON(F.F_FRIEND_EMAIL=M.MEMBER_EMAIL) WHERE ${title}=#{email} AND F_STATUS='Y'
       </if>
       <if test="title=='F_FRIEND_EMAIL'">
-         SELECT f_member_email FROM FRIEND WHERE ${title}=#{email} AND F_STATUS='Y'
+         SELECT * FROM FRIEND F JOIN MEMBER M ON(F.F_MEMBER_EMAIL=M.MEMBER_EMAIL) WHERE ${title}=#{email} AND F_STATUS='Y'
       </if>
    </select>
 
@@ -79,5 +79,6 @@
    <select id="friendOne" resultMap="friendMap" parameterType="string">
       SELECT * FROM FRIEND WHERE F_FRIEND_EMAIL=#{fEmail} AND F_STATUS='Y'
    </select>
+
       
 </mapper>
