@@ -617,7 +617,7 @@ $(function(){
 <div class='w3-col m2' id='friendRecommendClass'>
 	<table cellspacing='0' class='tablefriend' style="width: 100%; margin: 0%;">
 	<div class="pull-center well">
-            <label style="width: 100%; margin: 0%; text-align: center;" >친구 추천</label>
+            <label style="width: 100%; margin: 0%; text-align: center;" >친구추천</label>
            <div class="input-group custom-search-form" >
 	          <select class="form-control" name="searchType" id='searchType' style="width: 37%;">
 				<option value="member_email" ${'member_email' eq param.searchType?"selected":"" }>이메일</option>
