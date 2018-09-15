@@ -218,8 +218,8 @@
 				friendList.push(f_email);
 				for(var k =0; k<size;k++){
 					console.log("userIdList[k] : "+userIdList[k]);
-				    if(f_email==userIdList[k]){
-						friendListTag = "<a href='#' class='w3-bar-item w3-button'>"+f_email+"<i class='fa fa-cloud'/></a><br>";
+				    if(f_email==userIdList[k]){																																			
+						friendListTag = "<a href='#' class='w3-bar-item w3-button' >"+f_email+"&nbsp;&nbsp;&nbsp;&nbsp;<span aria-label='현재 활동 중' style='text-align: right;background: rgb(66, 183, 42); border-radius: 50%; display: inline-block; height: 6px; margin-left: 4px; width: 6px;'></span></a><br>";
 						su++;
 						break;
 				    }else{

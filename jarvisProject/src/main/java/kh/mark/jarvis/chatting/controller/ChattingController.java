@@ -36,10 +36,10 @@ public class ChattingController {
 		roomMap.put("title", "MY_EMAIL");
 		roomMap.put("email", email);
 		List<Map<String,Object>> roomList=chattingService.roomList(roomMap);
-		String last_chat=chattingService.lastChatting(roomMap);
+		/*String last_chat=chattingService.lastChatting(roomMap);*/
 		roomMap.put("title", "FRIEND_EMAIL");
 		List<Map<String,Object>> roomList1=chattingService.roomList(roomMap);
-		String last_chat1=chattingService.lastChatting(roomMap);
+		/*String last_chat1=chattingService.lastChatting(roomMap);*/
 		
 		Map<String,String> map=new HashMap();
 		map.put("title", "F_MEMBER_EMAIL");
@@ -52,8 +52,8 @@ public class ChattingController {
 		model.addAttribute("roomList1",roomList1);
 		model.addAttribute("friendList",friendList);
 		model.addAttribute("friendList1",friendList1);
-		model.addAttribute("last_chat",last_chat);
-		model.addAttribute("last_chat1",last_chat1);
+		/*model.addAttribute("last_chat",last_chat);*/
+		/*model.addAttribute("last_chat1",last_chat1);*/
 		
 		return "chat/chattingView";
 	}

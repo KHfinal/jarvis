@@ -510,31 +510,7 @@ function fn_postLike(e) { /* 좋아요 전송 */
 
 </div>
 <script>
-/* function searchsearch(){
 
-var searchKeyword = $('#searchKeyword').val();
-var searchType = $('#searchType').val();
-
-alert("searchKeyword : "+ searchKeyword);
-alert("searchType : "+ searchType);
-$.ajax({
-	url:"${path }/friend/friendSearch.do",
-	type:"get",
-	data:{searchKeyword : searchKeyword,searchType:searchType },
-	dataType:"json",
-	success : function(data){
-		$.each(data,function(i,item){
-			var searchList = item.memberEmail; 
-			
-			console.log("searchList : " + searchList);
-		});
-		
-	}, error : function(data){
-		console.log(data);
-	}
-});
-
-} */
 function searchsearch(){
 	ajax();
 var myEmail = '${memberLoggedIn.memberEmail}';
@@ -572,7 +548,7 @@ if(searchType != 'MEMBER_CONCERN'){
 							break;
 						}
 						alert("searchPFP : " + searchPFP);
-					 friendConcernTag = "<tr><td><img src='${path}/resources/profileImg/"+searchPFP+"' class='w3-circle' style='height:4%;width:15%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+searchEmail+'&nbsp;&nbsp;&nbsp;<button type="button" id="friend_add" onclick="fn_friendAdd('+"'"+searchEmail+"'"+');">친추</button></td></tr>'; 
+					 friendConcernTag = "<tr ><td><img src='${path}/resources/profileImg/"+searchPFP+"' class='w3-circle' style='height:4%;width:15%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+searchEmail+'&nbsp;&nbsp;&nbsp;<button type="button" id="friend_add" onclick="fn_friendAdd('+"'"+searchEmail+"'"+');">친추</button></td></tr>'; 
 					 $('.tablefriend').append(friendConcernTag);
 					 break;
 					}	
@@ -641,7 +617,7 @@ $(function(){
 <div class='w3-col m2' id='friendRecommendClass'>
 	<table cellspacing='0' class='tablefriend' style="width: 100%; margin: 0%;">
 	<div class="pull-center well">
-            <center>  
+            <label style="width: 100%; margin: 0%; text-align: center;" >친구 추천</label>
            <div class="input-group custom-search-form" >
 	          <select class="form-control" name="searchType" id='searchType' style="width: 37%;">
 				<option value="member_email" ${'member_email' eq param.searchType?"selected":"" }>이메일</option>
@@ -653,15 +629,6 @@ $(function(){
             </div>
     </div>
    </table> 
-   
-   
-   
-   
-   
-   
-   
-   
- 
 </div>
    
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
