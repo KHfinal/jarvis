@@ -544,18 +544,18 @@ var friendConcernTag;
 var tr="";
 alert(searchType);
 if(searchType != 'MEMBER_CONCERN'){
-
+	$('.tablefriend').empty();
 	$.ajax({
 		url:"${path }/friend/friendSearch.do",
 		type:"post",
 		data:{searchKeyword : searchKeyword,searchType:searchType },
 		dataType:"json",
 		success : function(data){
-			
+			$('.tablefriend').append("<tr><th colspan='2' style='text-align:center;'>친구 추천</th></tr>");
 			friendConcernTag;
 			console.log("friendList : " + friendList);
 			$.each(data,function(i,item){
-				
+				var searchPFP = item.memberPFP;
 				var searchEmail = item.memberEmail; 
 				
 				console.log("가져온 이메일 : " +searchEmail);
@@ -571,7 +571,8 @@ if(searchType != 'MEMBER_CONCERN'){
 						if(searchEmail==myEmail){
 							break;
 						}
-					 friendConcernTag = "<tr><td>"+"</td><td>"+searchEmail+"</td><td>"+'<button type="button" id="friend_add" onclick="fn_friendAdd('+"'"+searchEmail+"'"+');">친추</button></td></tr>'; 
+						alert("searchPFP : " + searchPFP);
+					 friendConcernTag = "<tr><td><img src='${path}/resources/profileImg/"+searchPFP+"' class='w3-circle' style='height:4%;width:15%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+searchEmail+'&nbsp;&nbsp;&nbsp;<button type="button" id="friend_add" onclick="fn_friendAdd('+"'"+searchEmail+"'"+');">친추</button></td></tr>'; 
 					 $('.tablefriend').append(friendConcernTag);
 					 break;
 					}	
@@ -625,38 +626,42 @@ if(searchType != 'MEMBER_CONCERN'){
 } */
 
 }
-
+$(function(){
+	$('select').selectlist({
+		zIndex: 10,
+		width: 200,
+		height: 30
+	});		
+})
 
 </script>
 
 
 
 <div class='w3-col m2' id='friendRecommendClass'>
-	<table cellspacing='0' class='tablefriend'>
+	<table cellspacing='0' class='tablefriend' style="width: 100%; margin: 0%;">
 	<div class="pull-center well">
             <center>  
-            <select class="form-control" name="searchType" id='searchType'>
-                <!-- <option value="" disabled selected>검색타입</option> -->
-				<!-- 최초보이는 값으로 설정함. required이기 때문에 반드시 다른값을 선택해야함. value="" 반드시 있어야함.-->
+           <div class="input-group custom-search-form" >
+	          <select class="form-control" name="searchType" id='searchType' style="width: 37%;">
 				<option value="member_email" ${'member_email' eq param.searchType?"selected":"" }>이메일</option>
-				<option value="member_name" ${'member_name'==param.searchType?"selected":"" }>친구이름</option>
+				<option value="member_name" ${'member_name'==param.searchType?"selected":"" }>이름</option>
 				<option value="ADDR2" ${'ADDR2' eq param.searchType?"selected":"" }>지역</option>
 				<option value="MEMBER_CONCERN" ${'MEMBER_CONCERN' eq param.searchType?"selected":"" }>관심사</option>
-            </select>
-           <div class="input-group custom-search-form">
-                <input type="search"  id='searchKeyword' name='searchKeyword' placeholder="Search...">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" onclick='searchsearch();' >
-                          <i >search</i>
-                        </button>
-                    </span>
+	           </select> 
+				<input type="search" id="searchKeyword" placeholder="Search..." onkeypress="if( event.keyCode == 13 ){searchsearch();}" style="width: 63%; "/>	           
             </div>
-       
     </div>
-   <tr>
-      <th >회원 이메일</th>
-   </tr>
-   </table>
+   </table> 
+   
+   
+   
+   
+   
+   
+   
+   
+ 
 </div>
    
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
