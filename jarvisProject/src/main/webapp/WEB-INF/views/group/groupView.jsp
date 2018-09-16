@@ -6,7 +6,7 @@
 <%@ taglib prefix='fn' uri='http://java.sun.com/jsp/jstl/functions'%>
 
 <c:set var="path" value="<%=request.getContextPath()%>"/>
-
+<c:set var="loopFlag" value="false"/>
 
 
 <jsp:include page="/WEB-INF/views/common/header.jsp">
@@ -33,6 +33,23 @@ function readURL(input) {
    }
 }
 
+//게시글 수정
+function updateReadURL(input) {
+   for(var i=0; i<input.files.length; i++) {
+       if (input.files[i]) {
+          var reader = new FileReader();
+   
+          reader.onload = function (e) {
+             var img = $('<img id="imgDisplayUpdate" class="img-thumbnail">');
+             img.attr('src', e.target.result);
+             img.appendTo('#imgDisplayUpdateContainer');
+          }
+          reader.readAsDataURL(input.files[i]);
+       }
+   }
+}
+
+
 $(function() {
 	 // 게시글 등록
 	 $("#imgInput").on('change', function(){
@@ -45,6 +62,18 @@ $(function() {
 	       readURL(this);   
 	    }
 	 });
+	 
+	// 게시글 수정
+    $("#imgUpdateInput").on('change', function(){
+       ext = $(this).val().split(".").pop().toLowerCase(); 
+       
+       if($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+          resetFormElement($(this)) // resetFormElement실행
+          alert('이미지 파일이 아닙니다.');
+       } else {
+          updateReadURL(this);   
+       }
+    });
 	
 	/* 댓글 input 엔터 이벤트 */
 	$('.inputCommentTxt').keydown(function(e) {
@@ -69,7 +98,7 @@ $(function() {
 	   
 	   /* 답글 입력 */
 	   var html = "<form class='createCommentFrm' method='post' action='${path }/group/postCommentInsert.do?groupNo=${groupNo}'>";
-	   html += "<input type='hidden' name='g_comment_writer' value='${memberLoggedIn.getMemberNickname() }'/>";
+	   html += "<input type='hidden' name='g_comment_writer' value='${memberLoggedIn.getMemberEmail() }'/>";
 	   html += "<input type='hidden' name='g_post_ref' value='" + replyPostRef + "'/>";
 	   html += "<input type='hidden' name='g_comment_level' value='2'/>";
 	   html += "<input type='hidden' name='g_comment_ref' value='" + replyCommentRef + "'/>";
@@ -96,6 +125,39 @@ $(function() {
           }
        });
     });
+
+
+/* 하트... */
+$.ajax({
+   type: "POST",
+   url: "${pageContext.request.contextPath}/group/startLike.do",
+   contentType : "application/x-www-form-urlencoded; charset=utf-8",
+   dataType : "json",
+     
+   success: function(data) {
+     var myLikeList = data.myLikeList;
+     var myPostNoList = data.myPostNoList;
+     
+     for(var i=0; i<myPostNoList.length; i++) {
+        var myPostNo = myPostNoList[i]; 
+        for(var j=0; j<myLikeList.length; j++) {
+           var myLike = myLikeList[j];
+           
+           if($('.likeBtn[title=' + myPostNo + ']').attr('title') == myLike) {
+              $('.likeBtn[title=' + myLike + ']').children().removeClass();
+              $('.likeBtn[title=' + myLike + ']').children().addClass('fas fa-heart like');
+           }
+        }
+     }
+   },
+   
+   error: function(xhr, status, errormsg) {
+      console.log(xhr);
+      console.log(status);
+      console.log(errormsg);
+   }
+});
+
 });
 
 function fn_postLike(e) { /* 좋아요 전송 */
@@ -111,10 +173,10 @@ function fn_postLike(e) { /* 좋아요 전송 */
 		type: "POST",
 		url: "${pageContext.request.contextPath}/group/likeInsertAndSelect.do",
 		data: {
-			likeMember : likeFrm.children('.likeMember').val(),
-			postRef : likeFrm.children('.postRef').val(),
-			commentRef : likeFrm.children('.commentRef').val(),
-			likeCheck : likeFrm.children('.likeCheck').val()
+			g_like_member : likeFrm.children('.likeMember').val(),
+			g_post_ref : likeFrm.children('.postRef').val(),
+			g_comment_ref : likeFrm.children('.commentRef').val(),
+			g_like_check : likeFrm.children('.likeCheck').val()
 		},
 		contentType : "application/x-www-form-urlencoded; charset=utf-8",
 	    dataType : "json",
@@ -126,10 +188,10 @@ function fn_postLike(e) { /* 좋아요 전송 */
 			var likeCheck;
 
 			$.each(data.likeList, function(i, item) {
-				likeMember = item.likeMember;
-				postRef = item.postRef;
-				commentRef = item.commentRef;
-				likeCheck = item.likeCheck;
+				likeMember = item.g_like_member;
+				postRef = item.g_post_ref;
+				commentRef = item.g_comment_ref;
+				likeCheck = item.g_like_check;
 			})
 			
 			console.log("member"+likeMember);
@@ -137,15 +199,19 @@ function fn_postLike(e) { /* 좋아요 전송 */
 			console.log("comment"+commentRef);
 			console.log("like"+likeCheck);
 			
-			btn.children().removeClass();
-			btn.children().addClass('fas fa-heart like full');
-			var html = "<span></span>";
-			
-			/* 
-			btn.children().removeClass();
-			btn.children().addClass('far fa-heart like empty');
-			*/
-		},
+			if(data.count == 0 || likeFrm.children('.postRef').val() == postRef && likeFrm.children('.likeCheck').val() == 1) {
+	            var html = "<p class='likePostCount'>" + data.count + "</p>";
+	            likeFrm.next($('.likePostCount-container')).html(html);
+	         }
+	         
+	         if(data.count == 0 || likeFrm.children('.commentRef').val() == commentRef && likeFrm.children('.likeCheck').val() == 2) {
+	            var html = "<p class='likeCount'>" + data.count + "</p>";
+	            likeFrm.next($('.likeCommentCount-container')).html(html);
+	            
+	            var html = "<p class='likeCount'>" + data.count + "</p>";
+	            likeFrm.next($('.likeReplyCount-container')).html(html);
+	         } 
+	      },
 		
 		error: function(xhr, status, errormsg) {
 			console.log(xhr);
@@ -195,7 +261,7 @@ function fn_subMenu(e) {
 	         <!-- Modal body -->
 	         <form id="createPostFrm" method="post" action="${path }/group/insertGroupPost.do?g_no=${groupNo}" enctype="multipart/form-data">
 	            <div class="modal-body">
-	               <input type="hidden" id="postWriter" name="g_post_writer" value="${memberLoggedIn.getMemberNickname() }"/>
+	               <input type="hidden" id="postWriter" name="g_post_writer" value="${memberLoggedIn.getMemberEmail() }"/>
 	               <textarea class="form-control" rows="5" id="postContents" name="g_post_contents" placeholder="문구 입력..."></textarea>
 	               <hr>
 	               
@@ -222,7 +288,7 @@ function fn_subMenu(e) {
 	    <div class="panel-heading">
 	    
 	    <c:forEach items="${memberList }" var="member">
-          <c:if test="${post.getG_post_writer() eq member.getMemberNickname() }">
+          <c:if test="${post.getG_post_writer() eq member.getMemberEmail() }">
           <span><img class='postProfile rounded-circle' src='${path }/resources/profileImg/${member.getMemberPFP() }'></span>
            <span class="userName" style="font-size: 2em">${member.getMemberNickname() }</span>&nbsp;&nbsp;
            </c:if>
@@ -239,40 +305,100 @@ function fn_subMenu(e) {
 	        
 	        <!-- 좋아요 갯수 출력 -->
 	        <div class="likeCount-container" style="display: inline-block">
-				<p class='likePostCount'></p>
+				<p class='likePostCoopen launch configurationunt'></p>
 	        </div>
 	        
 	        <!-- 게시물 서브 메뉴 -->
            <a href="javascript:void(0);" onclick="fn_subMenu(this);" class="dropdown-toggle" data-toggle="dropdown" title="${post.getG_post_no() }" style="float: right; padding-top: 10px;"><i class="fas fa-angle-double-down subAwe" style="font-size: 2.3em;"></i></a>
-           <c:forEach items="${memberList }" var="member">
-           <c:choose>
-              <c:when test="${post.getG_post_writer() eq member.getMemberNickname()}">
-              <div class="subMenu-container dropdown-menu">
-                <a class="dropdown-item" href="#">수정하기</a>
-                <a class="dropdown-item" href="${path }/group/deleteGroupPost.do?postNo=${post.getG_post_no() }&groupNo=${groupNo }">삭제하기</a>
-                <a class="dropdown-item" href="#">숨기기</a>
-                <a class="dropdown-item" href="#">신고하기</a>
-             </div>
-              </c:when>
+	           <c:choose>
+	              <c:when test="${post.getG_post_writer() eq memberLoggedIn.getMemberEmail()}">
+		              <div class="subMenu-container dropdown-menu">
+			              <a href="javascript:void(0);" onclick="subMenuPostUpdate(this)" title="${post.getG_post_no() }" class="dropdown-item" data-toggle="modal" data-target="#groupPostUpdateModal">수정하기</a>
+                		  <a href="javascript:void(0);" onclick="subMenuPostDelete(this)" title="${post.getG_post_no() }" class="dropdown-item" data-toggle="modal" data-target="#groupPostDeleteModal">삭제하기</a>
+			              <a class="dropdown-item" href="#">신고하기</a>
+		              </div>
+	              </c:when>
+	              
+	              <c:when test="${g.g_master eq memberLoggedIn.getMemberEmail() }">
+		              <div class="subMenu-container dropdown-menu">
+		              	  <a href="javascript:void(0);" onclick="subMenuPostDelete(this)" title="${post.getG_post_no() }" class="dropdown-item" data-toggle="modal" data-target="#groupPostDeleteModal">삭제하기</a>
+	              		  <a class="dropdown-item" href="#">신고하기</a>
+		              </div>
+	              </c:when>
+	              
+	              <c:when test="${g.g_master ne member.getMemberEmail() and post.getG_post_writer() ne member.getMemberEmail() }">
+		              <div class="subMenu-container dropdown-menu">
+		              	  <a class="dropdown-item" href="#">신고하기</a>
+		              </div>
+	              </c:when>
               
-              <c:when test="${g.g_master eq member.getMemberEmail() }">
-              <div class="subMenu-container dropdown-menu">
-                <a class="dropdown-item" href="${path }/group/deleteGroupPost.do?postNo=${post.getG_post_no() }&groupNo=${groupNo }">삭제하기</a>
-                <a class="dropdown-item" href="#">숨기기</a>
-                <a class="dropdown-item" href="#">신고하기</a>
+	           </c:choose>
+
+       <!-- 게시글 삭제 모달!! -->
+          <div class="modal fade" id="groupPostDeleteModal">
+             <div class="modal-dialog">
+                <div class="modal-content">
+                
+                   <div class="modal-header">
+                        <h3 class="modal-title" style='color: black;'><strong>선택한 게시물</strong>을 삭제하시겠습니까??</h3>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                     </div>
+                     
+                     <form id="deletePostFrm" method="post" action="${path }/group/deleteGroupPost.do?groupNo=${groupNo }">
+                        <div class="modal-body">
+                           <input type="hidden" id="postNo" name="postNo" value="${post.getG_post_no() }"/>
+                           <p style="color: red;">게시물을 삭제하면 이후 복구할 수 없습니다.</p>
+                        </div>
+                        
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary text-center">삭제하기</button>
+                            <input type="reset" class="btn btn-danger text-center" value="취소" data-dismiss="modal"/>
+                        </div>
+                     </form>
+                     
+                </div>
              </div>
-              </c:when>
-              
-              <c:when test="${post.getG_post_writer() != member.getMemberNickname() }">
-              <div class="subMenu-container dropdown-menu">
-                <a class="dropdown-item" href="#">숨기기</a>
-                <a class="dropdown-item" href="#">신고하기</a>
-             </div>
-              </c:when>
-          </c:choose>
-           </c:forEach>
+          </div>
+          
+          <!-- 게시글 수정 모달!! -->
+         <div class="modal fade" id="groupPostUpdateModal">
+            <div class="modal-dialog modal-lg">
+               <div class="modal-content">
+                  
+                  <!-- Modal Header -->
+                  <div class="modal-header">
+                     <h3 class="modal-title" style='color: black;'><strong>선택한 게시물</strong> 수정하기</h3>
+                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+                              
+                  <!-- Modal body -->
+                  <form id="updatePostFrm" method="post" action="${path }/group/updateGroupPost.do?g_no=${groupNo}" enctype="multipart/form-data">
+                     <div class="modal-body">
+                        <input type="hidden" id="postNo" name="g_post_no" value="${post.getG_post_no() }"/>
+                        <input type="hidden" id="postWriter" name="g_post_writer" value="${memberLoggedIn.getMemberEmail() }"/>
+                        <textarea class="form-control" rows="5" id="postContents" name="g_post_contents" placeholder="문구 입력..."></textarea>
+                        <hr>
+                        
+                        <!-- 이미지 업로드 -->
+                        <div id="imgDisplayUpdateContainer"></div>
+                        <hr>
+                        
+                        <div class="filebox"> <label for="imgUpdateInput">업로드</label> <input type="file" id="imgUpdateInput" name="upFile" multiple> </div>
+                     </div>
+                     
+                     <!-- Modal footer -->
+                     <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary text-center">등록하기</button>
+                        <input type="reset" class="btn btn-danger text-center" value="취소" data-dismiss="modal"/>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
            
-       </div>
+       </div> 
+       
+       
 	    
 	    <div class="panel-body">
 	       <div id="postContentsContainer">
@@ -296,7 +422,7 @@ function fn_subMenu(e) {
 	         <div class="commentDisplay-container">
 	         
 	         <c:forEach items="${memberList }" var="member">
-             <c:if test="${comment.getG_comment_writer() eq member.getMemberNickname() }">
+             <c:if test="${comment.getG_comment_writer() eq member.getMemberEmail() }">
              <span><img class='commentProfile rounded-circle' src='${path }/resources/profileImg/${member.getMemberPFP() }'></span>
                <a href="#"><span class="commentWriter" style="color: #EE4035">${member.getMemberNickname() }</span></a>
               </c:if>
@@ -306,14 +432,14 @@ function fn_subMenu(e) {
 	            <!-- 댓글 좋아요를 위한 form -->
             	<%-- <a href="javascript:void(0);" onclick="fn_postLike(this);" title="${comment.getCommentNo() }"><i class="fas fa-heart like ok" style="font-size: 1.1em;"></i></a> --%>
             	<a href="javascript:void(0);" onclick="fn_postLike(this);" title="${comment.getG_comment_no() }"><i class="far fa-heart like" style="font-size: 1.1em;"></i></a>
-	        	<form class="likeFrm" style="display:inline-block" method="post" action="${path }/group/likeInsertAndSelect.do?groupNo=${post.getG_post_no() }">
+	        	<form class="likeFrm" style="display:inline-block" method="post" action="${path }/group/likeInsertAndSelect.do">
 	            	<input type="hidden" class="likeMember" name="g_like_member" value="${memberLoggedIn.getMemberEmail() }"/>
 		        	<input type="hidden" class="postRef" name="g_post_ref" value="${post.getG_post_no() }"/>
 		        	<input type="hidden" class="commentRef" name="g_comment_ref" value="${comment.getG_comment_no() }"/>
 		        	<input type="hidden" class="likeCheck" name="g_like_check" value="2"/>
 	            </form>
 	            
-	            <button style="margin-left: 1%" class="inputReplyIcon btn btn-primary btn-sm" id="reply_commentRef" title="${comment.getG_post_ref() }" value="${comment.getG_comment_no() }"><i class="fas fa-long-arrow-alt-down" style="font-size: 1.1em;"></i></button>
+	            <button style="margin-left: 1%" class="inputReplyIcon btn btn-primary btn-sm" id="reply_commentRef" title="${comment.getG_post_ref() }" value="${comment.getG_comment_no() }" ><i class="fas fa-long-arrow-alt-down" style="font-size: 1.1em;"></i></button>
 	            <div style="clear: both"></div>
 	            
 	            
@@ -337,7 +463,7 @@ function fn_subMenu(e) {
 	               <!-- 답글 좋아요를 위한 form -->
 				   <%-- <a href="javascript:void(0);" onclick="fn_postLike(this);" title="${comment.getCommentNo() }"><i class="fas fa-heart like ok" style="font-size: 1.1em;"></i></a> --%>
 				   <a href="javascript:void(0);" onclick="fn_postLike(this);" title="${comment.getG_comment_no() }"><i class="far fa-heart like" style="font-size: 1.1em;"></i></a>
-	        	   <form class="likeFrm" style="display:inline-block" method="post" action="${path }/group/likeInsertAndSelect.do?groupNo=${post.getG_post_no() }">
+	        	   <form class="likeFrm" style="display:inline-block" method="post" action="${path }/group/likeInsertAndSelect.do">
 						<input type="hidden" class="likeMember" name="g_like_member" value="${memberLoggedIn.getMemberEmail() }"/>
 			        	<input type="hidden" class="postRef" name="g_post_ref" value="${post.getG_post_no() }"/>
 			        	<input type="hidden" class="commentRef" name="g_comment_ref" value="${comment.getG_comment_no() }"/>
@@ -351,11 +477,11 @@ function fn_subMenu(e) {
 
 	      <!-- 댓글 쓰기 -->
 	      <div id="inputComment-container">
-	         <form id="createCommentFrm" method="post" action="${path }/group/postCommentInsert.do?groupNo=${g.g_no }">
-	            <span><img class="commentProfile rounded-circle" src="${path }/resources/upload/post/20180030_210021127_730.jpg"></span>
+	         <form id="createCommentFrm" method="post" action="${path }/group/postCommentInsert.do">
+	            <span><img class="commentProfile rounded-circle" src='${path }/resources/profileImg/${memberLoggedIn.getMemberPFP() }'></span>
 	            <input type="text" id="inputCommentTxt" name="g_comment_contents" class="form-control" placeholder=" 댓글을 입력하세요..."/>
 	            <input type="hidden" id="reply_postRef" name="g_post_ref" value="${post.getG_post_no() }"/>
-	            <input type="hidden" name="g_comment_writer" value="${memberLoggedIn.getMemberNickname() }"/>
+	            <input type="hidden" name="g_comment_writer" value="${memberLoggedIn.getMemberEmail() }"/>
 	            <input type="hidden" name="g_comment_level" value="1"/>
 	            <div style="clear: both"></div>
 	         </form>

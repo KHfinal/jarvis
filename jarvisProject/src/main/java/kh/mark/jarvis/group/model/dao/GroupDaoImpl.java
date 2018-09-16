@@ -167,8 +167,45 @@ public class GroupDaoImpl implements GroupDao {
 
 	@Override
 	public int deleteGroupPost(SqlSessionTemplate Session, int postNo) {
-		// TODO Auto-generated method stub
+		
 		return Session.delete("group.deleteGroupPost", postNo);
+	}
+
+	
+	@Override
+	public int UpdateGroupPost(SqlSessionTemplate Session, GroupPost post) {
+		// TODO Auto-generated method stub
+		return Session.update("group.UpdateGroupPost", post);
+	}
+
+	@Override
+	public int deleteGroupPostDeleteAttach(SqlSessionTemplate Session, GroupPost post) {
+		// TODO Auto-generated method stub
+		return Session.delete("group.deleteGroupPostDeleteAttach", post);
+	}
+
+	@Override
+	public int deleteGroupPostLike(SqlSessionTemplate Session, GroupLike like) {
+		// TODO Auto-generated method stub
+		return Session.delete("group.deleteGroupPostLike", like);
+	}
+
+	@Override
+	public int deleteGroupCommentLike(SqlSessionTemplate Session, GroupLike like) {
+		// TODO Auto-generated method stub
+		return Session.delete("group.deleteGroupCommentLike", like);
+	}
+
+	@Override
+	public List<Integer> selectMyLike(SqlSessionTemplate Session, String memberEmail) {
+		// TODO Auto-generated method stub
+		return Session.selectList("group.selectMyLike", memberEmail);
+	}
+
+	@Override
+	public List<Integer> myPostNoList(SqlSessionTemplate Session) {
+		// TODO Auto-generated method stub
+		return Session.selectList("group.myPostNoList");
 	}
 	
 	

@@ -9,6 +9,8 @@ import kh.mark.jarvis.group.model.vo.GroupComment;
 import kh.mark.jarvis.group.model.vo.GroupLike;
 import kh.mark.jarvis.group.model.vo.GroupPost;
 import kh.mark.jarvis.member.model.vo.Member;
+import kh.mark.jarvis.post.model.vo.Attachment;
+import kh.mark.jarvis.post.model.vo.Post;
 
 public interface GroupService {
 
@@ -26,7 +28,13 @@ public interface GroupService {
 	List<GroupComment> selectCommentList();
 	List<Map<String, String>> selectGroupMember(int groupNo);
 	Group groupViewDetail(int groupNo);
+
+	int groupMemberInsert(Map groupM);
 	
+	List<Member> selectMemberList();
+	
+	int deleteGroupPost(int postNo);
+
 	int insertGroupPostLike(GroupLike like);
 	List<GroupLike> selectGroupPostLike(GroupLike like);
 	int selectGroupPostLikeCount(GroupLike like);
@@ -35,9 +43,9 @@ public interface GroupService {
 	List<GroupLike> selectGroupCommentLike(GroupLike like);
 	int selectGroupCommentLikeCount(GroupLike like);
 	
-	int groupMemberInsert(Map groupM);
-	
-	List<Member> selectMemberList();
-	
-	int deleteGroupPost(int postNo);
+	int updateGroupPost(GroupPost post, List<GroupAttachment> attList);
+	int deleteGroupPostLike(GroupLike like);
+	int deleteGroupCommentLike(GroupLike like);
+	List<Integer> selectMyLike(String memberEmail);
+	List<Integer> myPostNoList();
 }

@@ -28,7 +28,7 @@
 	</insert>
 	
 	<select id="groupSearch" parameterType="string" resultMap="groupMap">
-		SELECT * FROM GROUP_LIST WHERE G_NAME=#{titleSearch} ORDER BY G_DATE DESC
+		SELECT * FROM GROUP_LIST WHERE G_NAME LIKE '%'||#{titleSearch}||'%' ORDER BY G_DATE DESC
 	</select>
 	
 	<select id="groupFilter" parameterType="string" resultMap="groupMap">
@@ -73,7 +73,7 @@
 	</select>
 	
 	<insert id="insertGroupPostLike" parameterType="groupLike">
-		INSERT INTO GROUP_LIKE VALUES(GROUP_LIKE_SEQ.NEXTVAL, #{g_like_member}, #{g_post_ref}, #{g_like_check})
+		INSERT INTO GROUP_LIKE VALUES(GROUP_LIKE_SEQ.NEXTVAL, #{g_like_member}, #{g_post_ref}, #{g_comment_ref}, #{g_like_check})
 	</insert>
 	<insert id="insertGroupCommentLike" parameterType="groupLike">
 		INSERT INTO GROUP_LIKE VALUES(GROUP_LIKE_SEQ.NEXTVAL, #{g_like_member}, #{g_post_ref}, #{g_comment_ref}, #{g_like_check})
@@ -95,7 +95,7 @@
 		INSERT INTO GROUP_MEMBER VALUES(GROUP_MEMBER_SEQ.NEXTVAL,#{groupNo},#{mEmail})
 	</insert>
 	
-	<select id="selectMemberList" resultType="member" resultMap="memberMap">
+	<select id="selectMemberList" resultMap="memberMap">
 		SELECT * FROM MEMBER
 	</select>
 	
@@ -104,6 +104,28 @@
 	</delete>
 	
 	
+	<update id="UpdateGroupPost" parameterType="groupPost">
+		UPDATE GROUP_POST SET G_POST_CONTENTS = #{g_post_contents}, G_POST_DATE = SYSTIMESTAMP WHERE G_POST_NO = #{g_post_no}
+	</update>
+	<delete id="deleteGroupPostDeleteAttach" parameterType="groupPost">
+    	DELETE FROM GROUP_ATTACHMENT WHERE G_POST_NO = #{g_post_no}
+    </delete>
+    
+    <delete id="deleteGroupPostLike" parameterType="groupLike">
+    	DELETE FROM GROUP_LIKE WHERE G_POST_REF = #{g_post_ref} AND G_LIKE_MEMBER = #{g_like_member} AND G_LIKE_CHECK = #{g_like_check}
+    </delete>
+	<delete id="deleteGroupCommentLike" parameterType="groupLike">
+    	DELETE FROM GROUP_LIKE WHERE G_COMMENT_REF = #{g_comment_ref} AND G_LIKE_MEMBER = #{g_like_member} AND G_LIKE_CHECK = #{g_like_check}
+    </delete>
+   
+    <!-- 최초 로그인시 count값 받기 위한 select -->
+    <select id="selectMyLike" parameterType="string" resultType="Integer">
+    	SELECT DISTINCT G_POST_REF FROM GROUP_LIKE WHERE G_LIKE_MEMBER = #{memberEmail}
+    </select>
+   
+    <select id="myPostNoList" resultType="Integer">
+   		SELECT DISTINCT G_POST_NO FROM GROUP_POST
+    </select>
 	
 	
 	

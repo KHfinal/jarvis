@@ -119,75 +119,117 @@ public class GroupServiceImpl implements GroupService {
 
 	@Override
 	public List<GroupComment> selectCommentList() {
-		// TODO Auto-generated method stub
+		
 		return dao.selectCommentList(Session);
 	}
 	
 
 	@Override
 	public List<Map<String, String>> selectGroupMember(int groupNo) {
-		// TODO Auto-generated method stub
+		
 		return dao.selectGroupMember(Session, groupNo);
 	}
 
 	@Override
 	public Group groupViewDetail(int groupNo) {
-		// TODO Auto-generated method stub
+		
 		return dao.groupViewDetail(Session, groupNo);
 	}
 
 	@Override
 	public int insertGroupPostLike(GroupLike like) {
-		// TODO Auto-generated method stub
+		
 		return dao.insertGroupPostLike(Session, like);
 	}
 
 	@Override
 	public List<GroupLike> selectGroupPostLike(GroupLike like) {
-		// TODO Auto-generated method stub
+		
 		return dao.selectGroupPostLike(Session, like);
 	}
 
 	@Override
 	public int selectGroupPostLikeCount(GroupLike like) {
-		// TODO Auto-generated method stub
+		
 		return dao.selectGroupPostLikeCount(Session, like);
 	}
 
 	@Override
 	public int insertGroupCommentLike(GroupLike like) {
-		// TODO Auto-generated method stub
+		
 		return dao.insertGroupCommentLike(Session, like);
 	}
 
 	@Override
 	public List<GroupLike> selectGroupCommentLike(GroupLike like) {
-		// TODO Auto-generated method stub
+		
 		return dao.selectGroupCommentLike(Session, like);
 	}
 
 	@Override
 	public int selectGroupCommentLikeCount(GroupLike like) {
-		// TODO Auto-generated method stub
+		
 		return dao.selectGroupCommentLikeCount(Session, like);
 	}
 
 	@Override
 	public int groupMemberInsert(Map groupM) {
-		// TODO Auto-generated method stub
+		
 		return dao.groupMemberInsert(Session, groupM);
 	}
 
 	@Override
 	public List<Member> selectMemberList() {
-		// TODO Auto-generated method stub
+		
 		return dao.selectMemberList(Session);
 	}
 
 	@Override
 	public int deleteGroupPost(int postNo) {
-		// TODO Auto-generated method stub
+		
 		return dao.deleteGroupPost(Session, postNo);
+	}
+
+	@Override
+	public int updateGroupPost(GroupPost post, List<GroupAttachment> attList) {
+		  int result = 0;
+	      int postNo = 0;
+	      
+	      result = dao.UpdateGroupPost(Session, post);
+	      postNo = post.getG_post_no();
+	      result = dao.deleteGroupPostDeleteAttach(Session, post);
+	      
+	      if(attList.size() > 0) {
+	         for(GroupAttachment a : attList) {
+	            a.setG_post_no(postNo);
+	            result = dao.insertAttach(Session, a);
+	         }
+	      }
+	      return result;
+	}
+
+	@Override
+	public int deleteGroupPostLike(GroupLike like) {
+		
+		return dao.deleteGroupPostLike(Session, like);
+	}
+
+	@Override
+	public int deleteGroupCommentLike(GroupLike like) {
+		
+		return dao.deleteGroupCommentLike(Session, like);
+	}
+
+	@Override
+	public List<Integer> selectMyLike(String memberEmail) {
+		// TODO Auto-generated method stub
+		return dao.selectMyLike(Session, memberEmail);
+	}
+
+	@Override
+	public List<Integer> myPostNoList() {
+		// TODO Auto-generated method stub
+		return dao.myPostNoList(Session);
 	}
 	
 	
