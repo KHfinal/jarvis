@@ -45,4 +45,11 @@ public interface GroupDao {
 	List<Member> selectMemberList(SqlSessionTemplate Session);
 	
 	int deleteGroupPost(SqlSessionTemplate Session, int postNo);
+	
+	int UpdateGroupPost(SqlSessionTemplate Session, GroupPost post);
+	int deleteGroupPostDeleteAttach(SqlSessionTemplate Session, GroupPost post);
+	int deleteGroupPostLike(SqlSessionTemplate Session, GroupLike like);
+	int deleteGroupCommentLike(SqlSessionTemplate Session, GroupLike like);
+	List<Integer> selectMyLike(SqlSessionTemplate Session, String memberEmail);
+	List<Integer> myPostNoList(SqlSessionTemplate Session);
 }

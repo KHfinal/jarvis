@@ -13,9 +13,9 @@
 	<jsp:param value="social" name="title"/>	
 </jsp:include>
 <title>Agency - Start Bootstrap Theme</title>
-
+ 
 <link href="${path }/resources/css/agency.min.css" rel="stylesheet">
-
+<link rel="stylesheet" href="${path }/resources/css/socialHome.css?ver=15">
 <style>
 
 </style>
@@ -82,6 +82,29 @@
 				$("a[href^='http://']").attr("target","_blank");
 				$("a[href^='http://als']").attr("target","_self");
 			});
+   	
+  
+   	function previewFile() {
+  	  var preview = document.querySelector('#preViewImg');
+  	  var file    = document.querySelector('#imgInput').files[0];
+  	  var reader  = new FileReader();
+  	  
+  	  var ext = file.name.split(".").pop().toLowerCase();
+  	  if($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
+  		  $('#imgInput').val("");
+  		  
+            alert('이미지 파일이 아닙니다.');
+        }
+  	  else{
+		  reader.addEventListener("load", function () {
+		    preview.src = reader.result;
+		  }, false);
+	
+		  if (file) {
+		    reader.readAsDataURL(file);
+		  }
+  	  }
+  }
  
 </script>
 
@@ -100,7 +123,7 @@
 										<div class="input-group">
 											<input type="text" class="form-control" name="titleSearch" placeholder="그룹 이름을 입력하세요...">
 											<div class="input-group-append">
-												<button class="btn btn-secondary" type="submit">Go</button> 
+												<button class="btn btn-secondary" type="submit" style="z-index: 0;">Go</button> 
 											</div>	
 										</div>
 									</div>
@@ -174,12 +197,19 @@
                         <label for="comment">그룹 소개 글</label>
 						<textarea class="form-control" name="g_intro" rows="5" id="comment" placeholder="간단한 소개 글을 입력해 주세요."></textarea>
 						<label for="upFile1">그룹 이미지</label>
-	                    <div class="custom-file">
-		                    <input type="file" class="custom-file-input" name="upFile" id="upFile">
-		                    <label class="custom-file-label" for="upFile">파일을 선택하세요</label>
+	                	<div>
+	                		<img id="preViewImg" src="" height="200" alt="이미지 미리보기...">
+	                		<div style="float: right;">
+			                	<div class="filebox" style="float: none">
+			                		<label for="imgInput">업로드</label>
+			                		<input type="file" onchange="previewFile()" id="imgInput" name="upFile">
+		                		</div>
+	                		</div>
 	                	</div>
+		                <hr>
+		  
                     	<span>그룹 분류</span>
-                    	<div class="form-control-lg mb-2">
+                    	<div class="form-control-lg">
 	                    	<div class="row">
 		                        <div class="custom-control custom-checkbox mr-3">
 								    <input type="checkbox" class="custom-control-input" id="category1" name="g_category" value="c1"/>
@@ -236,7 +266,7 @@
         
         <div class="container mt-2" style="height: 3000px;">					
        		<div id="portfolio">
-				<div class="col-lg-12 text-center">
+				<div class="col-lg-12 text-center" style="z-index: 0;">
 					<h2 class="section-heading text-uppercase mt-3">그룹</h2>
 					<h3 class="section-subheading text-muted" style="margin-bottom: 30px;">자신에게 어울리는 그룹을 찾아보세요.</h3>
 				</div>

@@ -2,6 +2,7 @@ package kh.mark.jarvis.group.controller;
 
 import java.io.File;
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +30,9 @@ import kh.mark.jarvis.group.model.vo.GroupComment;
 import kh.mark.jarvis.group.model.vo.GroupLike;
 import kh.mark.jarvis.group.model.vo.GroupPost;
 import kh.mark.jarvis.member.model.vo.Member;
+import kh.mark.jarvis.post.model.vo.Attachment;
+import kh.mark.jarvis.post.model.vo.JarvisLike;
+import kh.mark.jarvis.post.model.vo.Post;
 
 @Controller
 public class GroupController {
@@ -163,6 +167,7 @@ public class GroupController {
 	@RequestMapping("/group/groupView.do")
 	public ModelAndView groupView(int groupNo, HttpSession hs) {
 		ModelAndView mv=new ModelAndView();
+		System.out.println("asdfsadfasdfasdfasdfasdfasdfasdf"+groupNo);
 		
 		Member m = (Member)hs.getAttribute("memberLoggedIn");
 		String mEmail = m.getMemberEmail();
@@ -171,6 +176,7 @@ public class GroupController {
 		
 		List<GroupPost> postList = service.groupView(groupNo); // 전체 Post
 		Group g = service.groupViewDetail(groupNo);
+		System.out.println(g);
 		List<GroupAttachment> attachmentList = service.selectAttachList(groupNo); 
 		List<GroupComment> commentList = service.selectCommentList();
 		List<Member> memberList = service.selectMemberList(); 
@@ -182,7 +188,7 @@ public class GroupController {
 		
 		logger.debug("멤버 그룹 디테일 : "+g.toString());
 		logger.debug(commentList.toString());
-		logger.debug(memberList.toString());
+		logger.debug("멤버 리스트"+memberList.toString());
 		for(int i=0;i<gMemberList.size();i++) {
 			/*logger.debug("그룹 멤버 셀렉트"+gMemberList.get(i).values().toString());
 			logger.debug("그룹 멤버 셀렉트"+gMemberList.get(i).get("MEMBER_EMAIL"));
@@ -225,6 +231,8 @@ public class GroupController {
 		logger.debug(post.getG_post_writer());
 		logger.debug(post.getG_post_contents());
 		logger.debug(post.getG_no());
+		
+		int groupNo= post.getG_post_no();
 
 		for(int i=0; i<upFile.length; i++) {
 			logger.debug(upFile[i].getOriginalFilename());
@@ -270,10 +278,10 @@ public class GroupController {
 		
 		if(result>0) {
 			msg = "POST를 성공적으로 등록하였습니다.";
-			loc = "/group/groupView.do?groupNo="+post.getG_no();
+			loc = "/group/groupView.do?groupNo="+groupNo;
 		} else {
 			msg = "POST 등록이 실패하였습니다.";
-			loc = "/group/groupView.do?groupNo="+post.getG_no();
+			loc = "/group/groupView.do?groupNo="+groupNo;
 		}
 		
 		ModelAndView mv = new ModelAndView();
@@ -313,90 +321,6 @@ public class GroupController {
 			return mv;
 		}
 		
-		// 4. 좋아요 등록 및 조회
-		@ResponseBody
-		@RequestMapping(value="/group/likeInsertAndSelect.do", method=RequestMethod.POST)
-		public ModelAndView likeInsertAndSelect(@ModelAttribute GroupLike like) throws Exception {
-			ModelAndView mv = new ModelAndView();
-			
-			logger.debug("likeInsertAndSelect.do 입장");
-			logger.debug("likeMember = " + like.getG_like_member());
-			logger.debug("postRef = " + like.getG_post_ref());
-			logger.debug("commentRef = " + like.getG_comment_ref());
-			logger.debug("likeCheck = " + like.getG_like_check());
-			
-			List<GroupLike> likeList = new ArrayList<GroupLike>();
-			
-			if(like.getG_comment_ref() == 0) {
-				int result = service.insertGroupPostLike(like);
-				if(result > 0) {
-					likeList = service.selectGroupPostLike(like);
-					
-					int count = service.selectGroupPostLikeCount(like);
-					System.out.println("selectPostLikeCount = " + count);
-					
-					mv.addObject("likeList", likeList);
-					mv.addObject("count", count);
-				}
-			} else {
-				int result = service.insertGroupCommentLike(like);
-				if(result > 0) {
-					likeList = service.selectGroupCommentLike(like);
-					int count = service.selectGroupCommentLikeCount(like);
-					
-					System.out.println("selectCommentLikeCount = " + count);
-					
-					mv.addObject("likeList", likeList);
-					mv.addObject("count", count);
-				}
-			}
-			
-			mv.setViewName("jsonView");
-			
-			return mv;
-		}
-		
-		// 5. 좋아요 삭제 및 조회
-		/*@ResponseBody
-		@RequestMapping(value="/post/likeDeleteAndSelect.do", method=RequestMethod.POST)
-		public ModelAndView likeDeleteAndSelect(@ModelAttribute JarvisLike like) throws Exception {
-			ModelAndView mv = new ModelAndView();
-			
-			logger.debug("likeDeleteAndSelect.do 입장");
-			logger.debug("likeMember = " + like.getLikeMember());
-			logger.debug("postRef = " + like.getPostRef());
-			logger.debug("commentRef = " + like.getCommentRef());
-			logger.debug("likeCheck = " + like.getLikeCheck());
-			
-			List<JarvisLike> likeList = new ArrayList<JarvisLike>();
-			
-			if(like.getCommentRef() == 0) {
-				int result = service.deletePostLike(like);
-				if(result > 0) {
-					likeList = service.selectPostLike(like);
-					
-					int count = service.selectPostLikeCount(like);
-					System.out.println("selectPostLikeCount = " + count);
-					mv.addObject("likeList", likeList);
-					mv.addObject("count", count);
-				}
-			} else {
-				int result = service.deleteCommentLike(like);
-				if(result > 0) {
-					likeList = service.selectCommentLike(like);
-					
-					int count = service.selectCommentLikeCount(like);
-					System.out.println("selectCommentLikeCount = " + count);
-					mv.addObject("likeList", likeList);
-					mv.addObject("count", count);
-				}
-			}
-			
-			mv.setViewName("jsonView");
-			
-			return mv;
-		}*/
-		
 		@RequestMapping("/group/groupMemberInsert.do")
 		public ModelAndView groupMemberInsert(int groupNo, HttpSession hs) {
 			ModelAndView mv=new ModelAndView();
@@ -427,31 +351,194 @@ public class GroupController {
 		}
 		
 		@RequestMapping("/group/deleteGroupPost.do")
-	      public ModelAndView deleteGroupPost(int postNo, String groupNo) {
-	         ModelAndView mv=new ModelAndView();
-	         
-	         logger.debug(String.valueOf(postNo));
-	         logger.debug(groupNo);
-	         
-	         int result = service.deleteGroupPost(postNo);
-	         
-	         String msg = "";
-	         String loc = "";
-	         
-	         if(result>0) {
-	            msg = "POST가 성공적으로 삭제되었습니다.";
-	            loc = "/group/groupView.do?groupNo="+groupNo;
-	         } else {
-	            msg = "POST 삭제가 실패하였습니다.";
-	            loc = "/group/groupView.do?groupNo="+groupNo;
-	         }
-	         
-	         mv.addObject("msg", msg);
-	         mv.addObject("loc", loc);
-	         
-	         mv.setViewName("common/msg");
-	         return mv;
+		public ModelAndView deleteGroupPost(int postNo, int groupNo) {
+			ModelAndView mv=new ModelAndView();
+			
+			logger.debug(String.valueOf(postNo));
+			logger.debug(String.valueOf(groupNo));
+			
+			int result = service.deleteGroupPost(postNo);
+			
+			String msg = "";
+			String loc = "";
+			
+			if(result>0) {
+				msg = "POST가 성공적으로 삭제되었습니다.";
+				loc = "/group/groupView.do?groupNo="+groupNo;
+			} else {
+				msg = "POST 삭제가 실패하였습니다.";
+				loc = "/group/groupView.do?groupNo="+groupNo;
+			}
+			
+			mv.addObject("msg", msg);
+			mv.addObject("loc", loc);
+			
+			mv.setViewName("common/msg");
+			return mv;
+		}
+		
+		// 게시물 수정
+	   @RequestMapping("/group/updateGroupPost.do")
+	   public ModelAndView postUpdate(GroupPost post, int g_no, MultipartFile[] upFile, HttpServletRequest request) throws ParseException {
+		   String saveDir = request.getSession().getServletContext().getRealPath("/resources/upload/group");
+			List<GroupAttachment> attList = new ArrayList<GroupAttachment>();
+			
+			logger.debug("게시물 업데이트 : "+post.toString());
+			
+			File dir = new File(saveDir);
+			if(dir.exists() == false) dir.mkdirs();
+			
+			for(MultipartFile f : upFile) {
+				if(!f.isEmpty()) {
+					String originalFileName = f.getOriginalFilename();
+					String ext = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+
+					
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyymmdd_HHmmssSS");
+					
+					int rndNum = (int) (Math.random() * 1000);
+					String renamedFileName = sdf.format(new Date(System.currentTimeMillis()));
+					renamedFileName += "_" + rndNum + "." + ext; 
+					
+					try {
+						f.transferTo(new File(saveDir + "/" + renamedFileName));
+					} catch(Exception e) {
+						e.printStackTrace();
+					}
+					
+					GroupAttachment attach = new GroupAttachment();
+					attach.setG_original_filename(originalFileName);
+					attach.setG_renamed_filename(renamedFileName);
+					attList.add(attach);
+					
+				}
 	      }
+	      
+	      int result = service.updateGroupPost(post, attList);
+	      
+	      String msg="";
+	      String loc="";
+	      
+	      if(result>0) {
+	         msg = "POST를 성공적으로 수정하였습니다.";
+	         loc = "/group/groupView.do?groupNo="+post.getG_no();
+	      } else {
+	         msg = "POST 수정이 실패하였습니다.";
+	         loc = "/group/groupView.do?groupNo="+post.getG_no();
+	      }
+	      
+	      ModelAndView mv = new ModelAndView();
+	      
+	      mv.addObject("msg", msg);
+	      mv.addObject("loc", loc);
+	      
+	      mv.setViewName("common/msg");
+	      
+	      return mv;
+	   }
+	   
+	// 4. 좋아요 등록 및 조회
+	   @ResponseBody
+	   @RequestMapping(value="/group/likeInsertAndSelect.do", method=RequestMethod.POST)
+	   public ModelAndView likeInsertAndSelect(@ModelAttribute GroupLike like) throws Exception {
+	      ModelAndView mv = new ModelAndView();
+	      
+	      logger.debug("likeInsertAndSelect.do 입장");
+	      logger.debug("g_like_member = " + like.getG_like_member());
+	      logger.debug("g_post_ref = " + like.getG_post_ref());
+	      logger.debug("g_comment_ref = " + like.getG_comment_ref());
+	      logger.debug("g_like_check = " + like.getG_like_check());
+	      
+	      List<GroupLike> likeList = new ArrayList<GroupLike>();
+	      
+	      if(like.getG_comment_ref() == 0) {
+	         int result = service.insertGroupPostLike(like);
+	         if(result > 0) {
+	            likeList = service.selectGroupPostLike(like);
+	            
+	            int count = service.selectGroupPostLikeCount(like);
+	            System.out.println("selectPostLikeCount = " + count);
+	            
+	            mv.addObject("likeList", likeList);
+	            mv.addObject("count", count);
+	         }
+	      } else {
+	         int result = service.insertGroupCommentLike(like);
+	         if(result > 0) {
+	            likeList = service.selectGroupCommentLike(like);
+	            int count = service.selectGroupCommentLikeCount(like);
+	            
+	            System.out.println("selectCommentLikeCount = " + count);
+	            
+	            mv.addObject("likeList", likeList);
+	            mv.addObject("count", count);
+	         }
+	      }
+	      
+	      mv.setViewName("jsonView");
+	      
+	      return mv;
+	   }
+	   
+	   // 5. 좋아요 삭제 및 조회
+	   @ResponseBody
+	   @RequestMapping(value="/group/likeDeleteAndSelect.do", method=RequestMethod.POST)
+	   public ModelAndView likeDeleteAndSelect(@ModelAttribute GroupLike like) throws Exception {
+	      ModelAndView mv = new ModelAndView();
+	      
+	      logger.debug("likeDeleteAndSelect.do 입장");
+	      logger.debug("g_like_member = " + like.getG_like_member());
+	      logger.debug("g_post_ref = " + like.getG_post_ref());
+	      logger.debug("g_comment_ref = " + like.getG_comment_ref());
+	      logger.debug("g_like_check = " + like.getG_like_check());
+	      
+	      List<GroupLike> likeList = new ArrayList<GroupLike>();
+	      
+	      if(like.getG_comment_ref() == 0) {
+	         int result = service.deleteGroupPostLike(like);
+	         if(result > 0) {
+	            likeList = service.selectGroupPostLike(like);
+	            
+	            int count = service.selectGroupPostLikeCount(like);
+	            System.out.println("selectPostLikeCount = " + count);
+	            
+	            mv.addObject("likeList", likeList);
+	            mv.addObject("count", count);
+	         }
+	      } else {
+	         int result = service.deleteGroupCommentLike(like);
+	         if(result > 0) {
+	            likeList = service.selectGroupCommentLike(like);
+	            
+	            int count = service.selectGroupCommentLikeCount(like);
+	            System.out.println("selectCommentLikeCount = " + count);
+	            mv.addObject("likeList", likeList);
+	            mv.addObject("count", count);
+	         }
+	      }
+	      
+	      mv.setViewName("jsonView");
+	      
+	      return mv;
+	   }
+	   
+	   @ResponseBody
+	   @RequestMapping(value="/group/startLike.do", method=RequestMethod.POST)
+	   public ModelAndView startLike(HttpSession session) throws Exception {
+	      System.out.println("들어오니??");
+	      ModelAndView mv = new ModelAndView();
+	      Member m = (Member) session.getAttribute("memberLoggedIn");
+	      
+	      List<Integer> myLikeList = service.selectMyLike(m.getMemberEmail());
+	      List<Integer> myPostNoList = service.myPostNoList();
+	      
+	      mv.addObject("myLikeList", myLikeList);
+	      mv.addObject("myPostNoList", myPostNoList);
+	      
+	      mv.setViewName("jsonView");
+	      
+	      return mv;
+	   }
 	
 
 }
