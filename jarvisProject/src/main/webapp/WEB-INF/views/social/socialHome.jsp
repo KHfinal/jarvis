@@ -516,25 +516,36 @@ function searchsearch(){
 var myEmail = '${memberLoggedIn.memberEmail}';
 var searchKeyword = $('#searchKeyword').val();
 var searchType = $('#searchType').val();
-var friendConcernTag;
+var friendKeywordTag;
 var tr="";
 alert(searchType);
-if(searchType != 'MEMBER_CONCERN'){
-	$('.tablefriend').empty();
+alert(searchKeyword);
+
+	$('.tablefriendKeyword').empty();
 	$.ajax({
 		url:"${path }/friend/friendSearch.do",
 		type:"post",
 		data:{searchKeyword : searchKeyword,searchType:searchType },
 		dataType:"json",
 		success : function(data){
-			$('.tablefriend').append("<tr><th colspan='2' style='text-align:center;'>친구 추천</th></tr>");
-			friendConcernTag;
+			$('.tablefriendKeyword').append("<tr><th colspan='2' style='text-align:center;'>친구 목록</th></tr>");
+			
 			console.log("friendList : " + friendList);
 			$.each(data,function(i,item){
 				var searchPFP = item.memberPFP;
 				var searchEmail = item.memberEmail; 
 				
 				console.log("가져온 이메일 : " +searchEmail);
+				console.log("친구목록 : " + friendList);
+				if(friendList.length < 1){
+
+					friendKeywordTag = "<tr ><td><img src='${path}/resources/profileImg/"+searchPFP+"' class='w3-circle' style='height:4%;width:15%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+searchEmail+'&nbsp;&nbsp;&nbsp;<button type="button" id="friend_add" onclick="fn_friendAdd('+"'"+searchEmail+"'"+');">친추</button></td></tr>';
+					if(searchEmail !=myEmail){
+						$('.tablefriendKeyword').append(friendKeywordTag);
+					}
+					 
+				}
+				if(friendList.length >=1){
 				for(var i =0; i<friendList.length;i++){
 					friendConcernTag ="";
 					if(friendList[i]==searchEmail ){
@@ -544,91 +555,96 @@ if(searchType != 'MEMBER_CONCERN'){
 						break;
 					}
 					if(i==friendList.length-1){
-						if(searchEmail==myEmail){
-							break;
+						 friendConcernTag = "<tr ><td><img src='${path}/resources/profileImg/"+searchPFP+"' class='w3-circle' style='height:4%;width:15%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+searchEmail+'&nbsp;&nbsp;&nbsp;<button type="button" id="friend_add" onclick="fn_friendAdd('+"'"+searchEmail+"'"+');">친추</button></td></tr>';
+						if(searchEmail!=myEmail){
+							$('.tablefriendKeyword').append(friendConcernTag);
 						}
-						alert("searchPFP : " + searchPFP);
-					 friendConcernTag = "<tr ><td><img src='${path}/resources/profileImg/"+searchPFP+"' class='w3-circle' style='height:4%;width:15%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+searchEmail+'&nbsp;&nbsp;&nbsp;<button type="button" id="friend_add" onclick="fn_friendAdd('+"'"+searchEmail+"'"+');">친추</button></td></tr>'; 
-					 $('.tablefriend').append(friendConcernTag);
 					 break;
 					}	
 				}
-				
+				}
 			});
 		}
 	});
-	
-};
+}
+function concernSearch() {
+		ajax();
+		alert("관심사");
+		var myEmail = '${memberLoggedIn.memberEmail}';
+		$.ajax({
+			url:"${path}/friend/friednRecommendList.do",
+			type:"GET",
+			data:{email:myEmail},
+			dataType:"json",
+			success : function(data){
+				$('.tablefriendConcern').empty();
+				var friendConcernTag;
+				var tr="";
+				
+				$('.tablefriendConcern').append("<tr><th colspan='2' style='text-align:center;'>친구 추천</th></tr>");
+				$.each(data,function(i,item){
+					var f_email2 = item;
+					if(friendList.length < 1){
 
-/* if(searchType == "member_concern"){
-	alert("관심사");
-	
-	$.ajax({
-		url:"${path}/friend/friednRecommendList.do",
-		type:"GET",
-		data:{email:myEmail},
-		dataType:"json",
-		success : function(data){
-			
-			var friendConcernTag;
-			var tr="";
-			$.each(data.concernCompareList,function(i,item){
-				var f_email2 = item;
-				
-				
-				for(var i =0; i<friendList.length;i++){
-					friendConcernTag ="";
-					
-					
-					if(friendList[i]==f_email2 ){
-						
-						break;
-					}if(friendList[i]==f_email2){
-						break;
+						friendKeywordTag = "<tr ><td><img src='${path}/resources/profileImg/"+f_email2.memberPFP+"' class='w3-circle' style='height:4%;width:15%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+f_email2.memberEmail+'&nbsp;&nbsp;&nbsp;<button type="button" id="friend_add" onclick="fn_friendAdd('+"'"+f_email2.memberEmail+"'"+');">친추</button></td></tr>';
+						if(f_email2.memberEmail !=myEmail){
+							$('.tablefriendConcern').append(friendKeywordTag);
+						}
+						 
 					}
-					if(i==friendList.length-1){
-						if(f_email2==email2){
+					if(friendList.length >=1){
+					for(var i =0; i<friendList.length;i++){
+						friendConcernTag ="";
+						
+						
+						if(friendList[i]==f_email2 ){
+							
+							break;
+						}if(friendList[i]==f_email2){
 							break;
 						}
-						 friendConcernTag = "<tr><td>"+f_email2+"</td><td>"+'<button type="button" id="friend_add" onclick="fn_friendAdd('+"'"+f_email2+"'"+');">친추</button></td></tr>'; 
-						 console.log("관심사 friendConcernTag : " + friendConcernTag);
-						 $('.tablefriend').append(friendConcernTag);
-						 break;
-					}	
-				}
-			}); 
-		}
-	});
-} */
-
-}
-$(function(){
+						if(i==friendList.length-1){
+							if(f_email2==email2){
+								break;
+							}
+							friendConcernTag = "<tr ><td><img src='${path}/resources/profileImg/"+f_email2.memberPFP+"' class='w3-circle' style='height:4%;width:15%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+f_email2.memberEmail+'&nbsp;&nbsp;&nbsp;<button type="button" id="friend_add" onclick="fn_friendAdd('+"'"+f_email2.memberEmail+"'"+');">친추</button></td></tr>';  
+							 $('.tablefriendConcern').append(friendConcernTag);
+							 break;
+						}	
+					}
+					}
+				}); 
+			}
+		});
+};
+/* $(function(){
 	$('select').selectlist({
 		zIndex: 10,
 		width: 200,
 		height: 30
 	});		
-})
-
+}); */
 </script>
 
 
 
 <div class='w3-col m2' id='friendRecommendClass'>
-	<table cellspacing='0' class='tablefriend' style="width: 100%; margin: 0%;">
 	<div class="pull-center well">
-            <label style="width: 100%; margin: 0%; text-align: center;" >친구추천</label>
+            <label style="width: 100%; margin: 0%; text-align: center;" >친구찾기</label>
            <div class="input-group custom-search-form" >
-	          <select class="form-control" name="searchType" id='searchType' style="width: 37%;">
+	          <select class="form-control" name="searchType" id='searchType' style="width: 40%;">
 				<option value="member_email" ${'member_email' eq param.searchType?"selected":"" }>이메일</option>
 				<option value="member_name" ${'member_name'==param.searchType?"selected":"" }>이름</option>
 				<option value="ADDR2" ${'ADDR2' eq param.searchType?"selected":"" }>지역</option>
-				<option value="MEMBER_CONCERN" ${'MEMBER_CONCERN' eq param.searchType?"selected":"" }>관심사</option>
 	           </select> 
-				<input type="search" id="searchKeyword" placeholder="Search..." onkeypress="if( event.keyCode == 13 ){searchsearch();}" style="width: 63%; "/>	           
+				<input type="search" id="searchKeyword" placeholder="Search..." onkeypress="if( event.keyCode == 13 ){searchsearch();}" style="width: 100%; "/>	           
             </div>
     </div>
-   </table> 
-</div>
+	<table cellspacing='0' class='tablefriendKeyword' style="width: 100%; margin: 0%;">
+    </table><hr>
+    <button onclick="concernSearch();">관심사</button>
+    <table class='tablefriendConcern' style="width: 100%; margin: 0%;">
+    </table>
+   
    
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

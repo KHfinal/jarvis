@@ -1,5 +1,6 @@
 package kh.mark.jarvis.friend.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,36 +64,49 @@ public class FriendController{
 		return mv;
 	}
 	@RequestMapping("/friend/friednRecommendList.do")
-	public ModelAndView friendRecommend(String email,ModelAndView mv) {
-		List<String> concernCompareList=new ArrayList();
-		
+	
+	public @ResponseBody String friendRecommend(String email,ModelAndView mv) {
+		List<Member> concernCompareList=new ArrayList();
+		ObjectMapper mapper=new ObjectMapper();
 		String concernString = friendService.selectConcernList(email);
-		System.out.println("concernString : "+ concernString);
+		String[] concernArr = concernString.split(",");
 		
-		String[] consernArr = concernString.split(",");
-		String consern ="";
-		for(int i =0; i<consernArr.length;i++) {
-			consern = consernArr[i];
-			List<Member> memberConcernList = friendService.selectMemberConcernList(consern);
+		
+		
+		String concern ="";
+		
+		for(int i =0; i<concernArr.length;i++) {
+			concern = concernArr[i];
+			List<Member> memberConcernList = friendService.selectMemberConcernList(concern);
+			System.out.println("memberConcernList : " + memberConcernList);
 			/*System.out.println("memberConcernList 크기: "+ memberConcernList.size());*/
 			
 			for(int j=0;i<memberConcernList.size();j++){
 				if(j==memberConcernList.size()) {
 					break;
 				}else {
-					if(!(concernCompareList.contains(memberConcernList.get(j).getMemberEmail()))) {
-						concernCompareList.add(memberConcernList.get(j).getMemberEmail());
+					if(!(concernCompareList.contains(memberConcernList.get(j)))) {
+						
+						concernCompareList.add(memberConcernList.get(j));
 					}
 				}
 			}
 		        
 		
 		}
-		System.out.println("concernCompareList : " + concernCompareList);
-		mv.addObject("concernCompareList", concernCompareList);
-		mv.setViewName("jsonView");
 		
-		return mv;
+		String a = "";
+		try {
+			a = mapper.writeValueAsString(concernCompareList);
+			System.out.println("a : " + a);
+		}catch (Exception e) {
+		}
+		 
+		/*System.out.println("concernCompareList : " + concernCompareList);
+		mv.addObject("concernCompareList", concernCompareList);
+		mv.setViewName("jsonView");*/
+		
+		return a;
 	}
 	/*@RequestMapping("/friend/friendSearch.do")
 	public ModelAndView friendSearch(String searchType,String searchKeyword ,ModelAndView mv) {
@@ -122,7 +136,6 @@ public class FriendController{
 			 a = mapper.writeValueAsString(list);
 			 logger.debug(a);
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
