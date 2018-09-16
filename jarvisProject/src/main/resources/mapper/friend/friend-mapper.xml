@@ -37,7 +37,7 @@
       SELECT MEMBER_CONCERN FROM MEMBER WHERE MEMBER_EMAIL = #{email}
    </select>
    <select id="selectMemberConcernList" resultMap="memberMap">
-      SELECT MEMBER_EMAIL FROM MEMBER WHERE MEMBER_CONCERN like '%'||#{concern}||'%'
+      SELECT MEMBER_EMAIL,MEMBER_PFP FROM MEMBER WHERE MEMBER_CONCERN like '%'||#{concern}||'%'
    </select>
    
    <select id="keywordSearch" parameterType="map" resultMap="memberMap">
