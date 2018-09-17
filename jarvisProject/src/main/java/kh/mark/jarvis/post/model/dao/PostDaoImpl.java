@@ -1,6 +1,7 @@
 package kh.mark.jarvis.post.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -126,6 +127,11 @@ public class PostDaoImpl implements PostDao {
 @Override
 public List<Integer> myPostNoList(SqlSessionTemplate sqlSession) {
 	return sqlSession.selectList("post.myPostNoList");
+}
+
+@Override
+public List<Map<String, String>> loadCategory(SqlSessionTemplate sqlSession) {
+	return sqlSession.selectList("post.loadCategory");
 }
 
 

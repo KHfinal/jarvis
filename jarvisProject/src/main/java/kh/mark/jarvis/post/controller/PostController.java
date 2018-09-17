@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -39,12 +40,15 @@ public class PostController {
    
    // 1. 게시물 조회
    @RequestMapping("/post/socialHomeView.do")
-   public String selectPost(Model model, HttpSession s) {
+   public String selectPost(Model model, HttpSession s,HttpServletRequest request) {
       
       Member m = (Member)s.getAttribute("memberLoggedIn");
       logger.debug(m.toString());
       if(m.getAddInfo().equals("N")) {
-         return "member/memberInfoAdd";
+    	 List<Map<String, String>> categoryList = service.loadCategory();
+         logger.debug(categoryList.toString());
+         request.setAttribute("categoryList", categoryList);
+    	 return "member/memberInfoAdd";
       }
       
       // 용석
