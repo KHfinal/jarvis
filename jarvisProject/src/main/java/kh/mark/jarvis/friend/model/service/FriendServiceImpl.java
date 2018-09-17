@@ -36,6 +36,10 @@ public class FriendServiceImpl implements FriendService{
 	
 
 	@Override
+	public List<Member> selectRecognizableList(String email) {
+		return dao.selectRecognizableList(sqlSession,email);
+	}
+	@Override
 	public List<Member> selectSearch2(Map<String, String> map) {
 		return dao.selectSearch2(sqlSession,map);
 	}
