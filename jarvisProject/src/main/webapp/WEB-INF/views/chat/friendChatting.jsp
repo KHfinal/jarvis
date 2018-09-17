@@ -321,17 +321,22 @@ $(document).ready(function(){
 					<div class="mesgs">
 						<div class="msg_history">
 							<div id="chatdata" class="panel-body">
+							<!-- 받은 메세지 -->
+							<c:forEach items="${chat_contents }" var="chat">
 								<div class="incoming_msg">
 									<div class="incoming_msg_img">
 										<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
 									</div>
 									<div class="received_msg">
 										<div class="received_withd_msg">
-											<p>Test which is a new approach to have all solutions</p>
-											<span class="time_date"> 11:01 AM | June 9</span>
+											<p>${chat.MESSAGE }</p>
+											<span class="time_date">  | </span>
 										</div>
 									</div>
 								</div>
+							</c:forEach>
+								
+							<!-- 보낸 메세지 -->
 								<div class="outgoing_msg">
 									<div class="sent_msg">
 										<p>Test which is a new approach to have all solutions</p>

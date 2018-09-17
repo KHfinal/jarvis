@@ -99,14 +99,20 @@ public class ChattingController {
 			roomMap.put("my_email", email);
 			roomMap.put("friend_email", fEmail);
 			int result=chattingService.createRoom(roomMap);
+			if(result>0) new ChattingController().createRoom(model,hs,request,fEmail);
 		}
+		/*채팅내용 가져오기-------------------------------------------------*/
+		Map<String,String> chatMap=new HashMap();
+		int room_no=selectRoom.getRoom_no();
+		List<Map<String,String>> chat_contents=chattingService.contentsList(room_no);
 		
 		model.addAttribute("roomList",roomList);
 		model.addAttribute("roomList1",roomList1);
 		model.addAttribute("selectRoom",selectRoom);
 		model.addAttribute("friendList",friendList);
 		model.addAttribute("friendList1",friendList1);
-		model.addAttribute("chat/friendChatting");
+		//model.addAttribute("chat/friendChatting");
+		model.addAttribute("chat_contents", chat_contents);
 		model.addAttribute("host",request.getRemoteAddr());
 		return "chat/friendChatting";
 	}

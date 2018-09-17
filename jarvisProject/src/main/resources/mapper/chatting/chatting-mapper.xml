@@ -47,4 +47,8 @@
 			SELECT MESSAGE FROM CHATTING_CONTENTS C JOIN CHATTING_ROOM R ON(C.ROOM_NO=R.ROOM_NO) WHERE ${mytitle}=#{MYemail} AND ${ftitle}=#{FEmail}
 		</if>
 	</select>
+	
+	<select id="contentsList" resultType="map" parameterType="_int">
+		SELECT * FROM CHATTING_CONTENTS WHERE ROOM_NO=#{room_no} ORDER BY WRITER_DATE
+	</select>
 </mapper>
