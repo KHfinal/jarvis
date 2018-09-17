@@ -2,6 +2,7 @@ package kh.mark.jarvis.post.model.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,6 +146,11 @@ public class PostServiceImpl implements PostService {
 @Override
 public List<Integer> myPostNoList() {
 	return dao.myPostNoList(sqlSession);
+}
+
+@Override
+public List<Map<String, String>> loadCategory() {
+	return dao.loadCategory(sqlSession);
 }
 
 
