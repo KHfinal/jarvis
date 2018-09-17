@@ -88,8 +88,6 @@ public class ChattingController {
 		ChattingRoom selectRoom=chattingService.selectRoom(roomMap);
 		roomMap.put("mytitle", "FRIEND_EMAIL");
 		roomMap.put("ftitle", "MY_EMAIL");
-		roomMap.put("myEmail", fEmail);
-		roomMap.put("fEmail", email);
 		ChattingRoom selectRoom1=chattingService.selectRoom(roomMap);
 		if(selectRoom==null) {
 			selectRoom=selectRoom1;

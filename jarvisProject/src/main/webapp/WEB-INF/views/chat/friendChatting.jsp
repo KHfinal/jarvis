@@ -64,6 +64,7 @@
 		var strArray=data.split("|");
 		var userName=null;
 		var message=null;
+		var room_no=null;
 		for(i=0;i<strArray.length;i++)
 		{
 			console.log("strArray["+i+"] : "+strArray[i]);	
@@ -75,6 +76,7 @@
 			userName=strArray[0];//접속자 아이디
 			message=strArray[1];//전송내용
 			host=strArray[2].substr(1,strArray[2].indexOf(":")-1);//실제아이피주소만 남기기
+			room_no=strArray[3];//방번호
 			today=new Date();
 			printDate=today.getFullYear()+"년 "+leadingZeros(today.getMonth(),2)+"월 "+today.getDate()+"일";
 			printHour=leadingZeros(today.getHours(),2)+":"+leadingZeros(today.getMinutes(),2);
@@ -87,12 +89,22 @@
 			if(host==ck_host||(host==0&&ck_host.includes('0:0:')))
 			{
 				if(message!=null && message!=""){
-					var printHTML="<div class='outgoing_msg'>";
+					if('${selectRoom.room_no}'==room_no)
+					{
+						var printHTML="<div class='outgoing_msg'>";
+						printHTML+="<div class='sent_msg'>";
+						printHTML+="<p>"+message+"</p>";
+						printHTML+="<span class='time_date'> "+ printHour+" | "+printDate+"</span>";
+						printHTML+="</div></div>";
+						$("#chatdata").append(printHTML);	
+					}
+					/* var printHTML="<c:if test='"+room_no+"=="+${selectRoom.room_no}+"'>"
+					printHTML+="<div class='outgoing_msg'>";
 					printHTML+="<div class='sent_msg'>";
 					printHTML+="<p>"+message+"</p>";
 					printHTML+="<span class='time_date'> "+ printHour+" | "+printDate+"</span>";
-					printHTML+="</div></div>";
-					$("#chatdata").append(printHTML);
+					printHTML+="</div></div></c:if>";
+					$("#chatdata").append(printHTML); */
 				}
 				else alert("메세지를 입력하세요");
 			}
@@ -100,15 +112,28 @@
 			{
 				if(message!=null && message!=""){
 					//타인의 메세지
-					var printHTML="<div class='incoming_msg'>"
+					if('${selectRoom.room_no}'==room_no)
+					{
+						var printHTML="<div class='incoming_msg'>"
+						printHTML+="<div class='incoming_msg_img'>";
+						printHTML+="<img src='${path}/resources/profileImg/profileDefault.png' class='rounded-circle' title='"+userName+"'></div>";
+						printHTML+="<div class='received_msg'>";
+						printHTML+="<div class='received_withd_msg'>";
+						printHTML+="<p>"+message+"</p>";
+						printHTML+="<span class='time_date'> "+ printHour+" | "+printDate+"</span>";
+						printHTML+="</div></div></div>";
+						$("#chatdata").append(printHTML);
+					}
+					/* var printHTML="<c:if test='"+room_no+"=="+${selectRoom.room_no}+"'>"
+					printHTML+="<div class='incoming_msg'>"
 					printHTML+="<div class='incoming_msg_img'>";
 					printHTML+="<img src='${path}/resources/profileImg/profileDefault.png' class='rounded-circle' title='"+userName+"'>";
 					printHTML+="<div class='received_msg'>";
 					printHTML+="<div class='received_withd_msg'>";
 					printHTML+="<p>"+message+"</p>";
 					printHTML+="<span class='time_date'> "+ printHour+" | "+printDate+"</span>";
-					printHTML+="</div></div></div>";
-					$("#chatdata").append(printHTML);
+					printHTML+="</div></div></div></c:if>";
+					$("#chatdata").append(printHTML); */
 				}
 				else alert("메세지를 입력하세요");
 			}

@@ -63,7 +63,7 @@ public class SocketHandler extends TextWebSocketHandler {
 			//보내는 순서를 정확하게 기억을 해야함 "|"구분자로 
 			//배열로 처리한 다음 페이지를 변경
 			
-			s.sendMessage(new TextMessage(login.getMemberName()+"|"+message_div[0]+"|"+session.getRemoteAddress())); //evt란 매개변수로 보내짐
+			s.sendMessage(new TextMessage(login.getMemberName()+"|"+message_div[0]+"|"+session.getRemoteAddress()+"|"+message_div[1])); //evt란 매개변수로 보내짐
 		}
 		 
 		//super.handleTextMessage(session, message);
