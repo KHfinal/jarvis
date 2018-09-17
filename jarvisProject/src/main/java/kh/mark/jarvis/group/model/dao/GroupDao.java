@@ -31,6 +31,9 @@ public interface GroupDao {
 	int insertComment(SqlSessionTemplate Session, GroupComment comment);
 	List<GroupComment> selectCommentList(SqlSessionTemplate Session);
 	List<Map<String, String>> selectGroupMember(SqlSessionTemplate Session, int groupNo);
+	
+	List<Map<String, String>> selectGroupEnroll(SqlSessionTemplate Session, int groupNo);
+	
 	Group groupViewDetail(SqlSessionTemplate Session, int groupNo);
 	
 	int insertGroupPostLike(SqlSessionTemplate Session, GroupLike like);
@@ -52,4 +55,7 @@ public interface GroupDao {
 	int deleteGroupCommentLike(SqlSessionTemplate Session, GroupLike like);
 	List<Integer> selectMyLike(SqlSessionTemplate Session, String memberEmail);
 	List<Integer> myPostNoList(SqlSessionTemplate Session);
+	
+	int groupMemberAccept(SqlSessionTemplate Session, String mEmail);
+	int groupMemberDelete(SqlSessionTemplate Session, String mEmail);
 }

@@ -27,6 +27,19 @@ public class GroupServiceImpl implements GroupService {
 	
 	
 	
+	
+	@Override
+	public int groupMemberDelete(String mEmail) {
+		// TODO Auto-generated method stub
+		return dao.groupMemberDelete(Session, mEmail);
+	}
+
+	@Override
+	public int groupMemberAccept(String mEmail) {
+		// TODO Auto-generated method stub
+		return dao.groupMemberAccept(Session, mEmail);
+	}
+
 	@Override
 	public List<Map<String, String>> myGroupList(String mEmail) {
 		// TODO Auto-generated method stub
@@ -182,6 +195,13 @@ public class GroupServiceImpl implements GroupService {
 	public List<Member> selectMemberList() {
 		
 		return dao.selectMemberList(Session);
+	}
+	
+
+	@Override
+	public List<Map<String, String>> selectGroupEnroll(int groupNo) {
+		// TODO Auto-generated method stub
+		return dao.selectGroupEnroll(Session, groupNo);
 	}
 
 	@Override

@@ -24,7 +24,7 @@
 		INSERT INTO GROUP_CATEGORY VALUES(#{g_no},#{g_category})
 	</insert>
 	<insert id="groupMasterInsert" parameterType="map">
-		INSERT INTO GROUP_MEMBER VALUES(GROUP_MEMBER_SEQ.NEXTVAL,#{g_no},#{member_email})
+		INSERT INTO GROUP_MEMBER VALUES(GROUP_MEMBER_SEQ.NEXTVAL,#{g_no},#{member_email},'Y')
 	</insert>
 	
 	<select id="groupSearch" parameterType="string" resultMap="groupMap">
@@ -65,7 +65,11 @@
 	</select>
 	
 	<select id="selectGroupMember" parameterType="_int" resultType="map">
-		SELECT MEMBER_EMAIL FROM GROUP_MEMBER WHERE G_NO=#{groupNo}
+		SELECT * FROM GROUP_MEMBER JOIN MEMBER USING(MEMBER_EMAIL) WHERE G_NO=#{groupNo} AND G_MEMBER_STATUS='Y'
+	</select>
+	
+	<select id="selectGroupEnroll" parameterType="_int" resultType="map">
+		SELECT * FROM GROUP_MEMBER JOIN MEMBER USING(MEMBER_EMAIL) WHERE G_NO=#{groupNo} AND G_MEMBER_STATUS='N'
 	</select>
 	
 	<select id="groupViewDetail" parameterType="_int" resultType="group">
@@ -92,7 +96,7 @@
 	</select>
 	
 	<insert id="groupMemberInsert" parameterType="map">
-		INSERT INTO GROUP_MEMBER VALUES(GROUP_MEMBER_SEQ.NEXTVAL,#{groupNo},#{mEmail})
+		INSERT INTO GROUP_MEMBER VALUES(GROUP_MEMBER_SEQ.NEXTVAL,#{groupNo},#{mEmail},DEFAULT)
 	</insert>
 	
 	<select id="selectMemberList" resultMap="memberMap">
@@ -126,7 +130,14 @@
     <select id="myPostNoList" resultType="Integer">
    		SELECT DISTINCT G_POST_NO FROM GROUP_POST
     </select>
+    
+    <update id="groupMemberAccept" parameterType="string">
+    	UPDATE GROUP_MEMBER SET G_MEMBER_STATUS='Y' WHERE MEMBER_EMAIL=#{mEmail} 
+    </update>
 	
+	<delete id="groupMemberDelete" parameterType="string">
+		DELETE FROM GROUP_MEMBER WHERE MEMBER_EMAIL=#{mEmail}
+	</delete>
 	
 	
 	<resultMap type="member" id="memberMap">
