@@ -230,9 +230,9 @@ public class MemberController {
 			  try {
 				if(!reNamedFilename.equals("profileDefault.png"))//단 프로필이미지를 선택하지 않았을 때는 파일을 저장하지 않는다.
 					profileFile1.transferTo(new File(saveDir+"/"+reNamedFilename));
-				}catch(Exception e) {
+			  }catch(Exception e) {
 					e.printStackTrace();
-				}//파일업로드 끝!
+			   }//파일업로드 끝!
 			  
 		  }
 		  else { 
@@ -421,28 +421,102 @@ public class MemberController {
 	  
 		//내 정보 보기 - 메인 상단바에서 클릭시 정보보기 페이지로 이동
         @RequestMapping(value="/myInfoView.do" )
-         public ModelAndView memberView(Member m) 
+         public ModelAndView myInfoView(String member_email,ModelAndView mv) 
          {
             
-        	System.out.println("페이지까지 오나?");
+        //	System.out.println("********************"+member_email);
         	//List<Member> m= (List<Member>) memberService.selectLogin(memberEmail); //xml까지 보낸 후 
+        	Member member = memberService.selectLogin(member_email);
         	
-        	ModelAndView mv = new ModelAndView();
-        	mv.addObject("myinfo",m.equals(sessionList)); //m을 내 정보에 담아서 
+        	mv.addObject("member", member);
             mv.setViewName("member/myInfoView"); //--->폴더이름/jsp명
             
-            return mv;  
+            return mv;
          }
-           
-        
+
            //내 정보 수정 - memberinfoview에서 클릭시 
-           @RequestMapping(value="/memberUpdateView.do", method=RequestMethod.POST)
-         public ModelAndView memberUpdateView(Member m,HttpServletRequest request) 
+           @RequestMapping(value="/myInfoUpdateView.do")
+         public ModelAndView myInfoUpdateView(String member_email,ModelAndView mv) 
          {
-           
-        	ModelAndView mv = new ModelAndView(); //mv 생성하시고
-            mv.setViewName("member/myinfoUpdateView"); //jsp로 쏘세요 //--->폴더이름/jsp명 
-            return mv; 
+       	   Member member = memberService.selectLogin(member_email);
+           	mv.addObject("member", member);
+        	mv.setViewName("member/myInfoUpdateView"); //jsp로 쏘세요 //--->폴더이름/jsp명 
+            
+        	return mv; 
          }
-	  
+         
+           
+           	//내 정보 수정 시작  - updateview에서 수정 클릭시 
+		  	@RequestMapping("/myinfoUpdate.do") 
+		  	public ModelAndView myinfoUpdate(Member m, HttpServletRequest request) 
+		  	{
+		  		
+		  		int myInfo = memberService.myInfoUpdate(m);
+		  		System.out.println(myInfo);
+		  		
+		  		ModelAndView mv = new ModelAndView();
+		  		String msg="정보수정 완료! ";
+		  		String loc="/member/myInfoView.do";
+		  		
+		  		
+		  		
+		  		mv.addObject("msg", msg);
+				mv.addObject("loc",loc);
+		  		mv.setViewName("common/msg");
+		  		return mv;
+		  	}
+		  	
+		  	
+		  	//myInfoPFP.do
+		  	//내 프로필 사진 보기,
+		  	@RequestMapping("/myInfoPFP.do")
+		  	public ModelAndView myinfoPFP(String member_email,ModelAndView mv)
+		  	{
+		  		Member member = memberService.selectLogin(member_email);
+	           	mv.addObject("member", member);
+	        	mv.setViewName("member/myInfoPFP");
+	        	return mv;
+		  	}
+		  	
+		  	//프로필사진 업로드 하기
+		  	@RequestMapping("/myInfoPFPupdate.do")
+		  	public ModelAndView myinfoPFPupdate(Member m,ModelAndView mv, MultipartFile profileFile1,HttpServletRequest request) throws IOException
+		  	{
+		  		  String saveDir=request.getSession().getServletContext().getRealPath("/resources/profileImg");
+				  String reNamedFilename=null;
+				  File dir = new File(saveDir);
+				  if(dir.exists()==false) dir.mkdirs();
+				  if(!profileFile1.isEmpty()) {
+					  String originalFilename=profileFile1.getOriginalFilename();
+					  String ext=originalFilename.substring(originalFilename.lastIndexOf(".")+1);
+					  reNamedFilename = m.getMemberEmail()+"_profileImg"+"."+ext;
+				  }else {//이미지를 선택 안한다면 기본 이미지를 띄어줘야한다.
+					  reNamedFilename="profileDefault.png";
+				  }
+				  m.setMemberPFP(reNamedFilename);
+				  
+		  		  int result = memberService.myPFPupdate(m);	
+		  		  String msg="프로필 사진 저장 성공";
+		  		  String loc="/post/socialHomeView.do";
+		  		  
+		  		  if (result>0)
+		  		  {
+		  			try {
+						if(!reNamedFilename.equals("profileDefault.png"))//단 프로필이미지를 선택하지 않았을 때는 파일을 저장하지 않는다.
+							profileFile1.transferTo(new File(saveDir+"/"+reNamedFilename)); //파일 저장
+					  }catch(Exception e) {
+							e.printStackTrace();
+					   }//파일업로드 
+		  		  } 
+		  		  else
+		  		  {
+		  			msg="사진 업로드 실패";
+		  			loc="/member/myInfoPFP.do";
+		  		  }
+		  		  
+		  		mv.addObject("msg", msg);
+				mv.addObject("loc",loc);
+				mv.setViewName("common/msg");  
+	        	return mv;
+		  	}
 }

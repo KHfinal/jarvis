@@ -24,6 +24,10 @@ public interface MemberService {
 
 	int pwUpdate(Member m);	//패스워드 변경하기
 
+	int myInfoUpdate(Member m);	//내 정보 수정
+
+	int myPFPupdate(Member m); //프로필사진 수정
+
 	
 
 }

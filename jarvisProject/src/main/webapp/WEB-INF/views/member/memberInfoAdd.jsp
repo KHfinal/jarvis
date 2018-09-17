@@ -36,9 +36,11 @@ function previewFile() {
 </script>
 <div class="m-auto">
              <form action="${path }/member/addInfoUpdate.do" method="POST" enctype="multipart/form-data">
-             <input type="hidden" name="memberEmail" value="${memberLoggedIn.memberEmail }">
+             
+             
+             	<input type="hidden" name="memberEmail" value="${memberLoggedIn.memberEmail }">
                  <h2 class="text-info font-weight-light mb-5"><i class="fa fa-diamond"></i>추가정보</h2>
-                 
+                 <!-- name을 담아서 컨트롤 -->
                   <div class="form-row profile-row">
                 <div class="col-md-8">
                 	<h3>프로필 사진</h3>

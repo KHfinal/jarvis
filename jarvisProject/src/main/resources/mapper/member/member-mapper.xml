@@ -61,8 +61,22 @@
 <!-- 패스워드 변경 -메일 전송 후-->
 <update id="pwUpdate"  parameterType="string" >
   	update member set member_pw=#{memberPw} where member_email = #{memberEmail}
- </update>
-  
-  
-  
+</update>
+
+<!-- 내정보 수정 -->
+<update id="myInfoUpdate" parameterType="member">
+	update member set 
+	member_name=#{memberName}, member_nickname=#{memberNickname}
+	,member_phone=#{phone}<!-- , member_gender=#{memberGender} -->
+	,member_concern=#{memberConcern,typeHandler=strArr}
+	,member_birth=#{memberBirthday}
+	,addr1=#{addr1}, addr2=#{addr2}, addr3=#{addr3} 	
+	where member_email=#{memberEmail} 
+</update>  
+    
+ <!-- 내사진 수정 -->   
+    <update id="myPFPupdate" parameterType="member">
+  		update member set member_pfp=#{memberPFP} where member_email=#{memberEmail}
+  </update>
+    
 </mapper>
