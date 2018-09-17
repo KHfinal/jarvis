@@ -9,7 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import kh.mark.jarvis.member.model.vo.Member;
 
 public interface FriendDao {
-	List<String> selectFriendListJson(SqlSessionTemplate sqlSession,Map<String,String> map);
+	List<Member> selectFriendListJson(SqlSessionTemplate sqlSession,Map<String,String> map);
 	String selectConcernList(SqlSessionTemplate sqlSession,String email);
 	List<Member> selectMemberConcernList(SqlSessionTemplate sqlSession,String concern);
 	List<Member> selectSearch2(SqlSessionTemplate session, Map<String,String> map);

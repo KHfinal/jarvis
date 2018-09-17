@@ -35,14 +35,14 @@ public class FriendController{
 	private MemberService memberService;
 	
 	@RequestMapping("/friend/selectFriendListJson.do")
-	public ModelAndView selectFriendList(String email,ModelAndView mv){
+	public @ResponseBody String selectFriendList(String email,ModelAndView mv){
 		Map<String,String> map=new HashMap();
 		map.put("title", "F_MEMBER_EMAIL");
 		map.put("email", email);
-		List<String> friendList=friendService.selectFriendListJson(map);
+		List<Member> friendList=friendService.selectFriendListJson(map);
 		map.put("title", "F_FRIEND_EMAIL");
-		List<String> friendList1=friendService.selectFriendListJson(map);
-
+		List<Member> friendList1=friendService.selectFriendListJson(map);
+		ObjectMapper mapper=new ObjectMapper();
 		if(friendList.size()>0) {
 			for(int i=0;i<friendList1.size();i++)
 			{
@@ -57,11 +57,15 @@ public class FriendController{
 			friendList=friendList1;
 		}
 		//mv.addObject("requestList",requestList);
-
-		mv.addObject("list",friendList);
-		mv.setViewName("jsonView");
+		String a ="";
+		try {
+			a = mapper.writeValueAsString(friendList);
+			System.out.println("a : " + a);
+		}catch (Exception e) {
+		}
 		
-		return mv;
+		
+		return a;
 	}
 	@RequestMapping("/friend/concernRecommendList.do")
 	public @ResponseBody String concernRecommend(String email,ModelAndView mv) {
@@ -94,6 +98,7 @@ public class FriendController{
 			a = mapper.writeValueAsString(concernCompareList);
 			System.out.println("a : " + a);
 		}catch (Exception e) {
+			e.getMessage();
 		}
 		
 		return a;

@@ -11,7 +11,7 @@ import kh.mark.jarvis.member.model.vo.Member;
 public class FriendDaoImpl implements FriendDao{
 
 	@Override
-	public List<String> selectFriendListJson(SqlSessionTemplate sqlSession, Map<String,String> map) {
+	public List<Member> selectFriendListJson(SqlSessionTemplate sqlSession, Map<String,String> map) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("friend.selectFriendListJson",map);
 	}

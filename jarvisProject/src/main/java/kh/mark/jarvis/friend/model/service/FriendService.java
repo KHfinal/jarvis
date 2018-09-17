@@ -7,7 +7,7 @@ import kh.mark.jarvis.member.model.vo.Member;
 
 public interface FriendService {
 	/*List<Friend> selectFriendList(String member_email);*/
-	List<String> selectFriendListJson(Map<String,String> map);
+	List<Member> selectFriendListJson(Map<String,String> map);
 	String selectConcernList(String email);
 	List<Member> selectMemberConcernList(String concern);
 	List<Member> selectRecognizableList(String email);

@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
@@ -31,17 +32,18 @@ public class SocketHandler extends TextWebSocketHandler {
 		Member login=(Member)session.getAttributes().get("memberLoggedIn");
 		
 		userName.add(login.getMemberEmail());
-		
 		System.out.println("소켓 들어온사람 : " + login.getMemberEmail());
-		System.out.println("소켓 입장후 접속자" + userName);
+		
 		for(WebSocketSession s : sessionList) {
 			for(int i =0; i<userName.size();i++) {
-				System.out.println("userName.get(i) : " + userName.get(i));
+				System.out.println("userName.get(i) : " + userName.get(i) );
+				
 				s.sendMessage(new TextMessage("1"+"|"+userName.get(i)));
 				
 			}
 			
 		}
+		System.out.println("현재 접속자" + userName);
 		
 	}
 
@@ -54,14 +56,15 @@ public class SocketHandler extends TextWebSocketHandler {
 		Member login=(Member)session.getAttributes().get("memberLoggedIn");
 		System.out.println("나간사람 : " + login.getMemberEmail());
 		userName.remove(login.getMemberEmail());
-		System.out.println("나간후 접속자" + userName);
+		
 		for(WebSocketSession s : sessionList) {
 			for(int i =0; i<userName.size();i++) {
-				System.out.println("보내는 값: " + userName.get(i));
+				System.out.println("보내는 값: " + userName.get(i) );
 				s.sendMessage(new TextMessage("2"+"|"+userName.get(i)));
 			}
 			
 		}
+		System.out.println("현재 접속자" + userName);
 		
 		
 	}
