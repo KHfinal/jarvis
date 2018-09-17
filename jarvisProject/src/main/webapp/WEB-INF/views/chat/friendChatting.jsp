@@ -10,12 +10,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="http://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 <script>
-//SocketJS 채팅구현
-var sock=new SockJS("<c:url value='/chatting'/>")
-	sock.onmessage=onMessage;
-	sock.onclose=onClose;
-	
-var today=null;
+	var today=null;
 
 	$(function(){
 		//전송버튼을 눌렀을때 이벤트 처리

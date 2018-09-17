@@ -101,8 +101,11 @@
    <select id="myPostNoList" resultType="Integer">
    	  SELECT DISTINCT POST_NO FROM POST
    </select>
-   
-   
+   <select id="loadCategory" resultType="map">
+   	select * from category
+   </select>
+   <resultMap type="String" id="cMap">
+   </resultMap>
    <!-- Map을 이용할 때, resultMap사용. id는 xml안에서 태그를 불러올 변수명이다. -->
    <resultMap type="post" id="postMap">  
       <result column="post_no" property="postNo"/>

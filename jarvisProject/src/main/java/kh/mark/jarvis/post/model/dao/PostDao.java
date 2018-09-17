@@ -1,6 +1,7 @@
 package kh.mark.jarvis.post.model.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
@@ -53,6 +54,8 @@ public interface PostDao {
    int deletePostDeleteLike(SqlSessionTemplate sqlSession, Post post);
 
 List<Integer> myPostNoList(SqlSessionTemplate sqlSession);
+
+List<Map<String, String>> loadCategory(SqlSessionTemplate sqlSession);
 
 
 }

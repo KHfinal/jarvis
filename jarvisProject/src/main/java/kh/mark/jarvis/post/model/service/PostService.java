@@ -1,6 +1,7 @@
 package kh.mark.jarvis.post.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import kh.mark.jarvis.member.model.vo.Member;
 import kh.mark.jarvis.post.model.vo.Attachment;
@@ -45,6 +46,8 @@ public interface PostService {
    int deletePost(Post post);
 
    List<Integer> myPostNoList();
+
+   List<Map<String, String>> loadCategory();
 
 
 
