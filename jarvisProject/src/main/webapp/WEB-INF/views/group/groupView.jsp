@@ -232,8 +232,8 @@ function fn_subMenu(e) {
 }
 
 </script>
-<div class="w3-col m7">
 <c:if test="${memberCheck eq 1 }">
+	<div class="w3-col m6">
 	<!-- 게시글 등록 미리보기. 클릭시 #postModal이 연결 돼 실제 입력창 나타난다. -->
 	<div id="createPostContainer" data-toggle="modal" data-target="#postModal">
 	   <div class="modal-header">
@@ -477,7 +477,7 @@ function fn_subMenu(e) {
 
 	      <!-- 댓글 쓰기 -->
 	      <div id="inputComment-container">
-	         <form id="createCommentFrm" method="post" action="${path }/group/postCommentInsert.do">
+	         <form id="createCommentFrm" method="post" action="${path }/group/postCommentInsert.do?groupNo=${g.g_no}">
 	            <span><img class="commentProfile rounded-circle" src='${path }/resources/profileImg/${memberLoggedIn.getMemberPFP() }'></span>
 	            <input type="text" id="inputCommentTxt" name="g_comment_contents" class="form-control" placeholder=" 댓글을 입력하세요..."/>
 	            <input type="hidden" id="reply_postRef" name="g_post_ref" value="${post.getG_post_no() }"/>
@@ -493,78 +493,77 @@ function fn_subMenu(e) {
 	
 	
 	</c:forEach>
-</c:if>
-<c:if test="${memberCheck eq 0 }">
-	
-	<div class="mb-5" style="text-align: center;"><h2>그룹에 가입하세요~~!</h2></div>
-		<div class="row">
-			<div class="col-3"></div>
-			<div class="col-6">
-				<div class="card" style="width:100%">
-					<img class="card-img-top" src="${path }/resources/upload/group/${g.g_renamedFilename }" alt="Card image" style="width:100%">
-					<div class="card-body">
-						<h4 class="card-title">${g.g_name }</h4>
-						<p class="card-text">${g.g_intro }</p>
-						<a href="${path }/group/groupMemberInsert.do?groupNo=${g.g_no}" class="btn btn-outline-secondary">가입 하기</a>
-					</div>
-				</div>
-			</div>
-			<div class="col-2"></div>
-		</div>
-	
-</c:if>
+
 </div>
-<div class="w3-col m2">
-<div class="w3-card w3-round w3-white">
-	<table class="table">
-		<c:forEach items="${groupEnrollList }" var="memberEnroll">
-			<tr>
-				<td>${memberEnroll.MEMBER_EMAIL }</td>
-				<td><button class="btn btn-outline-secondary btn-sm" style="float:right;" onclick="fn_memberAccept('${memberEnroll.MEMBER_EMAIL}')">수락</button></td>
-			</tr>
-		</c:forEach>
-	</table>
-	<hr>
-	<table class="table">
+<div class="w3-col m3">
+	<div class="w3-card w3-round w3-white">
+		<table class="table">
 		<thead>
 			<tr>
-				<th>회원목록</th>
-				<c:if test="${g.g_master eq memberLoggedIn.getMemberEmail() }">
-					<th>관리</th>
-				</c:if>
-				<c:if test="${g.g_master ne memberLoggedIn.getMemberEmail() }">
-					<th><a class="btn btn-outline-secondary btn-sm" style="float:right;" href="${path }/group/groupMemberDelete.do?mEmail=${gm.MEMBER_EMAIL}" onclick="fn_validateSelf()">탈퇴</a></th>
-				</c:if>
+				<th colspan="2" style="text-align: center;">가입 요청</th>
 			</tr>
 		</thead>
-		<tbody>
-		
-		<c:forEach items="${gMemberList }" var="gm" varStatus="a">
-			<tr>
-				<c:if test="${g.g_master ne memberLoggedIn.getMemberEmail() }">
-					<td colspan="2" align="center" id='master${a.index }'>${gm.MEMBER_NICKNAME } </td>
-				</c:if>
+			<tbody>
 				<c:if test="${g.g_master eq memberLoggedIn.getMemberEmail() }">
-					<td id='g_member'>${gm.MEMBER_NICKNAME } </td>
+					<c:forEach items="${groupEnrollList }" var="memberEnroll">
+						<tr>
+							<td>${memberEnroll.MEMBER_EMAIL }</td>
+							<td><button class="btn btn-outline-secondary btn-sm" onclick="fn_memberAccept('${memberEnroll.MEMBER_EMAIL}')">수락</button></td>
+						</tr>
+					</c:forEach>
 				</c:if>
-				<c:if test="${g.g_master eq memberLoggedIn.getMemberEmail() }">
-					<td>
-						<a class="btn btn-outline-secondary btn-sm" href="${path }/group/groupMemberDelete1.do?mEmail=${gm.MEMBER_EMAIL}&groupNo=${g.g_no}" onclick="fn_validate()">강퇴</a>
-					</td>
-				</c:if>
-			</tr>
-			<script>
-			$(document).ready(function () {
-				console.log("userIdList : " +userIdList.length );
-				console.log("" + $('#master${a.index }').html() );
-				for(var i = 0; i< userIdList.length;i++){
-					if(userIdList[i] == mas){	
-						console.log("들어옴");
-						 $('#master${a.index }').append("123");
-				    }	
-				}
-			});
-			
+			</tbody>
+		</table>
+	</div>
+	<div class="w3-card w3-round w3-white">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>회원목록</th>
+					<c:if test="${g.g_master eq memberLoggedIn.getMemberEmail() }">
+						<th>관리</th>
+					</c:if>
+					<c:if test="${g.g_master ne memberLoggedIn.getMemberEmail() }">
+						<th><a class="btn btn-outline-secondary btn-sm" style="float:right;" href="${path }/group/groupMemberDelete.do?mEmail=${memberLoggedIn.getMemberEmail()}" onclick="fn_validateSelf()">탈퇴</a></th>
+					</c:if>
+				</tr>
+			</thead>
+			<tbody>
+			<c:forEach items="${gMemberList }" var="gm" varStatus="a">
+				<tr>
+					<c:if test="${g.g_master ne memberLoggedIn.getMemberEmail() }">
+						<td colspan="2" align="center" id='master${a.index }'>${gm.MEMBER_NICKNAME } </td>
+					</c:if>
+					<c:if test="${g.g_master eq memberLoggedIn.getMemberEmail() }">
+						<td id='g_member'>${gm.MEMBER_NICKNAME } </td>
+					</c:if>
+					<c:if test="${g.g_master eq memberLoggedIn.getMemberEmail() }">
+						<td style="text-align: center;">
+							<c:if test="${g.g_master ne gm.MEMBER_EMAIL }">
+								<a class="btn btn-outline-secondary btn-sm" href="${path }/group/groupMemberDelete1.do?mEmail=${gm.MEMBER_EMAIL}&groupNo=${g.g_no}" onclick="fn_validate()">강퇴</a>
+							</c:if>
+							<c:if test="${g.g_master eq gm.MEMBER_EMAIL }">
+								<a class="btn btn-outline-danger btn-sm" href="${path }/group/deleteGroup.do?groupNo=${g.g_no}" onclick="fn_validate()">그룹삭제</a>
+							</c:if>
+						</td>
+					</c:if>
+				</tr>
+				<script>
+				$(document).ready(function () {
+					console.log("userIdList : " +userIdList.length );
+					console.log("" + $('#master${a.index }').html() );
+					for(var i = 0; i< userIdList.length;i++){
+						if(userIdList[i] == mas){	
+							console.log("들어옴");
+							 $('#master${a.index }').append("123");
+					    }	
+					}
+				});
+				</script>
+			</c:forEach>
+			</tbody>
+		</table>
+		<script>
 			function fn_memberAccept(mEmail) {
 				var g_no = '${g.g_no}';
 				alert(g_no);
@@ -585,10 +584,29 @@ function fn_subMenu(e) {
 			function fn_validateSelf(){
 				confirm("정말로 탈퇴 하시겠습니까?");
 			}
-			</script>
-		</c:forEach>
-		</tbody>
-	</table>
-</div>		
+		</script>
+	</div>		
 </div>
+</c:if>
+<div class="w3-col m6">
+<c:if test="${memberCheck eq 0 }">
+	<div class="mb-5" style="text-align: center;"><h2>그룹에 가입하세요~~!</h2></div>
+	<div class="row">
+		<div class="col-3"></div>
+		<div class="col-6">
+			<div class="card" style="width:100%">
+				<img class="card-img-top" src="${path }/resources/upload/group/${g.g_renamedFilename }" alt="Card image" style="width:100%">
+				<div class="card-body">
+					<h4 class="card-title">${g.g_name }</h4>
+					<p class="card-text">${g.g_intro }</p>
+					<a href="${path }/group/groupMemberInsert.do?groupNo=${g.g_no}" class="btn btn-outline-secondary">가입 하기</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-2"></div>
+	</div>
+</c:if>
+</div>
+
+
 <%-- <jsp:include page="/WEB-INF/views/common/footer.jsp"/> --%>

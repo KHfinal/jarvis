@@ -234,9 +234,9 @@ public class GroupController {
 	public ModelAndView insertGroupPost(GroupPost post, MultipartFile[] upFile, HttpServletRequest request) {
 		logger.debug(post.getG_post_writer());
 		logger.debug(post.getG_post_contents());
-		logger.debug(post.getG_no());
+		logger.debug("그룹 번호"+post.getG_no());
 		
-		int groupNo= post.getG_post_no();
+		int groupNo= Integer.parseInt(post.getG_no());
 
 		for(int i=0; i<upFile.length; i++) {
 			logger.debug(upFile[i].getOriginalFilename());
@@ -276,6 +276,8 @@ public class GroupController {
 		}
 		
 		int result = service.insertGroupPost(post, attList);
+		
+		logger.debug("게시글 등록하고 그룹 번호 가져오기 : "+groupNo);
 		
 		String msg="";
 		String loc="";
@@ -579,7 +581,7 @@ public class GroupController {
 	   public ModelAndView groupMemberDelete(String mEmail) {
 	   	   ModelAndView mv=new ModelAndView();
 		   
-	   	   logger.debug(mEmail);
+	   	   logger.debug("탈퇴 : "+mEmail);
 	   	   
 		   int result = service.groupMemberDelete(mEmail);
 		   
@@ -607,7 +609,7 @@ public class GroupController {
 	   public ModelAndView groupMemberDelete1(String mEmail, int groupNo) {
 	   	   ModelAndView mv=new ModelAndView();
 		   
-	   	   logger.debug(mEmail);
+	   	   logger.debug("강퇴 : "+mEmail);
 	   	   
 		   int result = service.groupMemberDelete(mEmail);
 		   
