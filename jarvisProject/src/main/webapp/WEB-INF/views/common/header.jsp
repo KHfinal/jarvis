@@ -29,6 +29,8 @@
 </head>
 
 
+
+
 <style>
 	html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 </style>
@@ -204,26 +206,28 @@
 	var email = '${memberLoggedIn.memberEmail}';    /* (0) */
 	$.ajax({
 		url:"${path}/friend/selectFriendListJson.do",
-		type:"POST",
+		type:"get",
 		data:{email:email},
 		dataType:"json",
 		success : function(data){
+			
 	    	$('#myDropdown').append('<input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()" style="width:100%">');
 	    	su=0;
 			var friendListTag;
 			friendList=[];
-			$.each(data.list,function(i,item){
-				var f_email = item; 
-				var size =userIdList.length;
-				friendList.push(f_email);
+			var size =userIdList.length;
+			$.each(data,function(i,item){
+				var fList= item.memberEmail;
+				
+				friendList.push(item.memberEmail);
 				for(var k =0; k<size;k++){
 					console.log("userIdList[k] : "+userIdList[k]);
-				    if(f_email==userIdList[k]){																																			
-						friendListTag = "<a href='#' class='w3-bar-item w3-button' >"+f_email+"&nbsp;&nbsp;&nbsp;&nbsp;<span aria-label='현재 활동 중' style='text-align: right;background: rgb(66, 183, 42); border-radius: 50%; display: inline-block; height: 6px; margin-left: 4px; width: 6px;'></span></a><br>";
+				    if(fList==userIdList[k]){																																			
+						friendListTag = "<a href='#' class='w3-bar-item w3-button' style='text-decoration:none'><img src='${path}/resources/profileImg/"+item.memberPFP+"' class='w3-circle' style='height:3%;width:15%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+item.memberEmail+"&nbsp;&nbsp;&nbsp;&nbsp;<span aria-label='현재 활동 중' style='text-align: right;background: rgb(66, 183, 42); border-radius: 50%; display: inline-block; height: 6px; margin-left: 4px; width: 6px;'></span></a><br>";
 						su++;
 						break;
 				    }else{
-				    	friendListTag = "<a href='#' class='w3-bar-item w3-button'>"+f_email+"</a><br>";
+				    	friendListTag = "<a href='#' class='w3-bar-item w3-button' style='text-decoration:none'><img src='${path}/resources/profileImg/"+item.memberPFP+"' class='w3-circle' style='height:3%;width:15%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+item.memberEmail+"</a><br>";
 				    }
 				} 
 				$('#myDropdown').append(friendListTag);

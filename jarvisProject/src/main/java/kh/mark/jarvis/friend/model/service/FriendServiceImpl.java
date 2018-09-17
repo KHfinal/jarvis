@@ -20,7 +20,7 @@ public class FriendServiceImpl implements FriendService{
 	
 	
 	@Override
-	public List<String> selectFriendListJson(Map<String,String> map) {
+	public List<Member> selectFriendListJson(Map<String,String> map) {
 		// TODO Auto-generated method stub
 		return dao.selectFriendListJson(sqlSession,map);
 	}

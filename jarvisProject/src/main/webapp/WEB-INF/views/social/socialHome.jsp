@@ -512,10 +512,14 @@ function fn_postLike(e) { /* 좋아요 전송 */
 <script>
 
 function searchsearch(){
+	
 	ajax();
 var myEmail = '${memberLoggedIn.memberEmail}';
 var searchKeyword = $('#searchKeyword').val();
 var searchType = $('#searchType').val();
+if(searchKeyword  == null){
+	return ;
+} 
 var friendKeywordTag;
 var tr="";
 alert(searchType);

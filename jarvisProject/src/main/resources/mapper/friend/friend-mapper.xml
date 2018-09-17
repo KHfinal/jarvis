@@ -25,12 +25,12 @@
    <result column="verify" property="verify"/>  
 </resultMap>
    
-   <select id="selectFriendListJson" resultType="string" parameterType="map">
+   <select id="selectFriendListJson" resultMap="memberMap" parameterType="map">
       <if test="title=='F_MEMBER_EMAIL'">
-           SELECT f_friend_email FROM FRIEND WHERE ${title}=#{email} AND F_STATUS='Y'
+           select * from member where member_email in(SELECT f_friend_email FROM FRIEND WHERE ${title}=#{email} AND F_STATUS='Y')
          </if>
          <if test="title=='F_FRIEND_EMAIL'">
-           SELECT f_member_email FROM FRIEND WHERE ${title}=#{email} AND F_STATUS='Y'
+           select * from member where member_email in(SELECT f_member_email FROM FRIEND WHERE ${title}=#{email} AND F_STATUS='Y')
          </if>
    </select>
    <select id="selectConcernList" resultType="string">
@@ -45,7 +45,7 @@
    </select>
    
    <select id="selectRecognizableList" resultMap="memberMap">
-   select * from member where member_email = (select f1.f_friend_email from friend f1 where f1.f_member_email in (select f2.f_friend_email from friend f2 where f2.f_member_email =#{email}) and f1.f_friend_email not in(#{email})  and f1.f_status ='Y' )
+   select * from member where member_email in (select f1.f_friend_email from friend f1 where f1.f_member_email in (select f2.f_friend_email from friend f2 where f2.f_member_email =#{email}) and f1.f_friend_email not in(#{email})  and f1.f_status ='Y' )
    </select>
    
    
