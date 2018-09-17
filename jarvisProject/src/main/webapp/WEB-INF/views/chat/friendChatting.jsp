@@ -10,6 +10,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="http://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 <script>
+var sock=new SockJS("<c:url value='/chatting'/>")
+sock.onmessage = onMessage;
+sock.onclose = onClose;
+sock.sendmessage=sendMessage;
+
 	var today=null;
 
 	$(function(){
@@ -22,9 +27,9 @@
 				scrollTop: $('#chatdata').get(0).scrollHeight
 			}, 10);
 		});
-		$('#exitBtn').click(function(){
+		/* $('#exitBtn').click(function(){
 			sock.onclose();
-		});
+		}); */
 	});
 	function leadingZeros(n, digits) {
 		   var zero = '';
@@ -49,6 +54,10 @@
 		var message = new Array();
 		message[0] = $("#message").val();
 		message[1] = ${selectRoom.room_no};
+		console.log("message : "+$("#message").val());
+		console.log("message1"+message[0]);
+		console.log("message2"+message[1]);
+		console.log("${selectRoom.room_no}");
 		sock.send(message);
 		/* if('${memberLoggedIn.getMemberEmail()}'=='${selectRoom.getMy_email()}'||'${memberLoggedIn.getMemberEmail()}'=='${selectRoom.getFriend_email()}'){ */
 			/* sock.send($('#message').val()); */
@@ -316,17 +325,22 @@ $(document).ready(function(){
 					<div class="mesgs">
 						<div class="msg_history">
 							<div id="chatdata" class="panel-body">
+							<!-- 받은 메세지 -->
+							<c:forEach items="${chat_contents }" var="chat">
 								<div class="incoming_msg">
 									<div class="incoming_msg_img">
 										<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
 									</div>
 									<div class="received_msg">
 										<div class="received_withd_msg">
-											<p>Test which is a new approach to have all solutions</p>
-											<span class="time_date"> 11:01 AM | June 9</span>
+											<p>${chat.MESSAGE }</p>
+											<span class="time_date">  | </span>
 										</div>
 									</div>
 								</div>
+							</c:forEach>
+								
+							<!-- 보낸 메세지 -->
 								<div class="outgoing_msg">
 									<div class="sent_msg">
 										<p>Test which is a new approach to have all solutions</p>

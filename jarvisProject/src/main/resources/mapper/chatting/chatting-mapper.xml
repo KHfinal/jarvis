@@ -32,7 +32,7 @@
 	</resultMap>
 	
 	<insert id="saveMessage" parameterType="map">
-		INSERT INTO CHATTING_CONTENTS VALUES(CHATTING_CONTENTS_SEQ.NEXTVAL, #{room_no}, #{writer}, #{message}, SYSTIMESTAMP)
+		INSERT INTO CHATTING_CONTENTS VALUES(#{room_no}, #{writer}, #{message}, SYSTIMESTAMP, default)
 	</insert>
 	
 	<select id="chattingList" resultMap="chattingContents" parameterType="map">
@@ -46,5 +46,9 @@
 		<if test="mytitle=='FRIEND_EMAIL' and ftitle=='MY_EMAIL'">
 			SELECT MESSAGE FROM CHATTING_CONTENTS C JOIN CHATTING_ROOM R ON(C.ROOM_NO=R.ROOM_NO) WHERE ${mytitle}=#{MYemail} AND ${ftitle}=#{FEmail}
 		</if>
+	</select>
+	
+	<select id="contentsList" resultType="map" parameterType="_int">
+		SELECT * FROM CHATTING_CONTENTS WHERE ROOM_NO=#{room_no} ORDER BY WRITER_DATE
 	</select>
 </mapper>

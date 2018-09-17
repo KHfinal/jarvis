@@ -49,6 +49,11 @@ public class ChattingServiceImpl implements ChattingService {
 	public String lastChatting(Map<String, String> roomMap) {
 		return dao.lastChatting(sqlSession, roomMap);
 	}
+
+	@Override
+	public List<Map<String, String>> contentsList(int room_no) {
+		return dao.contentsList(sqlSession, room_no);
+	}
 	
 	
 
