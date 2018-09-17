@@ -25,9 +25,9 @@
 </style>
 
 <div class="row">
-	<div class="col-8">
+	<div class="col-8 mb-5">
 	<h3>전체회원목록</h3>
-		<div class="list-group">
+		<div class="list-group" style="overflow:auto; height:900px;">
 			<table id="tbl-board" class="table table-striped table-hover">
             <tr>
                 <th></th>
@@ -52,6 +52,7 @@
 		</div>
 	</div>
 	<div class="col-4">
+	<h3>친구리스트</h3>
 		<div class="list-group" style="overflow:auto; height:500px;">
 			<table id="tbl-board" class="table table-striped table-hover">
 	            <tr>

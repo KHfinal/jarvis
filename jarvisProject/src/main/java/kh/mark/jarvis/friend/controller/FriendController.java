@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -303,4 +304,41 @@ public class FriendController{
 		return mv;
 	}
 	
+	@RequestMapping("/friend/autoFriendList")
+	public ModelAndView autoFriendList(HttpServletRequest request, HttpSession hs)
+	{
+		ModelAndView mv=new ModelAndView();
+		Member m = (Member)hs.getAttribute("memberLoggedIn");
+		String email = m.getMemberEmail();
+		String search = request.getParameter("search");
+		Map<String,String> map=new HashMap();
+		List<Map<String,Object>> emailList=null;
+		List<Map<String,Object>> emailList1=null;
+		System.out.println("넘어오냐 검색어"+search);
+		/*List<Map<String,Object>> friendList=null;
+		List<Map<String,Object>> friendList1=null;
+		if(!search.trim().isEmpty())
+		{*/
+			map.put("title", "F_MEMBER_EMAIL");
+			map.put("search", search);
+			map.put("email", email);
+			emailList=friendService.autoFriendList(map);
+			map.put("title", "F_FRIEND_EMAIL");
+			emailList1=friendService.autoFriendList(map);
+		/*}
+		else
+		{
+			map.put("title", "F_MEMBER_EMAIL");
+			map.put("email", email);
+			friendList=friendService.friendList(map);
+			map.put("title", "F_FRIEND_EMAIL");
+			friendList1=friendService.friendList(map);
+		}*/
+		mv.addObject("emailList", emailList);
+		mv.addObject("emailList1", emailList1);
+		/*mv.addObject("friendList", friendList);
+		mv.addObject("friendList1", friendList1);*/
+		mv.setViewName("jsonView");
+		return mv;
+	}
 }
