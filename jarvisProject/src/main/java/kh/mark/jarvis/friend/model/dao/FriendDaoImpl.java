@@ -71,6 +71,10 @@ public class FriendDaoImpl implements FriendDao{
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("friend.friendOne",fEmail);
 	}
+	@Override
+	public List<Map<String, Object>> autoFriendList(SqlSessionTemplate sqlSession, Map<String,String> map) {
+		return sqlSession.selectList("friend.autoFriendList",map);
+	}
 
 	
 

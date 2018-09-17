@@ -51,7 +51,7 @@ public class ChattingServiceImpl implements ChattingService {
 	}
 
 	@Override
-	public List<Map<String, String>> contentsList(int room_no) {
+	public List<Map<String, Object>> contentsList(int room_no) {
 		return dao.contentsList(sqlSession, room_no);
 	}
 	

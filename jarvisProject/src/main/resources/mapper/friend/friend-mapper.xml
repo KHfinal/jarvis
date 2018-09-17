@@ -83,5 +83,14 @@
       SELECT * FROM FRIEND WHERE F_FRIEND_EMAIL=#{fEmail} AND F_STATUS='Y'
    </select>
 
-      
+
+	<select id="autoFriendList" resultType="map" parameterType="map">
+		<if test="title=='F_MEMBER_EMAIL'">
+			SELECT * FROM FRIEND F JOIN MEMBER M ON(F.F_FRIEND_EMAIL=M.MEMBER_EMAIL) WHERE F_MEMBER_EMAIL=#{email} AND F_FRIEND_EMAIL LIKE '%'||#{search}||'%'
+		</if>
+		<if test="title=='F_FRIEND_EMAIL'">
+			SELECT * FROM FRIEND F JOIN MEMBER M ON(F.F_MEMBER_EMAIL=M.MEMBER_EMAIL) WHERE F_FRIEND_EMAIL=#{email} AND F_MEMBER_EMAIL LIKE '%'||#{search}||'%'
+		</if>
+	</select>
+	
 </mapper>

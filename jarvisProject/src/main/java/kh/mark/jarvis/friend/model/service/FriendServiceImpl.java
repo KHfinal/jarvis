@@ -77,6 +77,10 @@ public class FriendServiceImpl implements FriendService{
 	public String friendOne(String fEmail) {
 		return dao.friendOne(sqlSession, fEmail);
 	}
+	@Override
+	public List<Map<String, Object>> autoFriendList(Map<String,String> map) {
+		return dao.autoFriendList(sqlSession, map);
+	}
 
 	
 
