@@ -32,7 +32,7 @@
 	</resultMap>
 	
 	<insert id="saveMessage" parameterType="map">
-		INSERT INTO CHATTING_CONTENTS VALUES(CHATTING_CONTENTS_SEQ.NEXTVAL, #{room_no}, #{writer}, #{message}, SYSTIMESTAMP)
+		INSERT INTO CHATTING_CONTENTS VALUES(#{room_no}, #{writer}, #{message}, SYSTIMESTAMP, default)
 	</insert>
 	
 	<select id="chattingList" resultMap="chattingContents" parameterType="map">

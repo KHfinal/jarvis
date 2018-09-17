@@ -10,6 +10,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="http://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 <script>
+var sock=new SockJS("<c:url value='/chatting'/>")
+sock.onmessage = onMessage;
+sock.onclose = onClose;
+sock.sendmessage=sendMessage;
+
 	var today=null;
 
 	$(function(){
@@ -22,9 +27,9 @@
 				scrollTop: $('#chatdata').get(0).scrollHeight
 			}, 10);
 		});
-		$('#exitBtn').click(function(){
+		/* $('#exitBtn').click(function(){
 			sock.onclose();
-		});
+		}); */
 	});
 	function leadingZeros(n, digits) {
 		   var zero = '';
@@ -49,6 +54,10 @@
 		var message = new Array();
 		message[0] = $("#message").val();
 		message[1] = ${selectRoom.room_no};
+		console.log("message : "+$("#message").val());
+		console.log("message1"+message[0]);
+		console.log("message2"+message[1]);
+		console.log("${selectRoom.room_no}");
 		sock.send(message);
 		/* if('${memberLoggedIn.getMemberEmail()}'=='${selectRoom.getMy_email()}'||'${memberLoggedIn.getMemberEmail()}'=='${selectRoom.getFriend_email()}'){ */
 			/* sock.send($('#message').val()); */

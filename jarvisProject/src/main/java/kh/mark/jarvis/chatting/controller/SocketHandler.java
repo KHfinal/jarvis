@@ -29,7 +29,7 @@ public class SocketHandler extends TextWebSocketHandler {
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		
 		//server접속했을때 부여하는 sessionId값이랑 다름
-		//logger.info("접속한 사용자 : "+session);
+		logger.info("접속한 사용자 : "+session);
 		sessionList.add(session);
 		//server의 session객체에 저장되어있는 값을 불러오기!
 		//spring security가 적용되어있어야함! 
@@ -49,6 +49,7 @@ public class SocketHandler extends TextWebSocketHandler {
 	//메세지를 sessionList인원들에게 전송!
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		//여기서 service,dao로 연결하여 대화내용 DB에 저장할 수 있다.
+		System.out.println("asdasdasdasdsad"+message);
 		Member login=(Member)session.getAttributes().get("memberLoggedIn");
 		
 		String[] message_div=message.getPayload().split(",");
