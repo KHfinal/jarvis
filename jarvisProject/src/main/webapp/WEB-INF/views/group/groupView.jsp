@@ -232,7 +232,7 @@ function fn_subMenu(e) {
 }
 
 </script>
-<div class="w3-col m7 ml-3">
+<div class="w3-col m7">
 <c:if test="${memberCheck eq 1 }">
 	<!-- 게시글 등록 미리보기. 클릭시 #postModal이 연결 돼 실제 입력창 나타난다. -->
 	<div id="createPostContainer" data-toggle="modal" data-target="#postModal">
@@ -491,6 +491,7 @@ function fn_subMenu(e) {
 	   </div> <!-- panel-footer -->
 	</div> <!-- panel -->
 	
+	
 	</c:forEach>
 </c:if>
 <c:if test="${memberCheck eq 0 }">
@@ -512,5 +513,82 @@ function fn_subMenu(e) {
 		</div>
 	
 </c:if>
+</div>
+<div class="w3-col m2">
+<div class="w3-card w3-round w3-white">
+	<table class="table">
+		<c:forEach items="${groupEnrollList }" var="memberEnroll">
+			<tr>
+				<td>${memberEnroll.MEMBER_EMAIL }</td>
+				<td><button class="btn btn-outline-secondary btn-sm" style="float:right;" onclick="fn_memberAccept('${memberEnroll.MEMBER_EMAIL}')">수락</button></td>
+			</tr>
+		</c:forEach>
+	</table>
+	<hr>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>회원목록</th>
+				<c:if test="${g.g_master eq memberLoggedIn.getMemberEmail() }">
+					<th>관리</th>
+				</c:if>
+				<c:if test="${g.g_master ne memberLoggedIn.getMemberEmail() }">
+					<th><a class="btn btn-outline-secondary btn-sm" style="float:right;" href="${path }/group/groupMemberDelete.do?mEmail=${gm.MEMBER_EMAIL}" onclick="fn_validateSelf()">탈퇴</a></th>
+				</c:if>
+			</tr>
+		</thead>
+		<tbody>
+		
+		<c:forEach items="${gMemberList }" var="gm" varStatus="a">
+			<tr>
+				<c:if test="${g.g_master ne memberLoggedIn.getMemberEmail() }">
+					<td colspan="2" align="center" id='master${a.index }'>${gm.MEMBER_NICKNAME } </td>
+				</c:if>
+				<c:if test="${g.g_master eq memberLoggedIn.getMemberEmail() }">
+					<td id='g_member'>${gm.MEMBER_NICKNAME } </td>
+				</c:if>
+				<c:if test="${g.g_master eq memberLoggedIn.getMemberEmail() }">
+					<td>
+						<a class="btn btn-outline-secondary btn-sm" href="${path }/group/groupMemberDelete1.do?mEmail=${gm.MEMBER_EMAIL}&groupNo=${g.g_no}" onclick="fn_validate()">강퇴</a>
+					</td>
+				</c:if>
+			</tr>
+			<script>
+			$(document).ready(function () {
+				console.log("userIdList : " +userIdList.length );
+				console.log("" + $('#master${a.index }').html() );
+				for(var i = 0; i< userIdList.length;i++){
+					if(userIdList[i] == mas){	
+						console.log("들어옴");
+						 $('#master${a.index }').append("123");
+				    }	
+				}
+			});
+			
+			function fn_memberAccept(mEmail) {
+				var g_no = '${g.g_no}';
+				alert(g_no);
+				$.ajax({
+					url:"${path}/group/groupMemberAccept.do",
+					type:"GET",
+					data:{mEmail:mEmail,groupNo:g_no},
+					dataType:"Json",
+					success : function(data){
+						alert(data);
+					}
+				})
+			};
+			
+			function fn_validate(){
+				confirm("정말로 강퇴 하시겠습니까?");
+			}
+			function fn_validateSelf(){
+				confirm("정말로 탈퇴 하시겠습니까?");
+			}
+			</script>
+		</c:forEach>
+		</tbody>
+	</table>
+</div>		
 </div>
 <%-- <jsp:include page="/WEB-INF/views/common/footer.jsp"/> --%>

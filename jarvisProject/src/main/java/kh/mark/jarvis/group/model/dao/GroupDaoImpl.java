@@ -18,6 +18,25 @@ public class GroupDaoImpl implements GroupDao {
 
 	
 	
+	
+	@Override
+	public int groupMemberDelete(SqlSessionTemplate Session, String mEmail) {
+		// TODO Auto-generated method stub
+		return Session.delete("group.groupMemberDelete", mEmail);
+	}
+
+	@Override
+	public int groupMemberAccept(SqlSessionTemplate Session, String mEmail) {
+		// TODO Auto-generated method stub
+		return Session.update("group.groupMemberAccept", mEmail);
+	}
+
+	@Override
+	public List<Map<String, String>> selectGroupEnroll(SqlSessionTemplate Session, int groupNo) {
+		// TODO Auto-generated method stub
+		return Session.selectList("group.selectGroupEnroll", groupNo);
+	}
+
 	@Override
 	public List<Map<String, String>> myGroupList(SqlSessionTemplate Session, String mEmail) {
 		// TODO Auto-generated method stub

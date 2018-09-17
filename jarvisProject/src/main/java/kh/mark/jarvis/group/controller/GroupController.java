@@ -183,6 +183,9 @@ public class GroupController {
 		
 		List<Map<String, String>> gMemberList = service.selectGroupMember(groupNo);
 		
+		List<Map<String, String>> groupEnrollList = service.selectGroupEnroll(groupNo);
+		
+		
 		logger.debug(postList.toString());
 		int memberCheck=0;
 		
@@ -190,9 +193,10 @@ public class GroupController {
 		logger.debug(commentList.toString());
 		logger.debug("멤버 리스트"+memberList.toString());
 		for(int i=0;i<gMemberList.size();i++) {
-			/*logger.debug("그룹 멤버 셀렉트"+gMemberList.get(i).values().toString());
-			logger.debug("그룹 멤버 셀렉트"+gMemberList.get(i).get("MEMBER_EMAIL"));
-			logger.debug("그룹 멤버 셀렉트"+gMemberList.get(i).containsValue(mEmail));*/
+			logger.debug("그룹 멤버 셀렉트"+gMemberList.get(i).values().toString());
+			logger.debug("그룹 멤버 셀렉트"+gMemberList.get(i));
+			logger.debug("그룹 멤버 셀렉트"+gMemberList.get(i).containsValue(mEmail));
+			
 			if(gMemberList.get(i).containsValue(mEmail)) {
 				memberCheck=1;
 				mv.addObject("memberCheck", memberCheck);
@@ -215,11 +219,11 @@ public class GroupController {
 		}
 		
 		
-		
+		mv.addObject("groupEnrollList", groupEnrollList);
 		mv.addObject("g", g);
 		mv.addObject("commentList", commentList);
 		mv.addObject("memberList", memberList);
-		
+		mv.addObject("gMemberList", gMemberList);
 		mv.addObject("groupNo", groupNo);
 		mv.setViewName("group/groupView");
 		
@@ -539,6 +543,92 @@ public class GroupController {
 	      
 	      return mv;
 	   }
-	
+
+	   @RequestMapping("/group/groupMemberAccept.do")
+	   public ModelAndView groupMemberAccept(String mEmail, int groupNo) {
+		   ModelAndView mv=new ModelAndView();
+		   
+		   logger.debug(mEmail);
+		   
+		   int result = service.groupMemberAccept(mEmail);
+		   
+		   String msg="";
+	       String loc="";
+	      
+	       if(result>0) {
+	          msg = "그룹 가입을 수락하였습니다.";
+	          loc = "/group/groupView.do?groupNo="+groupNo;
+	       } else {
+	          msg = "POST 수정이 실패하였습니다.";
+	          loc = "/group/groupView.do?groupNo="+groupNo;
+	       }
+	      
+	      
+	       mv.addObject("msg", msg);
+	       mv.addObject("loc", loc);
+	      
+	       mv.setViewName("common/msg");
+		      
+		      
+		   
+		   return mv;
+		   
+	   }
+	   
+	   @RequestMapping("/group/groupMemberDelete.do")
+	   public ModelAndView groupMemberDelete(String mEmail) {
+	   	   ModelAndView mv=new ModelAndView();
+		   
+	   	   logger.debug(mEmail);
+	   	   
+		   int result = service.groupMemberDelete(mEmail);
+		   
+		   String msg="";
+		   String loc="";
+		      
+		   if(result>0) {
+		      msg = "탈퇴에 성공하였습니다.";
+		      loc = "/post/socialHomeView.do";
+		   } else {
+		      msg = "탈퇴에 실패하였습니다.";
+		      loc = "/post/socialHomeView.do";
+		   }
+		      
+		      
+		   mv.addObject("msg", msg);
+		   mv.addObject("loc", loc);
+		      
+		   mv.setViewName("common/msg");
+		   
+		   return mv;
+	   }
+	   
+	   @RequestMapping("/group/groupMemberDelete1.do")
+	   public ModelAndView groupMemberDelete1(String mEmail, int groupNo) {
+	   	   ModelAndView mv=new ModelAndView();
+		   
+	   	   logger.debug(mEmail);
+	   	   
+		   int result = service.groupMemberDelete(mEmail);
+		   
+		   String msg="";
+		   String loc="";
+		      
+		   if(result>0) {
+		      msg = "회원 삭제에 성공하였습니다.";
+		      loc = "/group/groupView.do?groupNo="+groupNo;
+		   } else {
+		      msg = "회원 삭제에 실패하였습니다.";
+		      loc = "/group/groupView.do?groupNo="+groupNo;
+		   }
+		      
+		      
+		   mv.addObject("msg", msg);
+		   mv.addObject("loc", loc);
+		      
+		   mv.setViewName("common/msg");
+		   
+		   return mv;
+	   }
 
 }

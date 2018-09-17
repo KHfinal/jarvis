@@ -27,6 +27,9 @@ public interface GroupService {
 	int insertComment(GroupComment comment);
 	List<GroupComment> selectCommentList();
 	List<Map<String, String>> selectGroupMember(int groupNo);
+	
+	List<Map<String, String>> selectGroupEnroll(int groupNo);
+	
 	Group groupViewDetail(int groupNo);
 
 	int groupMemberInsert(Map groupM);
@@ -48,4 +51,8 @@ public interface GroupService {
 	int deleteGroupCommentLike(GroupLike like);
 	List<Integer> selectMyLike(String memberEmail);
 	List<Integer> myPostNoList();
+	
+	int groupMemberAccept(String mEmail);
+	
+	int groupMemberDelete(String mEmail);
 }
