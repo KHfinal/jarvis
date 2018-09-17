@@ -44,6 +44,9 @@
    SELECT * FROM MEMBER WHERE 1=1 <if test="searchType != null and searchType != ''"> AND ${searchType} LIKE '%'||#{searchKeyword}||'%'</if>
    </select>
    
+   <select id="selectRecognizableList" resultMap="memberMap">
+   select * from member where member_email = (select f1.f_friend_email from friend f1 where f1.f_member_email in (select f2.f_friend_email from friend f2 where f2.f_member_email =#{email}) and f1.f_friend_email not in(#{email})  and f1.f_status ='Y' )
+   </select>
    
    
    <select id="requestList" resultType="map" parameterType="map">

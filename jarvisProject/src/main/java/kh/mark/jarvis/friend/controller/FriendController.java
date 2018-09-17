@@ -63,15 +63,12 @@ public class FriendController{
 		
 		return mv;
 	}
-	@RequestMapping("/friend/friednRecommendList.do")
-	
-	public @ResponseBody String friendRecommend(String email,ModelAndView mv) {
+	@RequestMapping("/friend/concernRecommendList.do")
+	public @ResponseBody String concernRecommend(String email,ModelAndView mv) {
 		List<Member> concernCompareList=new ArrayList();
 		ObjectMapper mapper=new ObjectMapper();
 		String concernString = friendService.selectConcernList(email);
 		String[] concernArr = concernString.split(",");
-		
-		
 		
 		String concern ="";
 		
@@ -91,36 +88,45 @@ public class FriendController{
 					}
 				}
 			}
-		        
-		
 		}
-		
 		String a = "";
 		try {
 			a = mapper.writeValueAsString(concernCompareList);
 			System.out.println("a : " + a);
 		}catch (Exception e) {
 		}
-		 
-		/*System.out.println("concernCompareList : " + concernCompareList);
-		mv.addObject("concernCompareList", concernCompareList);
-		mv.setViewName("jsonView");*/
 		
 		return a;
 	}
-	/*@RequestMapping("/friend/friendSearch.do")
-	public ModelAndView friendSearch(String searchType,String searchKeyword ,ModelAndView mv) {
-		System.out.println("searchType : " + searchType);
-		System.out.println("searchKeyword : " + searchKeyword);
-		Map<String,Object> map=new HashMap<String,Object>();
-		map.put("searchType", searchType);
-		map.put("searchKeyword", searchKeyword);
-		List<Member> list= friendService.selectSearch2(map);
-		System.out.println("list : " + list);
-		mv.addObject("list",list);
-		mv.setViewName("jsonView");
-		return mv;
-	}*/
+	@RequestMapping("/friend/recognizableRecommendList.do")
+	public @ResponseBody String recognizableRecommend(String email,ModelAndView mv) {
+		List<Member> concernCompareList=new ArrayList();
+		ObjectMapper mapper=new ObjectMapper();
+		
+		List<Member> recognizeList = friendService.selectRecognizableList(email);
+		System.out.println("recognizeList : " + recognizeList);
+			
+			
+		/*for(int j=0;i<memberConcernList.size();j++){
+			if(j==memberConcernList.size()) {
+				break;
+			}else {
+				if(!(concernCompareList.contains(memberConcernList.get(j)))) {
+					
+					concernCompareList.add(memberConcernList.get(j));
+				}
+			}
+		}
+	*/
+		String a = "";
+		try {
+			a = mapper.writeValueAsString(recognizeList);
+			System.out.println("a : " + a);
+		}catch (Exception e) {
+		}
+		
+		return a;
+	}
 	
 	@RequestMapping("/friend/friendSearch.do")
 	public @ResponseBody String friendSearch(String searchType,String searchKeyword) {
