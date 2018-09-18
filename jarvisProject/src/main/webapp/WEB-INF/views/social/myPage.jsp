@@ -11,7 +11,7 @@
    <jsp:param value="social" name="title"/>
 </jsp:include>
 
-<link rel="stylesheet" href="${path }/resources/css/socialHome.css?ver=121">
+<link rel="stylesheet" href="${path }/resources/css/socialHome.css?ver=12121">
 
 <script>
 // 게시글 등록
@@ -284,7 +284,7 @@ function goMyPage(e) {
    <!-- 게시글 등록 미리보기. 클릭시 #postModal이 연결 돼 실제 입력창 나타난다. -->
    <div id="createPostContainer" data-toggle="modal" data-target="#postModal">
       <div class="modal-header">
-         <h4 class="modal-title">Welcome to Jarvis</h4>
+         <h4 class="modal-title">${MpMember.getMemberName() } Page</h4>
          <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       

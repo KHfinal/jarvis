@@ -53,10 +53,10 @@ public class PostController {
 		}
 
 		// 용석
-		List<Post> postList = service.selectPostList(); // 전체 Post
+		List<Post> postList = service.selectPostList(m.getMemberEmail()); // 전체 Post
 		List<Attachment> attachmentList = service.selectAttachList();
 		List<JarvisComment> commentList = service.selectCommentList();
-		List<Integer> myLikeList = service.selectMyLike(m.getMemberEmail());
+		List<Integer> myLikeList = service.selectMyLike(m.getMemberEmail()); // count 값이 0일때 빈 하트 출력을 위해 사용
 		List<Member> memberList = service.selectMemberList(); // 전체 회원 리스트
 
 		if (myLikeList.size() == 0) {
@@ -376,25 +376,50 @@ public class PostController {
 		// 로그인 시 하트 검색
 		List<JarvisLike> myLikeOnList = service.selectMyLikeOn(m.getMemberEmail());
 
-		for (JarvisLike jl : myLikeOnList) {
-			System.out.println("jl = " + jl);
-		}
-
 		// 로그인 시 count값 검색
 		List<Map<String, Object>> startLikeCount = service.startLikeCount();
-
-		for (Map<String, Object> map : startLikeCount) {
-			System.out.println("POST_REF = " + map.get("POST_REF"));
-			System.out.println("COMMENT_REF = " + map.get("COMMENT_REF"));
-			System.out.println("LIKE_CHECK = " + map.get("LIKE_CHECK"));
-			System.out.println("CNT = " + map.get("CNT"));
-		}
 
 		mv.addObject("myLikeOnList", myLikeOnList);
 		mv.addObject("startLikeCount", startLikeCount);
 
 		mv.setViewName("jsonView");
 
+		return mv;
+	}
+	
+	@RequestMapping("/post/myPage")
+	public ModelAndView myPage(HttpServletRequest request, HttpSession session) {
+		ModelAndView mv = new ModelAndView();
+		Member m = (Member) session.getAttribute("memberLoggedIn");
+		
+		String memberEmail = request.getParameter("memberEmail");
+		
+		Member MpMember = service.selectMyPageMember(memberEmail); // 마이페이지 주인
+
+		List<Post> postList = service.selecyMyPagePostList(memberEmail); // 마이페이지 주인의 게시물 + 주인 친구 게시물
+		List<Attachment> attachmentList = service.selectAttachList();
+		List<JarvisComment> commentList = service.selectCommentList();
+		List<Integer> myLikeList = service.selectMyLike(m.getMemberEmail()); // count 값이 0일때 빈 하트 출력을 위해 사용
+		List<Member> memberList = service.selectMemberList(); // 전체 회원 리스트
+		
+		if (myLikeList.size() == 0) {
+			int flagCnt = 1;
+			mv.addObject("flagCnt", flagCnt);
+		}
+
+		if (postList != null && attachmentList != null) {
+			mv.addObject("postList", postList);
+			mv.addObject("attachmentList", attachmentList);
+		}
+		
+		mv.addObject("MpMember", MpMember);
+		mv.addObject("commentList", commentList);
+		mv.addObject("myLikeList", myLikeList);
+		mv.addObject("memberList", memberList);
+		
+		
+		mv.setViewName("social/myPage"); 
+		
 		return mv;
 	}
 }

@@ -77,8 +77,8 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<Post> selectPostList() {
-		return dao.selectPostList(sqlSession);
+	public List<Post> selectPostList(String memberEmail) {
+		return dao.selectPostList(sqlSession, memberEmail);
 	}
 
 	@Override
@@ -158,6 +158,17 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public List<Map<String, Object>> startLikeCount() {
 		return dao.startLikeCount(sqlSession);
+	}
+
+	// 마이페이지 멤버
+	@Override
+	public Member selectMyPageMember(String memberEmail) {
+		return dao.selectMyPageMember(sqlSession, memberEmail);
+	}
+
+	@Override
+	public List<Post> selecyMyPagePostList(String memberEmail) {
+		return dao.selecyMyPagePostList(sqlSession, memberEmail);
 	}
 
 }

@@ -56,8 +56,8 @@ public class PostDaoImpl implements PostDao {
 
 	/* post 조회 */
 	@Override
-	public List<Post> selectPostList(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectList("post.selectPostList");
+	public List<Post> selectPostList(SqlSessionTemplate sqlSession, String memberEmail) {
+		return sqlSession.selectList("post.selectPostList", memberEmail);
 	}
 
 	@Override
@@ -138,6 +138,16 @@ public class PostDaoImpl implements PostDao {
 	@Override
 	public List<Map<String, Object>> startLikeCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectList("post.startLikeCount");
+	}
+
+	@Override
+	public Member selectMyPageMember(SqlSessionTemplate sqlSession, String memberEmail) {
+		return sqlSession.selectOne("post.selectMyPageMember", memberEmail);
+	}
+
+	@Override
+	public List<Post> selecyMyPagePostList(SqlSessionTemplate sqlSession, String memberEmail) {
+		return sqlSession.selectList("post.selecyMyPagePostList", memberEmail);
 	}
 
 }

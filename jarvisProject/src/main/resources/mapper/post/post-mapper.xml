@@ -42,7 +42,12 @@
    </delete>
    
    <select id="selectPostList" resultType="post" resultMap="postMap">
-      SELECT * FROM POST ORDER BY POST_DATE DESC
+      <!-- SELECT * FROM POST ORDER BY POST_DATE DESC -->
+      SELECT * 
+  	  FROM POST  
+	  WHERE POST_WRITER IN ((SELECT F1.F_FRIEND_EMAIL FROM FRIEND F1 WHERE F1.F_MEMBER_EMAIL = #{memberEmail}))
+	  OR POST_WRITER IN((SELECT F2.F_MEMBER_EMAIL FROM FRIEND F2 WHERE F2.F_FRIEND_EMAIL = #{memberEmail})) OR POST_WRITER = #{memberEmail}
+	  ORDER BY POST_DATE DESC
    </select>
    
    <select id="selectAttachList" parameterType="attach" resultType="attach" resultMap="attachMap">
@@ -96,6 +101,7 @@
       DELETE FROM JARVIS_LIKE WHERE COMMENT_REF = #{commentRef} AND LIKE_MEMBER = #{likeMember} AND LIKE_CHECK = #{likeCheck}
    </delete>
    
+   <!-- count 값이 0일때 빈 하트 출력을 위해 사용 -->
    <select id="selectMyLike" parameterType="string" resultType="Integer">
       SELECT DISTINCT POST_REF FROM JARVIS_LIKE WHERE LIKE_MEMBER = #{memberEmail}
    </select>
@@ -108,6 +114,16 @@
    <!-- 최초 로그인 시 카운트 값 -->
    <select id="startLikeCount" resultType="map">
         SELECT POST_REF, COMMENT_REF, LIKE_CHECK, COUNT(*) AS CNT FROM JARVIS_LIKE WHERE POST_REF IS NOT NULL GROUP BY POST_REF, COMMENT_REF, LIKE_CHECK
+   </select>
+   
+   <!-- 마이페이지 -->
+   <select id="selectMyPageMember" resultMap="memberMap" parameterType="java.lang.String" resultType="string">
+   		SELECT * FROM MEMBER WHERE MEMBER_EMAIL = #{memberEmail}		
+   </select>
+   
+   <!-- 마이페이지 POST 호출! 중요! -->
+   <select id="selecyMyPagePostList" resultType="post" resultMap="postMap">
+   		SELECT * FROM POST WHERE POST_WRITER = #{memberEmail} ORDER BY POST_DATE DESC
    </select>
    
    
