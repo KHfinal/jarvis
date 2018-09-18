@@ -114,7 +114,6 @@ public class FriendController{
 				}
 				else if(checkFriend.get(s).getMemberEmail().equals(concernCompareList.get(d).getMemberEmail())) {
 					concernCompareList.remove(d);
-					
 				}
 			}
 		};
