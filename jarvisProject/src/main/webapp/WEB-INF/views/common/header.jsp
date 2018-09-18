@@ -46,6 +46,7 @@
 	   
 	    </div>
 	  </div>
+	  
 	  <a href="${path }/chat/chattingView.do" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="far fa-comments"></i></a>
 	  <c:if test="${memberLoggedIn.memberEmail  eq 'admin'}">
 	  <div class="w3-dropdown-hover w3-hide-small">

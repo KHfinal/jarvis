@@ -1,6 +1,7 @@
 package kh.mark.jarvis.friend.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,30 +75,71 @@ public class FriendController{
 		ObjectMapper mapper=new ObjectMapper();
 		String concernString = friendService.selectConcernList(email);
 		String[] concernArr = concernString.split(",");
-		
 		String concern ="";
 		
+		System.out.println("email : " + email);
 		for(int i =0; i<concernArr.length;i++) {
 			concern = concernArr[i];
+			System.out.println("관심사 : "+ concern);
 			List<Member> memberConcernList = friendService.selectMemberConcernList(concern);
 			System.out.println("memberConcernList : " + memberConcernList);
 			/*System.out.println("memberConcernList 크기: "+ memberConcernList.size());*/
 			
-			for(int j=0;i<memberConcernList.size();j++){
+			for(int j=0;j<memberConcernList.size();j++){
+				
+				
 				if(j==memberConcernList.size()) {
 					break;
 				}else {
-					if(!(concernCompareList.contains(memberConcernList.get(j)))) {
-						
+					if( !(concernCompareList.contains(memberConcernList.get(j)) )) {
 						concernCompareList.add(memberConcernList.get(j));
+					}else {
+						continue;
 					}
 				}
 			}
 		}
+		List<Member> checkFriend = friendService.selectCheckFriend(email);
+		for(int s = 0; s <checkFriend.size();s++) {
+			if(s == checkFriend.size()) {
+				break;
+			}
+			for(int d=0;d< concernCompareList.size();d++) {
+				if(d == concernCompareList.size()) {
+					break;
+				}
+				if(checkFriend.get(s).getMemberEmail().equals(concernCompareList.get(d).getMemberEmail())) {
+					System.out.println("d : " +d);
+					System.out.println("checkFriend 값 : "+checkFriend.get(s).getMemberEmail());
+					System.out.println("concernCompareList 값 : "+concernCompareList.get(d).getMemberEmail());
+					
+					concernCompareList.remove(d);
+					d--;
+					continue;
+				}if(concernCompareList.get(d).getMemberEmail().equals(email)) {
+					System.out.println("d : " +d);
+					concernCompareList.remove(d);
+					d--;
+					continue;
+					
+				}
+			}
+		};/*selectCheckFriend*/
+		/*System.out.println("내 친구 목록 ");
+		for(int z =0; z<checkFriend.size();z++) {
+			System.out.println("checkFriend["+z+"] "+checkFriend.get(z));
+		}
+		System.out.println("관심사 같은 멤버 목록");
+		for(int x =0; x<concernCompareList.size();x++) {
+			System.out.println("concernCompareList["+x+"] "+concernCompareList.get(x));
+		}*/
+	
 		String a = "";
 		try {
+			
 			a = mapper.writeValueAsString(concernCompareList);
-			System.out.println("a : " + a);
+			
+			
 		}catch (Exception e) {
 			e.getMessage();
 		}
@@ -111,19 +153,7 @@ public class FriendController{
 		
 		List<Member> recognizeList = friendService.selectRecognizableList(email);
 		System.out.println("recognizeList : " + recognizeList);
-			
-			
-		/*for(int j=0;i<memberConcernList.size();j++){
-			if(j==memberConcernList.size()) {
-				break;
-			}else {
-				if(!(concernCompareList.contains(memberConcernList.get(j)))) {
-					
-					concernCompareList.add(memberConcernList.get(j));
-				}
-			}
-		}
-	*/
+		
 		String a = "";
 		try {
 			a = mapper.writeValueAsString(recognizeList);
@@ -133,6 +163,60 @@ public class FriendController{
 		
 		return a;
 	}
+	@RequestMapping("/friend/friendRequestSocial.do")
+	public ModelAndView friendRequestSocial(String mail, HttpSession hs) throws UnsupportedEncodingException
+	{
+		Member m=(Member)hs.getAttribute("memberLoggedIn");
+		String email = m.getMemberEmail();
+		ModelAndView mv=new ModelAndView();
+		Map<String, String> fr=new HashMap<String, String>();
+		fr.put("email", email);
+		fr.put("fEmail", mail);
+		fr.put("p", "P");
+		int result=friendService.friendRequest(fr);
+		
+		String msg="";
+	      
+	    if (result>0) 
+	    {
+	       msg="친구요청 메세지를 보냈습니다.";
+	    } 
+	    else 
+	    {
+	       msg="친구요청이 실패했습니다.";
+	    }
+	    String a = URLEncoder.encode(msg, "UTF-8");
+	    mv.addObject("msg",a);
+	    mv.setViewName("jsonView");
+		return mv;
+	}
+	@RequestMapping("/friend/friendRefuseSocial.do")
+	public ModelAndView friendRefuseSocial(HttpSession hs, String mail) throws UnsupportedEncodingException
+	{
+		ModelAndView mv=new ModelAndView();
+		Member m = (Member)hs.getAttribute("memberLoggedIn");
+		String email = m.getMemberEmail();
+		Map<String, String> fr=new HashMap<String, String>();
+		fr.put("email", email);
+		fr.put("fEmail", mail);
+		int result=friendService.friendRefuse(fr);
+	      
+		String msg="";
+	      
+	    if (result>0) 
+	    {
+	    	msg="친구요청이 취소되었습니다.";
+	    } 
+	    else 
+	    {
+	       msg="친구요청 취소를 실패했습니다.";
+	    }
+	    String a = URLEncoder.encode(msg, "UTF-8");
+	    mv.addObject("msg",a);
+	    mv.setViewName("jsonView");
+		return mv;
+	}
+	
 	
 	@RequestMapping("/friend/friendSearch.do")
 	public @ResponseBody String friendSearch(String searchType,String searchKeyword) {
@@ -146,7 +230,7 @@ public class FriendController{
 		String a ="";
 		 try {
 			 a = mapper.writeValueAsString(list);
-			 logger.debug(a);
+			 System.out.println(searchKeyword +"로 가져온 값 : "+a);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
@@ -155,6 +239,10 @@ public class FriendController{
 		return a;
 	}
 	
+	//================================================================================================//
+	//================================================================================================//
+	//================================================================================================//
+	//================================================================================================//
 	
 	@RequestMapping("/friend/friendView.do")
 	public ModelAndView friendView(HttpSession hs) {

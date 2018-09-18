@@ -627,3 +627,45 @@ a {
    background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
    background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);   
 }
+/* das */
+
+
+.input1{
+  display: block;
+  margin:0%;
+  text-align:center;
+  font-family: 'Montserrat', sans-serif;
+  text-transform:uppercase;
+  background-color :rgba(245, 247, 248, 1);
+  border: 0px ;
+  cursor:pointer;
+  user-select: none;
+} 
+
+
+
+.input1{
+  color: #878787;
+  text-shadow:
+	0px 0px 0px #878787,
+	0px 0px 0px #878787,
+	0px 0px 0px #878787,
+	0px 0px 0px #878787,
+	0px 1px 3px #878787
+	;
+}
+
+
+
+
+.input1:active {
+  color: #c0c0c0;
+  text-shadow:
+ 	0px 1px 0px #808080,
+	0px 2px 0px #c6c5bb,
+	0px 3px 0px #353535,
+	0px 4px 0px #252525,
+	0px 5px 10px rgba(0, 0, 0, 0.6)
+	;
+	
+}
