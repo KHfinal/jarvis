@@ -12,6 +12,7 @@ public interface FriendService {
 	List<Member> selectMemberConcernList(String concern);
 	List<Member> selectRecognizableList(String email);
 	List<Member> selectSearch2(Map<String,String> map);
+	List<Member> selectCheckFriend(String email);
 	int friendRequest(Map<String, String> fr);
 	List<Map<String,Object>> requestList(Map<String,String> map);
 	int friendAgree(Map<String, String> fr);

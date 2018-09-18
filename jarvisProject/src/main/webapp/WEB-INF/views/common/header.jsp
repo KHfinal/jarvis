@@ -48,6 +48,7 @@
 	   
 	    </div>
 	  </div>
+	  
 	  <a href="${path }/chat/chattingView.do" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
 	  <c:if test="${memberLoggedIn.memberEmail  eq 'admin'}">
 	  <div class="w3-dropdown-hover w3-hide-small">
@@ -97,7 +98,7 @@
 
 
 <!-- Page Container -->
-<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
+<div class="w3-container w3-content" style="max-width:1500px;margin-top:80px">
   <!-- The Grid -->
   <div class="w3-row">
     <!-- 사이드 메뉴들 div 시작부분 -->
@@ -311,9 +312,8 @@
 	    }
 	}
 	}
-	function fn_friendAdd(data){
-		location.href="${path}/friend/friendRequest.do?fEmail="+data;
-	};
+	
+	
 	function fn_submit() {
 		submit();
 	};
