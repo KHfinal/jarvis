@@ -11,7 +11,7 @@
    <jsp:param value="social" name="title"/>
 </jsp:include>
 
-<link rel="stylesheet" href="${path }/resources/css/socialHome.css?ver=211">
+<link rel="stylesheet" href="${path }/resources/css/socialHome.css?ver=2111">
 
 <script>
 // 게시글 등록
@@ -122,30 +122,65 @@ $(function() {
        url: "${pageContext.request.contextPath}/post/startLike.do",
        contentType : "application/x-www-form-urlencoded; charset=utf-8",
        dataType : "json",
-         
+        
        success: function(data) {
-         var myLikeList = data.myLikeList;
-         var myPostNoList = data.myPostNoList;
-         
-         for(var i=0; i<myPostNoList.length; i++) {
-            var myPostNo = myPostNoList[i]; 
-            for(var j=0; j<myLikeList.length; j++) {
-               var myLike = myLikeList[j];
-               
-               if($('.likeBtn[title=' + myPostNo + ']').attr('title') == myLike) {
-                  $('.likeBtn[title=' + myLike + ']').children().removeClass();
-                  $('.likeBtn[title=' + myLike + ']').children().addClass('fas fa-heart like');
+          
+          var like = data.myLikeOnList;
+          var count = data.startLikeCount;
+          /* var postCnt = data.startPostCount;
+          var commentCnt = data.startCommentCount; */
+          
+          $.each(like, function(idx, value) {
+                
+                if($('.likeBtn[title=' + value.postRef + ']').attr('title') == value.postRef && value.likeCheck == 1) {
+                   $('.likeBtn[title=' + value.postRef + ']').children().removeClass();
+                    $('.likeBtn[title=' + value.postRef + ']').children().addClass('fas fa-heart like');
+                }
+                
+                if($('.likeCommentBtn[title=' + value.commentRef + ']').attr('title') == value.commentRef && value.likeCheck == 2) {
+                   $('.likeCommentBtn[title=' + value.commentRef + ']').children().removeClass();
+                    $('.likeCommentBtn[title=' + value.commentRef + ']').children().addClass('fas fa-heart like');
+                }
+          });
+          
+          $.each(count, function(idx, val) {
+              if($('.likePostCount-container[title=' + val.POST_REF + ']').attr('title') == val.POST_REF && val.LIKE_CHECK == 1) {
+                  var html = "<p class='likeCount'>" + val.CNT + "</p>";
+                     $('.likePostCount-container[title=' + val.POST_REF + ']').html(html);
+                }
+              
+              if($('.likeCommentCount-container[title=' + val.COMMENT_REF + ']').attr('title') == val.COMMENT_REF && val.LIKE_CHECK == 2) {
+                  var html = "<p class='likeCount'>" + val.CNT + "</p>";
+                     $('.likeCommentCount-container[title=' + val.COMMENT_REF + ']').html(html);
                }
-            }
-         }
-       },
-       
-       error: function(xhr, status, errormsg) {
-          console.log(xhr);
-          console.log(status);
-          console.log(errormsg);
-       }
-    });
+          });
+          
+          /* 
+          $.each(postCnt, function(idx, val) {
+               console.log("val.POST_REF = " + val.POST_REF);
+               if($('.likePostCount-container[title=' + val.POST_REF + ']').attr('title') == val.POST_REF) {
+                  var html = "<p class='likeCount'>" + val.CNT + "</p>";
+                     $('.likePostCount-container[title=' + val.POST_REF + ']').html(html);
+               }
+            });
+          
+          $.each(commentCnt, function(idx, val) {
+               console.log("val.COMMENT_REF= " + val.COMMENT_REF);
+               if($('.likeCommentCount-container[title=' + val.COMMENT_REF + ']').attr('title') == val.COMMENT_REF) {
+                  var html = "<p class='likeCount'>" + val.CNT + "</p>";
+                     $('.likeCommentCount-container[title=' + val.COMMENT_REF + ']').html(html);
+               }
+           });
+           */
+      },
+      
+      error: function(xhr, status, errormsg) {
+         console.log(xhr);
+         console.log(status);
+         console.log(errormsg);
+      }
+   });
+    
     
 });
 
@@ -178,7 +213,7 @@ function fn_postLike(e) { /* 좋아요 전송 */
          likeCheck : likeFrm.children('.likeCheck').val(),
       },
       contentType : "application/x-www-form-urlencoded; charset=utf-8",
-       dataType : "json",
+      dataType : "json",
         
       success: function(data) {
          var likeMember;
@@ -191,20 +226,20 @@ function fn_postLike(e) { /* 좋아요 전송 */
             postRef = item.postRef;
             commentRef = item.commentRef;
             likeCheck = item.likeCheck;
+            
+            /* 버튼 클릭 이후 Count 출력 */
+            if(data.count == 0 || likeFrm.children('.postRef').val() == postRef && likeFrm.children('.likeCheck').val() == 1) {
+               var html = "<p class='likeCount'>" + data.count + "</p>";
+               likeFrm.next($('.likePostCount-container')).html(html);
+            }
+            
+            if(data.count == 0 || likeFrm.children('.commentRef').val() == commentRef && likeFrm.children('.likeCheck').val() == 2) {
+               var html = "<p class='likeCount'>" + data.count  + "</p>";
+               likeFrm.next($('.likeCommentCount-container')).html(html);
+            }
          });
          
-         if(data.count == 0 || likeFrm.children('.postRef').val() == postRef && likeFrm.children('.likeCheck').val() == 1) {
-            var html = "<p class='likePostCount'>" + data.count + "</p>";
-            likeFrm.next($('.likePostCount-container')).html(html);
-         }
          
-         if(data.count == 0 || likeFrm.children('.commentRef').val() == commentRef && likeFrm.children('.likeCheck').val() == 2) {
-            var html = "<p class='likeCount'>" + data.count + "</p>";
-            likeFrm.next($('.likeCommentCount-container')).html(html);
-            
-            var html = "<p class='likeCount'>" + data.count + "</p>";
-            likeFrm.next($('.likeReplyCount-container')).html(html);
-         } 
       },
       
       error: function(xhr, status, errormsg) {
@@ -213,6 +248,34 @@ function fn_postLike(e) { /* 좋아요 전송 */
          console.log(errormsg);
       }
    });
+
+}
+
+function subMenuPostUpdate(e) {
+   var btn = $(e);
+   var btnPostNo = btn.attr('title');
+   var frm = $('#updatePostFrm');
+   
+   frm.find('#postNo').val(btnPostNo);
+}
+
+function subMenuCommentUpdate(e) {
+   
+}
+
+function subMenuPostDelete(e) {
+   var btn = $(e);
+   var btnPostNo = btn.attr('title');
+   
+   location.href="${pageContext.request.contextPath}/post/deletePost.do?postNo=" + btnPostNo;   
+   
+}
+
+function subMenuCommentDelete(e) {
+   var btn = $(e);
+   var btnCommentNo = btn.attr('title');
+   
+   location.href="${pageContext.request.contextPath}/post/deleteComment.do?commentNo=" + btnCommentNo;
 }
 
 </script>
@@ -288,10 +351,10 @@ function fn_postLike(e) { /* 좋아요 전송 */
    <div class="panel panel-default" >
        <div class="panel-heading">
           
-         <c:forEach items="${memberList }" var="member">
-          <c:if test="${post.getPostWriter() eq member.getMemberEmail() }">
-          <span><img class='postProfile rounded-circle' src='${path }/resources/profileImg/${member.getMemberPFP() }'></span>
-           <span class="userName" style="font-size: 2em">${member.getMemberNickname() }</span>&nbsp;&nbsp;
+           <c:forEach items="${memberList }" var="member">
+           <c:if test="${post.getPostWriter() eq member.getMemberEmail() }">
+              <span><img class='postProfile rounded-circle' src='${path }/resources/profileImg/${member.getMemberPFP() }'></span>
+              <span class="userName" style="font-size: 2em">${member.getMemberNickname() }</span>&nbsp;&nbsp;
            </c:if>
            </c:forEach>
            <span><fmt:formatDate value="${post.getPostDate()}" pattern="yy-MM-dd HH:mm"/></span>
@@ -306,74 +369,45 @@ function fn_postLike(e) { /* 좋아요 전송 */
            </form>
            
            <!-- 게시물 좋아요 갯수 출력 -->
-           <div class="likePostCount-container" style="display: inline-block">
-            <p class='likePostCount'></p>
+           <div class="likePostCount-container" title="${post.getPostNo() }" style="display: inline-block">
+
            </div>
            
            <!-- 게시물 서브 메뉴 -->
-           <a href="javascript:void(0);" onclick="fn_subMenu(this);" class="dropdown-toggle" data-toggle="dropdown" title="${post.getPostNo() }" style="float: right; padding-top: 10px;"><i class="fas fa-angle-double-down subAwe" style="font-size: 2.3em;"></i></a>
+           <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" title="${post.getPostNo() }" style="float: right; padding-top: 10px;"><i class="fas fa-angle-double-down subAwe" style="font-size: 2.3em;"></i></a>
            <c:choose>
               <c:when test="${post.getPostWriter() eq memberLoggedIn.getMemberEmail() }">
               <div class="subMenu-container dropdown-menu">
                 <a href="javascript:void(0);" onclick="subMenuPostUpdate(this)" title="${post.getPostNo() }" class="dropdown-item" data-toggle="modal" data-target="#postUpdateModal">수정하기</a>
                 <a href="javascript:void(0);" onclick="subMenuPostDelete(this)" title="${post.getPostNo() }" class="dropdown-item" data-toggle="modal" data-target="#postDeleteModal">삭제하기</a>
-                <a href="javascript:void(0);" onclick="subMenuPostReport(this)" title="${post.getPostNo() }" class="dropdown-item">신고하기</a>
-             </div>
+                <%-- <a href="javascript:void(0);" onclick="subMenuPostReport(this)" title="${post.getPostNo() }" class="dropdown-item">신고하기</a> --%>
+              </div>
               </c:when>
               
               <c:otherwise>
               <div class="subMenu-container dropdown-menu">
                 <a href="javascript:void(0);" onclick="subMenuPostReport(this)" title="${post.getPostNo() }" class="dropdown-item">신고하기</a>
-             </div>
+              </div>
               </c:otherwise>
-          </c:choose>
-          
-          <!-- 게시글 삭제 모달!! -->
-          <div class="modal fade" id="postDeleteModal">
-             <div class="modal-dialog">
-                <div class="modal-content">
-                
-                   <div class="modal-header">
-                        <h3 class="modal-title" style='color: black;'><strong>선택한 게시물</strong>을 삭제하시겠습니까??</h3>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                     </div>
-                     
-                     <form id="deletePostFrm" method="post" action="${path }/post/deletePost.do">
-                        <div class="modal-body">
-                           <input type="hidden" id="postNo" name="postNo" value="${post.getPostNo() }"/>
-                           <p style="color: red;">게시물을 삭제하면 이후 복구할 수 없습니다.</p>
-                        </div>
-                        
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary text-center">삭제하기</button>
-                            <input type="reset" class="btn btn-danger text-center" value="취소" data-dismiss="modal"/>
-                        </div>
-                     </form>
-                     
-                </div>
-             </div>
-          </div>
+             </c:choose>
           
           <!-- 게시글 수정 모달!! -->
-         <div class="modal fade" id="postUpdateModal">
+          <div class="modal fade" id="postUpdateModal">
             <div class="modal-dialog modal-lg">
                <div class="modal-content">
                   
-                  <!-- Modal Header -->
                   <div class="modal-header">
                      <h3 class="modal-title" style='color: black;'><strong>선택한 게시물</strong> 수정하기</h3>
                      <button type="button" class="close" data-dismiss="modal">&times;</button>
                   </div>
-                              
-                  <!-- Modal body -->
+                        
                   <form id="updatePostFrm" method="post" action="${path }/post/postUpdate.do" enctype="multipart/form-data">
                      <div class="modal-body">
                         <input type="hidden" id="postNo" name="postNo" value="${post.getPostNo() }"/>
-                        <input type="hidden" id="postWriter" name="postWriter" value="${memberLoggedIn.getMemberEmail() }"/>
+                        <%-- <input type="hidden" id="postWriter" name="postWriter" value="${memberLoggedIn.getMemberEmail() }"/> --%>
                         <textarea class="form-control" rows="5" id="postContents" name="postContents" placeholder="문구 입력..."></textarea>
                         <hr>
                         
-                        <!-- 이미지 업로드 -->
                         <div id="imgDisplayUpdateContainer"></div>
                         <hr>
                         
@@ -386,22 +420,44 @@ function fn_postLike(e) { /* 좋아요 전송 */
                             </select>
                         </div>
                         
-                        <div class="filebox"> <label for="imgUpdateInput">업로드</label> <input type="file" id="imgUpdateInput" name="upFile" multiple> </div>
+                        <div class="filebox"> <label for="imgUpdateInput">업로드</label> <input type="file" id="imgUpdateInput" name="upFile1" multiple> </div>
                      </div>
                      
-                     <!-- Modal footer -->
                      <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary text-center">등록하기</button>
+                        <button type="submit" class="btn btn-primary text-center">수정하기</button>
                         <input type="reset" class="btn btn-danger text-center" value="취소" data-dismiss="modal"/>
                      </div>
                   </form>
                </div>
             </div>
-         </div>
-           
+          </div>
+          
+          <!-- 게시글 삭제 모달!! -->
+          <div class="modal fade" id="postDeleteModal">
+             <div class="modal-dialog">
+                <div class="modal-content">
+                
+                   <div class="modal-header">
+                      <h3 class="modal-title" style='color: black;'><strong>선택한 게시물</strong>을 삭제하시겠습니까??</h3>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                   </div>
+                   
+                   <div class="modal-body">
+                      <p style="color: red;">게시물을 삭제하면 이후 복구할 수 없습니다.</p>
+                   </div>
+                   
+                   <div class="modal-footer">
+                       <button type="submit" class="btn btn-primary text-center">삭제하기</button>
+                       <input type="reset" class="btn btn-danger text-center" value="취소" data-dismiss="modal"/>
+                   </div>
+                
+                </div>
+              </div>
+           </div>
+          
        </div>
        
-      
+       <!-- POST 이미지, 게시글 출력 -->
        <div class="panel-body">
           <div id="postContentsContainer">
              <pre>${post.getPostContents() }</pre>
@@ -416,37 +472,104 @@ function fn_postLike(e) { /* 좋아요 전송 */
            <div style="clear: both"></div>
        </div>
        
-       
+      <!-- 댓글 출력 --> 
       <div class="panel-footer">
-         <!-- 댓글 출력 -->
          <c:forEach items="${commentList }" var="comment">
             <c:if test='${post.getPostNo() eq comment.getPostRef() and comment.getCommentLevel() eq 1}'>
             <div class="commentDisplay-container">
                
                <c:forEach items="${memberList }" var="member">
-             <c:if test="${comment.getCommentWriter() eq member.getMemberEmail() }">
-             <span><img class='commentProfile rounded-circle' src='${path }/resources/profileImg/${member.getMemberPFP() }'></span>
-               <a href="#"><span class="commentWriter" style="color: #EE4035">${member.getMemberNickname() }</span></a>
-              </c:if>
-                </c:forEach>
+                <c:if test="${comment.getCommentWriter() eq member.getMemberEmail() }">
+                <span><img class='commentProfile rounded-circle' src='${path }/resources/profileImg/${member.getMemberPFP() }'></span>
+                <a href="#"><span class="commentWriter" style="color: #EE4035">${member.getMemberNickname() }</span></a>
+                  <!-- 댓글 서브 메뉴 -->
+                 <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" title="${comment.getCommentNo() }" style="float: right; padding-top: 10px;"><i class="fas fa-angle-double-down subAwe" style="font-size: 1.1em;"></i></a>
+                 <c:choose>
+                    <c:when test="${comment.getCommentWriter() eq memberLoggedIn.getMemberEmail() }">
+                    <div class="subMenu-container dropdown-menu">
+                      <a href="javascript:void(0);" onclick="subMenuCommentUpdate(this)" title="${comment.getCommentNo() }" class="dropdown-item" data-toggle="modal" data-target="#commentUpdateModal">수정하기</a>
+                      <a href="javascript:void(0);" onclick="subMenuCommentDelete(this)" title="${comment.getCommentNo() }" class="dropdown-item" data-toggle="modal" data-target="#commentDeleteModal">삭제하기</a>
+                      <%-- <a href="javascript:void(0);" onclick="subMenuCommentReport(this)" title="${comment.getCommentNo() }" class="dropdown-item">신고하기</a> --%>
+                    </div>
+                    </c:when>
+                    
+                    <c:otherwise>
+                    <div class="subMenu-container dropdown-menu">
+                      <a href="javascript:void(0);" onclick="subMenuCommentReport(this)" title="${comment.getCommentNo() }" class="dropdown-item">신고하기</a>
+                    </div>
+                    </c:otherwise>
+                   </c:choose>
+                   
+                     <!-- 댓글 수정 모달!! -->
+                   <div class="modal fade" id="commentUpdateModal">
+                     <div class="modal-dialog">
+                        <div class="modal-content">
+                           
+                           <div class="modal-header">
+                              <h3 class="modal-title" style='color: black;'><strong>선택한 댓글</strong> 수정하기</h3>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                           </div>
+                                 
+                           <form id="updatePostFrm" method="post" action="${path }/post/postUpdate.do">
+                              <div class="modal-body">
+                                 <p>내용을 입력하세요</p>
+                                 <input type="text" id="updateCommentContents" name="updateCommentContents" class="form-control"/>
+                                 <hr>
+                              </div>
+                              
+                              <div class="modal-footer">
+                                 <button type="submit" class="btn btn-primary text-center">수정하기</button>
+                                 <input type="reset" class="btn btn-danger text-center" value="취소" data-dismiss="modal"/>
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                   </div>
+                   
+                    <!-- 댓글/답글 삭제 모달!! -->
+                  <div class="modal fade" id="commentDeleteModal">
+                     <div class="modal-dialog">
+                        <div class="modal-content">
+                        
+                           <div class="modal-header">
+                              <h3 class="modal-title" style='color: black;'><strong>선택한 댓글</strong>을 삭제하시겠습니까??</h3>
+                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                           </div>
+                           
+                           <div class="modal-body">
+                              <p style="color: red;">댓글을 삭제하면 이후 복구할 수 없습니다.</p>
+                           </div>
+                           
+                           <div class="modal-footer">
+                               <button type="submit" class="btn btn-primary text-center">삭제하기</button>
+                               <input type="reset" class="btn btn-danger text-center" value="취소" data-dismiss="modal"/>
+                           </div>
+                        
+                        </div>
+                     </div>
+                  </div>  
+                  
+                </c:if>
+               </c:forEach>
                <span class="commentContents">&nbsp;&nbsp;${comment.getCommentContents() }</span>
                
-               <!-- 댓글 좋아요를 위한 form -->
-               <a href="javascript:void(0);" onclick="fn_postLike(this);" title="${comment.getCommentNo() }"><i class="far fa-heart like" style="font-size: 1.1em;"></i></a>
+              <!-- 댓글 좋아요를 위한 form -->
+              <a href="javascript:void(0);" onclick="fn_postLike(this);" title="${comment.getCommentNo() }" class="likeCommentBtn"><i class="far fa-heart like" style="font-size: 1.1em;"></i></a>
               <form class="likeFrm" style="display:inline-block" method="post" action="${path }/post/likeInsertAndSelect.do">
-                  <input type="hidden" class="likeMember" name="likeMember" value="${memberLoggedIn.getMemberEmail() }"/>
+                 <input type="hidden" class="likeMember" name="likeMember" value="${memberLoggedIn.getMemberEmail() }"/>
                  <input type="hidden" class="postRef" name="postRef" value="${post.getPostNo() }"/>
                  <input type="hidden" class="commentRef" name="commentRef" value="${comment.getCommentNo() }"/>
                  <input type="hidden" class="likeCheck" name="likeCheck" value="2"/>
-               </form>
+              </form>
                
-               <!-- 댓글 좋아요 갯수 출력 -->
-              <div class="likeCommentCount-container" style="display: inline-block">
-               <p class='likeCount'>data.count</p>
+              <!-- 댓글 좋아요 갯수 출력 -->
+              <div class="likeCommentCount-container" title="${comment.getCommentNo() }" style="display: inline-block">
+
               </div>
                
                <button style="margin-left: 1%" class="inputReplyIcon btn btn-primary btn-sm" id="reply_commentRef" title="${comment.getPostRef() }" value="${comment.getCommentNo() }"><i class="fas fa-long-arrow-alt-down" style="font-size: 1.1em;"></i></button>
                <div style="clear: both"></div>
+               
                
                
                <div class="reply-container"> <!-- 답글은 여기로 -->
@@ -456,38 +579,55 @@ function fn_postLike(e) { /* 좋아요 전송 */
                   <!-- 답글 버튼 클릭 시  답글 입력 DIV 삽입 -->
                   
                </div>
-               
             </div>
             </c:if>
             
+            <!-- 답글 출력 -->
             <!-- replyDisplay 블록이 위의 replyDisplay-container로 붙는다 -->
             <c:if test='${post.getPostNo() eq comment.getPostRef() and comment.getCommentLevel() eq 2}'>
                <div title='${comment.getCommentRef() }' class='replyDisplay'>
-                  <c:forEach items="${memberList }" var="member">
-               <c:if test="${comment.getCommentWriter() eq member.getMemberEmail() }">
-               <span><img class='replyProfile rounded-circle' src='${path }/resources/profileImg/${member.getMemberPFP() }'></span>
-               <a href="#"><span class="commentWriter" style="color: #EE4035">${member.getMemberNickname() }</span></a>
-               </c:if>
+               <c:forEach items="${memberList }" var="member">
+                  <c:if test="${comment.getCommentWriter() eq member.getMemberEmail() }">
+                  <span><img class='replyProfile rounded-circle' src='${path }/resources/profileImg/${member.getMemberPFP() }'></span>
+                  <a href="#"><span class="commentWriter" style="color: #EE4035">${member.getMemberNickname() }</span></a>
+                  <!-- 답글 서브메뉴 -->
+                  <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" title="${comment.getCommentNo() }" style="float: right; padding-top: 10px;"><i class="fas fa-angle-double-down subAwe" style="font-size: 1.1em;"></i></a>
+                    <c:choose>
+                       <c:when test="${comment.getCommentWriter() eq memberLoggedIn.getMemberEmail() }">
+                       <div class="subMenu-container dropdown-menu">
+                         <a href="javascript:void(0);" onclick="subMenuCommentUpdate(this)" title="${comment.getCommentNo() }" class="dropdown-item" data-toggle="modal" data-target="#commentUpdateModal">수정하기</a>
+                         <a href="javascript:void(0);" onclick="subMenuCommentDelete(this)" title="${comment.getCommentNo() }" class="dropdown-item" data-toggle="modal" data-target="#commentDeleteModal">삭제하기</a>
+                         <%-- <a href="javascript:void(0);" onclick="subMenuCommentReport(this)" title="${comment.getCommentNo() }" class="dropdown-item">신고하기</a> --%>
+                       </div>
+                       </c:when>
+                       
+                       <c:otherwise>
+                       <div class="subMenu-container dropdown-menu">
+                         <a href="javascript:void(0);" onclick="subMenuCommentReport(this)" title="${comment.getCommentNo() }" class="dropdown-item">신고하기</a>
+                       </div>
+                       </c:otherwise>
+                    </c:choose>
+                  </c:if>
                </c:forEach>
-                  <span>&nbsp;&nbsp;${comment.getCommentContents() }</span>
+               <span>&nbsp;&nbsp;${comment.getCommentContents() }</span>
                   
-                  <!-- 답글 좋아요를 위한 form -->
-               <a href="javascript:void(0);" onclick="fn_postLike(this);" title="${comment.getCommentNo() }"><i class="far fa-heart like" style="font-size: 1.1em;"></i></a>
+                 <!-- 답글 좋아요를 위한 form -->
+                 <a href="javascript:void(0);" onclick="fn_postLike(this);" title="${comment.getCommentNo() }" class="likeCommentBtn"><i class="far fa-heart like" style="font-size: 1.1em;"></i></a>
                  <form class="likeFrm" style="display:inline-block" method="post" action="${path }/post/likeInsertAndSelect.do">
-                  <input type="hidden" class="likeMember" name="likeMember" value="${memberLoggedIn.getMemberEmail() }"/>
-                  <input type="hidden" class="postRef" name="postRef" value="${post.getPostNo() }"/>
-                  <input type="hidden" class="commentRef" name="commentRef" value="${comment.getCommentNo() }"/>
-                  <input type="hidden" class="likeCheck" name="likeCheck" value="2"/>
-                  </form>
+                     <input type="hidden" class="likeMember" name="likeMember" value="${memberLoggedIn.getMemberEmail() }"/>
+                     <input type="hidden" class="postRef" name="postRef" value="${post.getPostNo() }"/>
+                     <input type="hidden" class="commentRef" name="commentRef" value="${comment.getCommentNo() }"/>
+                     <input type="hidden" class="likeCheck" name="likeCheck" value="2"/>
+                 </form>
                   
                   <!-- 답글 좋아요 갯수 출력 -->
-               <div class="likeReplyCount-container" style="display: inline-block">
-                  <p class='likeCount'>data.count</p>
+               <div class="likeCommentCount-container" title="${comment.getCommentNo() }" style="display: inline-block">
+
                </div>
                   
                   <div style='clear: both'></div>
                </div>
-               </c:if>
+            </c:if>
          </c:forEach>
          
    

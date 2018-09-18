@@ -12,50 +12,52 @@ import kh.mark.jarvis.post.model.vo.JarvisLike;
 import kh.mark.jarvis.post.model.vo.Post;
 
 public interface PostDao {
+	
+	// 기훈 형
+	List<Map<String, String>> loadCategory(SqlSessionTemplate sqlSession);
 
-   int insertPost(SqlSessionTemplate sqlSession, Post post);
+	int insertPost(SqlSessionTemplate sqlSession, Post post);
 
-   int insertAttach(SqlSessionTemplate sqlSession, Attachment a);
-   
-   int UpdatePost(SqlSessionTemplate sqlSession, Post post);
+	int insertAttach(SqlSessionTemplate sqlSession, Attachment a);
 
-   List<Post> selectPostList(SqlSessionTemplate sqlSession);
+	int updatePost(SqlSessionTemplate sqlSession, Post post);
 
-   List<Attachment> selectAttachList(SqlSessionTemplate sqlSession);
+	int deleteAttach(SqlSessionTemplate sqlSession, int postNo);
 
-   int insertComment(SqlSessionTemplate sqlSession, JarvisComment comment);
+	int deletePost(SqlSessionTemplate sqlSession, int postNo);
 
-   List<JarvisComment> selectCommentList(SqlSessionTemplate sqlSession);
+	int deleteComment(SqlSessionTemplate sqlSession, int commentNo);
 
-   int insertPostLike(SqlSessionTemplate sqlSession, JarvisLike like);
-   
-   int insertCommentLike(SqlSessionTemplate sqlSession, JarvisLike like);
+	List<Post> selectPostList(SqlSessionTemplate sqlSession);
 
-   List<JarvisLike> selectPostLike(SqlSessionTemplate sqlSession, JarvisLike like);
+	List<Attachment> selectAttachList(SqlSessionTemplate sqlSession);
 
-   List<JarvisLike> selectCommentLike(SqlSessionTemplate sqlSession, JarvisLike like);
-   
-   int selectPostLikeCount(SqlSessionTemplate sqlSession, JarvisLike like);
+	int insertComment(SqlSessionTemplate sqlSession, JarvisComment comment);
 
-   int selectCommentLikeCount(SqlSessionTemplate sqlSession, JarvisLike like);
+	List<JarvisComment> selectCommentList(SqlSessionTemplate sqlSession);
 
-   int deletePostLike(SqlSessionTemplate sqlSession, JarvisLike like);
+	int insertPostLike(SqlSessionTemplate sqlSession, JarvisLike like);
 
-   int deleteCommentLike(SqlSessionTemplate sqlSession, JarvisLike like);
+	int insertCommentLike(SqlSessionTemplate sqlSession, JarvisLike like);
 
-   List<Integer> selectMyLike(SqlSessionTemplate sqlSession, String memberEmail);
+	List<JarvisLike> selectPostLike(SqlSessionTemplate sqlSession, JarvisLike like);
 
-   List<Member> selectMemberList(SqlSessionTemplate sqlSession);
+	List<JarvisLike> selectCommentLike(SqlSessionTemplate sqlSession, JarvisLike like);
 
-   int deletePostDeleteAttach(SqlSessionTemplate sqlSession, Post post);
+	int selectPostLikeCount(SqlSessionTemplate sqlSession, JarvisLike like);
 
-   int deletePost(SqlSessionTemplate sqlSession, Post post);
+	int selectCommentLikeCount(SqlSessionTemplate sqlSession, JarvisLike like);
 
-   int deletePostDeleteLike(SqlSessionTemplate sqlSession, Post post);
+	int deletePostLike(SqlSessionTemplate sqlSession, JarvisLike like);
 
-List<Integer> myPostNoList(SqlSessionTemplate sqlSession);
+	int deleteCommentLike(SqlSessionTemplate sqlSession, JarvisLike like);
 
-List<Map<String, String>> loadCategory(SqlSessionTemplate sqlSession);
+	List<Integer> selectMyLike(SqlSessionTemplate sqlSession, String memberEmail);
 
+	List<Member> selectMemberList(SqlSessionTemplate sqlSession);
+
+	List<JarvisLike> selectMyLikeOn(SqlSessionTemplate sqlSession, String memberEmail);
+
+	List<Map<String, Object>> startLikeCount(SqlSessionTemplate sqlSession);
 
 }
