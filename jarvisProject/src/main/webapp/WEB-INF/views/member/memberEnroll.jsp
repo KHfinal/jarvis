@@ -72,7 +72,7 @@ $(function(){
 		location.href="${path}";
 	}
 
-
+	
 </script>
 
     			<div class="m-auto w-lg-75 w-xl-50">
@@ -96,7 +96,7 @@ $(function(){
 	            		</div>
 	            		<div class="form-group">
 	            			<label class="text-secondary">이름</label>
-	            			<input type="text" required class="form-control" name="memberName" />
+	            			<input type="text" required class="form-control" name="memberName" pattern="^[a-zA-Z가-힣]*$" placeholder="한글or영문"/>
 	            		</div>
 	            		<div class="form-group">
 	            			<label class="text-secondary">닉네임</label>
@@ -107,9 +107,9 @@ $(function(){
 	            			<label class="text-secondary">휴대폰</label>
 	            			<input type="tel" required placeholder="(-없이)01012345678" name="phone" id="phone" maxlength="11" class="form-control" pattern=".{11,}" />
 	            		</div>
-	            		<button class="btn btn-info mt-2" type="submit">가입하기</button>
+	            		<button class="btn btn-info mt-2" type="submit">가입하기</button> &nbsp;&nbsp; 
+	          			<button class="btn btn-info mt-2" onclick="cancel()">메인으로</button>
           				
           			</form>
-          			<button class="btn btn-info mt-2" onclick="cancel()">취소</button>
    				</div>
 <jsp:include page="/WEB-INF/views/common/firstFooter.jsp"/>

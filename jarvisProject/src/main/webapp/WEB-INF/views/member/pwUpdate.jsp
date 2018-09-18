@@ -54,9 +54,9 @@ $(function(){
 	            		</div>
 	            		
 	            		<button class="btn btn-info mt-2" type="submit">변경하기</button>
+	          			<button class="btn btn-info mt-2" onclick="cancel()">취소</button>
           				
           			</form>
-          			<button class="btn btn-info mt-2" onclick="cancel()">취소</button>
    				</div>
 <script>
 	function cancel(){

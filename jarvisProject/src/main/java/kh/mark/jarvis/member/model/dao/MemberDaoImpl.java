@@ -70,6 +70,17 @@ public class MemberDaoImpl implements MemberDao{
 		return sqlSession.selectList("member.loadSiteInfo");
 	}
 
+	@Override	//개인정보 수정
+	public int myInfoUpdate(SqlSessionTemplate sqlSession, Member m) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("member.myInfoUpdate", m);
+	}
+
+	@Override  //프로필사진 수정
+	public int myPFPupdate(SqlSessionTemplate sqlSession, Member m) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("member.myPFPupdate", m);
+	}
 
 	
 }
