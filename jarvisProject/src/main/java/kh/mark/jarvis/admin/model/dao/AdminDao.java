@@ -8,4 +8,6 @@ public interface AdminDao {
 
 	int updateHeader(SqlSessionTemplate sqlSession, PageInfo p);
 
+	int updateSide(SqlSessionTemplate sqlSession, PageInfo p);
+
 }

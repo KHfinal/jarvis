@@ -38,6 +38,10 @@ public interface MemberDao {
 
 
 		List<Map<String, Object>> loadSiteInfo(SqlSessionTemplate sqlSession);
+		
+		int myInfoUpdate(SqlSessionTemplate sqlSession, Member m);	//내정보 업데이트
+
+		int myPFPupdate(SqlSessionTemplate sqlSession, Member m); //프로필사진 업데이트
 
 
 }

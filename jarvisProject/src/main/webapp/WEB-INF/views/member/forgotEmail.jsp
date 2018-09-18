@@ -16,7 +16,7 @@
 	            		
 		            	<div class="form-group">
 	            			<label class="text-secondary">이름</label>
-	            			<input type="text" required class="form-control" name="memberName" placeholder="가입시 사용한 이름을 입력해주세요" />
+	            			<input type="text" required class="form-control" name="memberName" placeholder="가입시 사용한 이름을 입력해주세요" pattern="^[a-zA-Z가-힣]*$"/>
 	            		</div>
 	            		
 	            		<div class="form-group">
@@ -24,8 +24,14 @@
 	            			<input type="tel" required placeholder="(-없이)01012345678" name="phone" id="phone" maxlength="11" class="form-control" />
 	            		</div>
 	            		<button class="btn btn-info mt-2" type="submit">제출</button>
-          				<button class="btn btn-info mt-2" type="submit">취소</button>
+          				<button class="btn btn-info mt-2" onclick="cancel()">취소</button>
           			</form>
-    				
+    				<script> 
+							//메인 홈으로 돌아가기
+							function cancel(){
+								location.href="${path}";
+							}
+	
+				   </script>
    				</div>
 <jsp:include page="/WEB-INF/views/common/firstFooter.jsp"/>
