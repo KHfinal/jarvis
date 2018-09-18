@@ -45,7 +45,26 @@
    </select>
    
    <select id="selectRecognizableList" resultMap="memberMap">
-   select * from member where member_email in (select f1.f_friend_email from friend f1 where f1.f_member_email in (select f2.f_friend_email from friend f2 where f2.f_member_email =#{email}) and f1.f_friend_email not in(#{email})  and f1.f_status ='Y' )
+  select * from member 
+where member_email in (
+ (select f2.f_friend_email as a from friend f2 where f2.f_member_email in(select f1.f_friend_email from friend f1 where f1.f_member_email = #{email})and f2.F_STATUS='Y'
+union
+select f3.f_member_email as a from friend f3 where  f3.f_friend_email in (select f1.f_friend_email from friend f1 where f1.f_member_email = #{email})and f3.F_STATUS='Y')
+UNION
+(select f2.f_friend_email as a from friend f2 where f2.f_member_email in(select f1.f_member_email from friend f1 where f1.f_friend_email = #{email})and f2.F_STATUS='Y'
+union
+select f3.f_member_email as a from friend f3 where  f3.f_friend_email in (select f1.f_member_email from friend f1 where f1.f_friend_email = #{email})and f3.F_STATUS='Y')
+) and member_email not in(
+(select f1.f_friend_email a from friend f1 where f1.f_member_email = #{email}
+union
+select f1.f_member_email a from friend f1 where f1.f_friend_email = #{email}))
+and member_email not in (#{email})
+   </select>
+   <select id="selectCheckFriend" resultMap="memberMap">
+   select * from member where member_email in
+(select f1.f_friend_email as a from friend f1 where f1.f_member_email =#{email} and f1.f_status ='Y' 
+union 
+select f2.f_member_email as a from friend f2 where f2.f_friend_email =#{email} and f2.f_status ='Y')
    </select>
    
    
