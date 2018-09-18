@@ -56,7 +56,7 @@ function previewFile() {
 		                        <label class="custom-control-label" for="${c.C_KEY }">${c.C_VALUE }</label>
 	                        </div>
 	                    </c:forEach>
-	                         </div> 
+	                         </div>
 	                         
 	                   <div class="form-row">
 		                   <label>성별:</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

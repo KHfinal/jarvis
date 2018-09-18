@@ -17,10 +17,15 @@ public class AdminServiceImpl implements AdminService {
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-	@Override
 	
+	@Override	
 	public int updateHeader(PageInfo p) {
 		return dao.updateHeader(sqlSession,p);
+	}
+
+	@Override
+	public int updateSide(PageInfo p) {
+		return dao.updateSide(sqlSession,p);
 	}
 
 }

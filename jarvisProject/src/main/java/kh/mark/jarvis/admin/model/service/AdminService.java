@@ -6,4 +6,6 @@ public interface AdminService {
 
 	int updateHeader(PageInfo p);
 
+	int updateSide(PageInfo p);
+
 }

@@ -22,5 +22,7 @@
  		
  		<typeAlias type="kh.mark.jarvis.chatting.model.vo.ChattingRoom" alias="chattingRoom"/>
 		<typeAlias type="kh.mark.jarvis.chatting.model.vo.ChattingContents" alias="chattingContents"/>
+		
+		<typeAlias type="kh.mark.jarvis.admin.model.vo.PageInfo" alias="pageinfo"/>
 	</typeAliases>
 </configuration>
