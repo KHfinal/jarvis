@@ -281,7 +281,8 @@ public class MemberController {
 			logger.debug("전달 받은 이름:"+member.getMemberName());
 			logger.debug("전달 받은 이름:"+member.getPhone());
 			ModelAndView mv = new ModelAndView(); 
-			
+		
+						
 			//화면으로 뿌리기 시작 mv.addjoject에 담아
 			String email = memberService.emailSearch(member); //이메일 찾기
 			
@@ -425,28 +426,169 @@ public class MemberController {
 		  }
 	  
 		//내 정보 보기 - 메인 상단바에서 클릭시 정보보기 페이지로 이동
-        @RequestMapping("/memberView.do")
-         public ModelAndView memberView(Member m) 
-         {
-              ModelAndView mv = new ModelAndView();
-            mv.addObject("m",m);
-            System.out.println("정보보기 페이지아이디: "+m.getMemberEmail());
-            mv.setViewName("member/memberInfoView");
-            
-            return mv; //--->폴더이름/jsp명 
-         }
+		//내 정보 보기 - 메인 상단바에서 클릭시 정보보기 페이지로 이동
+	        @RequestMapping(value="/myInfoView.do", method=RequestMethod.GET )
+	         public ModelAndView myInfoView(String member_email,ModelAndView mv) 
+	         {
+	            
+	        //	System.out.println("********************"+member_email);
+	        	//List<Member> m= (List<Member>) memberService.selectLogin(memberEmail); //xml까지 보낸 후 
+	        	Member member = memberService.selectLogin(member_email);
+	        	
+	        	mv.addObject("member", member);
+	            mv.setViewName("member/myInfoView"); //--->폴더이름/jsp명
+	            
+	            return mv;
+	         }
+
+	           //내 정보 수정 - memberinfoview에서 클릭시 
+	           @RequestMapping(value="/myInfoUpdateView.do")
+	         public ModelAndView myInfoUpdateView(String member_email,ModelAndView mv) 
+	         {
+	       	   Member member = memberService.selectLogin(member_email);
+	           	mv.addObject("member", member);
+	        	mv.setViewName("member/myInfoUpdateView"); //jsp로 쏘세요 //--->폴더이름/jsp명 
+	            
+	        	return mv; 
+	         }
+	         
+	           
+	           	//내 정보 수정 시작  - updateview에서 수정 클릭시 
+			  	@RequestMapping("/myinfoUpdate.do") 
+			  	public ModelAndView myinfoUpdate(Member m, HttpServletRequest request) 
+			  	{
+			  		
+			  		int myInfo = memberService.myInfoUpdate(m);
+			  		
+			  		
+			  		ModelAndView mv = new ModelAndView();
+			  		
+			  		String msg="정보수정 완료!"+"다시 로그인 해주시기 바랍니다.";
+			  		String loc="/";
+			  		
+			  		
+			  		
+			  		mv.addObject("msg", msg);
+			  		mv.addObject("loc",loc);
+			  		
+			  		mv.setViewName("common/msg");
+			  		return mv;
+			  	}
+			  	
+			  	
+			  	//myInfoPFP.do
+			  	//내 프로필 사진 보기,
+			  	@RequestMapping("/myInfoPFP.do")
+			  	public ModelAndView myinfoPFP(String member_email,ModelAndView mv)
+			  	{
+			  		Member member = memberService.selectLogin(member_email);
+		           	mv.addObject("member", member);
+		        	mv.setViewName("member/myInfoPFP");
+		        	return mv;
+			  	}
+			  	
+			  	//프로필사진 업로드 하기
+			  	@RequestMapping("/myInfoPFPupdate.do")
+			  	public ModelAndView myinfoPFPupdate(Member m,ModelAndView mv, MultipartFile profileFile1,HttpServletRequest request) throws IOException
+			  	{
+			  		  String saveDir=request.getSession().getServletContext().getRealPath("/resources/profileImg");
+					  String reNamedFilename=null;
+					  File dir = new File(saveDir);
+					  if(dir.exists()==false) dir.mkdirs();
+					  if(!profileFile1.isEmpty()) {
+						  String originalFilename=profileFile1.getOriginalFilename();
+						  String ext=originalFilename.substring(originalFilename.lastIndexOf(".")+1);
+						  reNamedFilename = m.getMemberEmail()+"_profileImg"+"."+ext;
+					  }else {//이미지를 선택 안한다면 기본 이미지를 띄어줘야한다.
+						  reNamedFilename="profileDefault.png";
+					  }
+					  m.setMemberPFP(reNamedFilename);
+					  
+			  		  int result = memberService.myPFPupdate(m);	
+			  		  String msg="프로필 사진 저장 성공"+"로그인페이지로 돌아갑니다.";
+			  		  String loc="/";
+			  		  
+			  		  if (result>0)
+			  		  {
+			  			try {
+							if(!reNamedFilename.equals("profileDefault.png"))//단 프로필이미지를 선택하지 않았을 때는 파일을 저장하지 않는다.
+								profileFile1.transferTo(new File(saveDir+"/"+reNamedFilename)); //파일 저장
+						  }catch(Exception e) {
+								e.printStackTrace();
+						   }//파일업로드 
+			  		  } 
+			  		  else
+			  		  {
+			  			msg="사진 업로드 실패";
+			  			loc="/member/myInfoPFP.do";
+			  		  }
+			  		  
+			  		mv.addObject("msg", msg);
+					mv.addObject("loc",loc);
+					mv.setViewName("common/msg");  
+		        	return mv;
+			  	
+			  	}
+			  	
+			  
+			  	//패스워드 변경 페이지로 이동
+			  	@RequestMapping("/myinfoPwView.do")
+			  	public ModelAndView myinfoPwView(String member_email,ModelAndView mv) 
+			  	{
+			  		Member member = memberService.selectLogin(member_email);
+		           	mv.addObject("member", member);
+		        	mv.setViewName("member/myInfoPwView");
+		        	return mv;
+			  	}
+			  	
+			  	
+			  	
+			  	
+			  	//패스워드 변경 시작/
+			  	@RequestMapping("/myinfoPwUpdate.do")
+				  public ModelAndView myinfoPw(Member m,HttpServletRequest request) {
+					  
+					 // logger.debug("유저가 이메일 변경 시도 "+m.getMemberEmail());
+					 
+						//암호화하기
+						String oriPw=m.getMemberPw(); //암호화 전
+						String enPw=BCPE.encode(oriPw);	   //암호화 후
+						System.out.println(enPw);	
+						m.setMemberPw(enPw);	//암호화 처리한것을 pw에 저장					
+					  
+						
+					  int result = memberService.pwUpdate(m);
+					  logger.debug("rename 후 멤버객체:"+m.toString());
+			
+					  ModelAndView mv = new ModelAndView();
+					  
+					  String msg ="";
+					  String loc="";
+					  
+					  if(result>0) {//디비에 업데이트가 되면 파일을 저장한다.
+						  
+						  msg ="암호 변경 완료!, 다시 로그인 해주시기바랍니다.";
+						  loc ="/";//로그인 홈으로 돌아가기
+					  }
+					  else { 
+						  msg="암호 변경 실패";
+						  //페이지 머물기
+					  }
+					  
+					 /* Member member = memberService.selectLogin(m.getMemberEmail());
+					  mv.addObject("memberLoggedIn",member);*/
+					  mv.addObject("msg", msg);
+					  mv.addObject("loc",loc);
+					  mv.setViewName("common/msg");
+					  
+					  return mv;
+					  
+					  
+				  }
+				  
+			  	
            
-        
-           //내 정보 수정 - memberinfoview에서 클릭시 
-           @RequestMapping("/memberUpdateView.do")
-         public ModelAndView memberUpdateView(Member m) 
-         {
-              ModelAndView mv = new ModelAndView();
-            mv.addObject("m",m);
-            System.out.println("정보수정 페이지아이디: "+m.getMemberEmail());
-            mv.setViewName("member/memberUpdateView");
-            
-            return mv; //--->폴더이름/jsp명 
-         }
-	  
+           
+           
+           
 }
