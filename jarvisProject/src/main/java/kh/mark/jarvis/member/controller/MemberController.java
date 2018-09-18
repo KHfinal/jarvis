@@ -435,6 +435,7 @@ public class MemberController {
 	        	//List<Member> m= (List<Member>) memberService.selectLogin(memberEmail); //xml까지 보낸 후 
 	        	Member member = memberService.selectLogin(member_email);
 	        	
+	        	mv.addObject("memberLoggedIn", member);
 	        	mv.addObject("member", member);
 	            mv.setViewName("member/myInfoView"); //--->폴더이름/jsp명
 	            
@@ -463,10 +464,11 @@ public class MemberController {
 			  		
 			  		ModelAndView mv = new ModelAndView();
 			  		
-			  		String msg="정보수정 완료!"+"다시 로그인 해주시기 바랍니다.";
-			  		String loc="/";
-			  		
-			  		
+			  		String msg="정보수정 완료!";
+			  		String loc="/myInfoView.do?member_email="+m.getMemberEmail();
+			  		if(myInfo<=0) {
+			  			msg = "정보수정 실패";
+			  		}
 			  		
 			  		mv.addObject("msg", msg);
 			  		mv.addObject("loc",loc);
@@ -505,8 +507,8 @@ public class MemberController {
 					  m.setMemberPFP(reNamedFilename);
 					  
 			  		  int result = memberService.myPFPupdate(m);	
-			  		  String msg="프로필 사진 저장 성공"+"로그인페이지로 돌아갑니다.";
-			  		  String loc="/";
+			  		  String msg="프로필 사진 저장 성공";
+			  		  String loc="/myInfoView.do?member_email="+m.getMemberEmail();
 			  		  
 			  		  if (result>0)
 			  		  {
@@ -563,12 +565,12 @@ public class MemberController {
 					  ModelAndView mv = new ModelAndView();
 					  
 					  String msg ="";
-					  String loc="";
+					  String loc="/myInfoView.do?member_email="+m.getMemberEmail();
 					  
 					  if(result>0) {//디비에 업데이트가 되면 파일을 저장한다.
 						  
-						  msg ="암호 변경 완료!, 다시 로그인 해주시기바랍니다.";
-						  loc ="/";//로그인 홈으로 돌아가기
+						  msg ="암호 변경 완료";
+						  
 					  }
 					  else { 
 						  msg="암호 변경 실패";

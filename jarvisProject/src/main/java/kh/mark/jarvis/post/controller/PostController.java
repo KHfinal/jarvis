@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,6 +32,7 @@ import kh.mark.jarvis.post.model.vo.JarvisComment;
 import kh.mark.jarvis.post.model.vo.JarvisLike;
 import kh.mark.jarvis.post.model.vo.Post;
 
+@SessionAttributes(value= {"categoryList"})
 @Controller
 public class PostController {
 
@@ -44,11 +46,11 @@ public class PostController {
 	public String selectPost(Model model, HttpSession s, HttpServletRequest request) {
 
 		Member m = (Member) s.getAttribute("memberLoggedIn");
+		List<Map<String, String>> categoryList = service.loadCategory();
+		model.addAttribute("categoryList", categoryList);
 		logger.debug(m.toString());
 		if (m.getAddInfo().equals("N")) {
-			List<Map<String, String>> categoryList = service.loadCategory();
-			logger.debug(categoryList.toString());
-			request.setAttribute("categoryList", categoryList);
+
 			return "member/memberInfoAdd";
 		}
 
