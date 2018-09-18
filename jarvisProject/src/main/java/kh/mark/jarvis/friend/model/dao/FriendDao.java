@@ -21,5 +21,5 @@ public interface FriendDao {
 	int friendRefuse(SqlSessionTemplate sqlSession, Map<String,String> fr);
 	List<Map<String,Object>> friendList(SqlSessionTemplate sqlSession, Map<String,String> map);
 	String friendOne(SqlSessionTemplate sqlSession, String fEmail);
-
+	List<Map<String,Object>> autoFriendList(SqlSessionTemplate sqlSession, Map<String,String> map);
 }

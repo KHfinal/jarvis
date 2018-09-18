@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -75,9 +76,8 @@ public class FriendController{
 		String concernString = friendService.selectConcernList(email);
 		String[] concernArr = concernString.split(",");
 		String concern ="";
-		List<Member> checkFriend = friendService.selectCheckFriend(email);
+		
 		System.out.println("email : " + email);
-		System.out.println("checkFriend : " + checkFriend);
 		for(int i =0; i<concernArr.length;i++) {
 			concern = concernArr[i];
 			System.out.println("관심사 : "+ concern);
@@ -99,8 +99,7 @@ public class FriendController{
 				}
 			}
 		}
-		System.out.println("checkFriend : " + checkFriend);
-		System.out.println("concernCompareList : " + concernCompareList);
+		List<Member> checkFriend = friendService.selectCheckFriend(email);
 		for(int s = 0; s <checkFriend.size();s++) {
 			if(s == checkFriend.size()) {
 				break;
@@ -109,15 +108,32 @@ public class FriendController{
 				if(d == concernCompareList.size()) {
 					break;
 				}
-				if(concernCompareList.get(d).getMemberEmail().equals(email)) {
+				if(checkFriend.get(s).getMemberEmail().equals(concernCompareList.get(d).getMemberEmail())) {
+					System.out.println("d : " +d);
+					System.out.println("checkFriend 값 : "+checkFriend.get(s).getMemberEmail());
+					System.out.println("concernCompareList 값 : "+concernCompareList.get(d).getMemberEmail());
+					
 					concernCompareList.remove(d);
-				}
-				else if(checkFriend.get(s).getMemberEmail().equals(concernCompareList.get(d).getMemberEmail())) {
+					d--;
+					continue;
+				}if(concernCompareList.get(d).getMemberEmail().equals(email)) {
+					System.out.println("d : " +d);
 					concernCompareList.remove(d);
+					d--;
+					continue;
+					
 				}
 			}
-		};
-		System.out.println("관심사 최종값 : " + concernCompareList);
+		};/*selectCheckFriend*/
+		/*System.out.println("내 친구 목록 ");
+		for(int z =0; z<checkFriend.size();z++) {
+			System.out.println("checkFriend["+z+"] "+checkFriend.get(z));
+		}
+		System.out.println("관심사 같은 멤버 목록");
+		for(int x =0; x<concernCompareList.size();x++) {
+			System.out.println("concernCompareList["+x+"] "+concernCompareList.get(x));
+		}*/
+	
 		String a = "";
 		try {
 			
@@ -376,4 +392,41 @@ public class FriendController{
 		return mv;
 	}
 	
+	@RequestMapping("/friend/autoFriendList")
+	public ModelAndView autoFriendList(HttpServletRequest request, HttpSession hs)
+	{
+		ModelAndView mv=new ModelAndView();
+		Member m = (Member)hs.getAttribute("memberLoggedIn");
+		String email = m.getMemberEmail();
+		String search = request.getParameter("search");
+		Map<String,String> map=new HashMap();
+		List<Map<String,Object>> emailList=null;
+		List<Map<String,Object>> emailList1=null;
+		System.out.println("넘어오냐 검색어"+search);
+		/*List<Map<String,Object>> friendList=null;
+		List<Map<String,Object>> friendList1=null;
+		if(!search.trim().isEmpty())
+		{*/
+			map.put("title", "F_MEMBER_EMAIL");
+			map.put("search", search);
+			map.put("email", email);
+			emailList=friendService.autoFriendList(map);
+			map.put("title", "F_FRIEND_EMAIL");
+			emailList1=friendService.autoFriendList(map);
+		/*}
+		else
+		{
+			map.put("title", "F_MEMBER_EMAIL");
+			map.put("email", email);
+			friendList=friendService.friendList(map);
+			map.put("title", "F_FRIEND_EMAIL");
+			friendList1=friendService.friendList(map);
+		}*/
+		mv.addObject("emailList", emailList);
+		mv.addObject("emailList1", emailList1);
+		/*mv.addObject("friendList", friendList);
+		mv.addObject("friendList1", friendList1);*/
+		mv.setViewName("jsonView");
+		return mv;
+	}
 }

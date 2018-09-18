@@ -26,11 +26,9 @@
 <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://fonts.googleapis.com/css?family=Gamja+Flower" rel="stylesheet">
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script> <!-- 다음 주소 API -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" />
 </head>
-
-
-
-
 <style>
 	html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 </style>
@@ -38,9 +36,9 @@
 <header>
 	<!-- 상담 헤더  -->
 	<div class="w3-top">
-	 <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
+	 <div class="w3-bar w3-left-align w3-large" style="background-color:${siteInfo.HEADER_COLOR }; color:${siteInfo.ICON_COLOR};">
 	  <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
-	  <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i>JARVIS</a>
+	  <a href="#" class="w3-bar-item w3-button w3-padding-large" style="background-color:${siteInfo.LOGO_BAGROUND};font-family:${siteInfo.LOGO_FONT}; font-size:${siteInfo.LOGO_FONTSIZE}px;"><i class="fa fa-home w3-margin-right"></i>JARVIS</a>
 	  <a href="${path }/post/socialHomeView.do" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i class="fa fa-globe"></i></a>
 	  <div id='fr' class="w3-dropdown-hover w3-hide-small">
 	    <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-user"></i><span id='su' class="w3-badge w3-right w3-small w3-green">0</span></button>     
@@ -74,11 +72,9 @@
 	      	<button type="button" id="friend_refuse1" onclick="friend_refuse('${r1 }');">거절</button>
 	      </a>
 	    </c:forEach>
-	      <a href="#" class="w3-bar-item w3-button">John Doe posted on your wall</a>
-	      <a href="#" class="w3-bar-item w3-button">Jane likes your post</a>
 	    </div>
 	  </div>
-	  <a href="${path }/memberView.do" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
+	  <a href="${path }/myInfoView.do?member_email=${memberLoggedIn.memberEmail}" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
 	    <img src="${path}/resources/profileImg/${memberLoggedIn.memberPFP}" class="w3-circle" style="height:23px;width:23px" alt="Avatar">
 	  </a>
 	  <a href="${path }/member/logout.do" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="logout">
@@ -105,11 +101,11 @@
     <div class="w3-col m3">
       <!-- 프로필 div-->
       <div class="w3-card w3-round w3-white">
-        <div class="w3-container">
-         <h4 class="w3-center">${memberLoggedIn.memberName }님의 Profile</h4>
+        <div class="w3-container" style="font-family:${siteInfo.PROFILE_FONT}">
+         <h4 class="w3-center" style="font-family: ${siteInfo.PROFILE_FONT}">${memberLoggedIn.memberName }님의 Profile</h4>
          <p class="w3-center"><img src="${path}/resources/profileImg/${memberLoggedIn.memberPFP}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
          <hr>
-         <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> ${memberLoggedIn.memberName }</p>
+         <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i>${memberLoggedIn.memberName }</p>
          <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme" id="addr2"></i></p>
          <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> ${memberLoggedIn.memberBirthday }</p>
         </div>
@@ -117,18 +113,18 @@
       <br>
       
       <!-- 메뉴 DIV -->
-      <div class="w3-card w3-round">
-        <div class="w3-white">
-          <button onclick="selectGroup('selectGroup');" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i>Groups</button>
+      <div class="w3-card w3-round" style="background-color:${siteInfo.MENU_BCOL};color:${siteInfo.MENU_FONTCOL};font-family:${siteInfo.MENU_FONT};">
+        <div>
+          <button onclick="selectGroup('selectGroup');" class="w3-button w3-block w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i>Groups</button>
           <div id="selectGroup" class="w3-hide w3-container" style="padding-left: 0; padding-right: 0;">
-            <button onclick="goGroup();" class="btn btn-outline-secondary w3-block w3-theme-l4 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Group List</button>
-            <button onclick="goMyGroup();" class="btn btn-outline-secondary w3-block w3-theme-l4 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> My Group</button>
+            <button onclick="goGroup();" class="btn btn-outline-secondary w3-block w3-left-align" style="background-color:${siteInfo.DROPDOWN_BCOL}"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Group List</button>
+            <button onclick="goMyGroup();" class="btn btn-outline-secondary w3-block w3-left-align" style="background-color:${siteInfo.DROPDOWN_BCOL}"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> My Group</button>
           </div>
-          <button onclick="goCalendar()" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i> My Events</button>
+          <button onclick="goCalendar()" class="w3-button w3-block w3-left-align"><i class="fa fa-calendar-check-o fa-fw w3-margin-right"></i>  My Events</button>
           <div id="Demo2" class="w3-hide w3-container">
             <p>Some other text..</p>
           </div>
-          <button onclick="myFunction('Demo3')" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Photos</button>
+          <button onclick="goMyPage(this)" title="${memberLoggedIn.memberEmail }" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Page</button>
           <button onclick="goFriend()" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Friends</button>
 
         </div>      
@@ -140,6 +136,9 @@
         <div class="w3-container">
           <p>Interests</p>
           <p>
+          <%-- <c:forEach items=${memberLoggedIn.memberConcern } var="c">
+          	<span class="w3-tag w3-small w3-theme-d5">z</span>
+          </c:forEach> --%>
             <span class="w3-tag w3-small w3-theme-d5">News</span>
             <span class="w3-tag w3-small w3-theme-d4">W3Schools</span>
             <span class="w3-tag w3-small w3-theme-d3">Labels</span>
@@ -155,15 +154,6 @@
         </div>
       </div>
       <br>
-      
-      <!-- Alert Box -->
-      <div class="w3-container w3-display-container w3-round w3-theme-l4 w3-border w3-theme-border w3-margin-bottom w3-hide-small">
-        <span onclick="this.parentElement.style.display='none'" class="w3-button w3-theme-l3 w3-display-topright">
-          <i class="fa fa-remove"></i>
-        </span>
-        <p><strong>Hey!</strong></p>
-        <p>People are looking at your profile. Find out who.</p>
-      </div>
     
     <!-- 사이드 메뉴 부분 종료 DIV -->
     </div>
@@ -317,6 +307,18 @@
 	function fn_submit() {
 		submit();
 	};
+
 	
+	function goMyPage(e) {
+		var btn = $(e);
+		var memberEmail;
+
+		memberEmail = btn.attr('title');
+		console.log('btn memberEmail = ' + memberEmail);
+		location.href="${pageContext.request.contextPath}/post/myPage?memberEmail=" + memberEmail;
+		
+	}
+	
+
 </script>
 

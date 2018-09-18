@@ -14,5 +14,5 @@ public interface ChattingService {
 	List<Map<String,String>> chattingList(Map<String,String> map);
 	String lastChatting(Map<String,String> roomMap);
 	
-	List<Map<String,String>> contentsList(int room_no);
+	List<Map<String,Object>> contentsList(int room_no);
 }

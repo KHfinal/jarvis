@@ -16,5 +16,5 @@ public interface ChattingDao {
 	List<Map<String,String>> chattingList(SqlSessionTemplate sqlSession, Map<String,String> map);
 	String lastChatting(SqlSessionTemplate sqlSession, Map<String,String> roomMap);
 	
-	List<Map<String,String>> contentsList(SqlSessionTemplate sqlSession, int room_no);
+	List<Map<String,Object>> contentsList(SqlSessionTemplate sqlSession, int room_no);
 }

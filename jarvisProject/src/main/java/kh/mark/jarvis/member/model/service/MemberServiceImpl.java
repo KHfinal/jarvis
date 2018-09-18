@@ -70,4 +70,21 @@ public class MemberServiceImpl implements MemberService{
 		return memberDao.pwUpdate(sqlSession,m);
 	}
 
+	@Override
+	public List<Map<String, Object>> loadSiteInfo() {
+		return memberDao.loadSiteInfo(sqlSession);
+	}
+
+	@Override	//내 정보 수정
+	public int myInfoUpdate(Member m) {
+		// TODO Auto-generated method stub
+		return memberDao.myInfoUpdate(sqlSession,m);
+	}
+
+	@Override
+	public int myPFPupdate(Member m) {
+		// TODO Auto-generated method stub
+		return memberDao.myPFPupdate(sqlSession,m);
+	}
+
 }

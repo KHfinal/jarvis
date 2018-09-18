@@ -56,7 +56,7 @@ function previewFile() {
 		                        <label class="custom-control-label" for="${c.C_KEY }">${c.C_VALUE }</label>
 	                        </div>
 	                    </c:forEach>
-	                         </div> 
+	                         </div>
 	                         
 	                   <div class="form-row">
 		                   <label>성별:</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -75,7 +75,7 @@ function previewFile() {
 	                     &nbsp;&nbsp;
 	                    <div class="form-row">
 	                       <label>생년월일 </label>
-	                       <input class="form-control" type="date" max="2020-12-31" min="1900-01-01" autocomplete="off" required="" name="memberBirthday">
+	                       <input class="form-control" type="date" max="2020-12-31" min="1900-01-01" autocomplete="off" name="memberBirthday">
 	                    </div>
 	                    
 	                    <br><br>
@@ -97,43 +97,44 @@ function previewFile() {
 	                    <div class="form-row">
 	                       <!--  <div class="col-md-12 content-right">    -->
 	                     	<button class="btn btn-info mt-2" type="submit">등록</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	                      <button class="btn btn-info mt-2" onclick="checkModal()">건너뛰기</button>
+	                      	<button type="button"class="btn btn-info mt-2" data-toggle="modal" data-target="#myModal">건너뛰기</button>
 	                   </div>
                    </form>
-                    <!-- </div> -->      
-                </div>
-<jsp:include page="/WEB-INF/views/common/firstFooter.jsp"/>
-<%-- <!-- 건너뛰기 확인 Modal -->
-<div class="modal" id="checkMessage">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="modal-header">
-        <h4 class="modal-title">Warning!</h4>
-      </div>
-
-      <!-- Modal body -->
-      <div class="modal-body">
-        <form action="${path }/member/notDoAddInfo.do" id="inputFrm">
-        	<p>추가 정보를 입력하지 않으시면 사용자에게 맞는 추천서비스를 이용하실 수 없습니다.<br>
-        	이후 내용은 개인정보수정 메뉴에서 작성이 가능합니다.<br> 건너뛰시겠습니까?
-        </form>
-      </div>
-
-      <!-- Modal footer -->
-      <div class="modal-footer">
+                   <!-- 건너뛰기 확인 Modal -->
+  <!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
       
-      <button type="submit" class="btn btn-success" data-dismiss="modal" onclick="fn_next()">네,다음에할게요</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal">지금 하고갈게요</button>
-       </div>
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Modal Heading</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          Modal body..
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
     </div>
   </div>
-</div> --%>
+                    <!-- </div> -->      
+                </div>
+
+
+<jsp:include page="/WEB-INF/views/common/firstFooter.jsp"/>
+
 <script>
    function checkModal(){
-	   $("#checkMessage").modal('show');
-   }
+	   $("#myModal").modal('show');
+   };
     //다음 API
    function execPostCode() {
          new daum.Postcode({
@@ -177,4 +178,4 @@ function previewFile() {
             }
          }).open();
      }
-</script>
+  </script>

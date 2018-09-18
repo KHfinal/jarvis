@@ -1,24 +1,39 @@
 package kh.mark.jarvis.admin.controller;
 
 import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.server.authentication.HttpBasicServerAuthenticationEntryPoint;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import kh.mark.jarvis.admin.model.service.AdminService;
+import kh.mark.jarvis.admin.model.service.AdminServiceImpl;
+import kh.mark.jarvis.admin.model.vo.PageInfo;
+import kh.mark.jarvis.member.model.service.MemberService;
 import kh.mark.jarvis.member.model.vo.Member;
 import kh.mark.jarvis.schedule.controller.ScheduleController;
 
+@SessionAttributes(value= {"siteInfo"})
 @Controller
 public class AdminController {
 	
 	private Logger logger = LoggerFactory.getLogger(ScheduleController.class);
+	
+	@Autowired
+	private AdminService service;
+	
+	@Autowired
+	private MemberService memberService;
 	
 	//커스터마이징 가능한 UI 페이지로 이동
 	@RequestMapping("/admin/customizing.do")
@@ -47,7 +62,53 @@ public class AdminController {
 		return "admin/customizingView";
 	}
 
+	@RequestMapping("/admin/updateHeader.do")
+	public ModelAndView updateHeader(ModelAndView mv, PageInfo p) {
+		
+		logger.debug(p.toString());
+		logger.debug("service가기전");
+		int result = service.updateHeader(p);
+		logger.debug("service갔다온후");
+		String msg="헤더 커스터마이징 완료";
+		String loc="/admin/customizing.do";
+		if(result<=0) {
+			msg = "헤더 커스터마이징 실패";
+		}
+		else {
+			List<Map<String, Object>> mapList = memberService.loadSiteInfo();
+			Map<String,Object> map = mapList.get(0);
+			mv.addObject("siteInfo", map);
+		}
+		mv.addObject("msg", msg);
+		mv.addObject("loc", loc);
+		mv.setViewName("common/msg");
+		
+		return mv;
+	}
 
+	@RequestMapping("/admin/updateSide.do")
+	public ModelAndView updateSide(ModelAndView mv, PageInfo p) {
+
+		int result = service.updateSide(p);
+		
+		String msg="사이드 커스터마이징 완료";
+		String loc="/admin/customizing.do";
+		if(result<=0) {
+			msg = "사이드 커스터마이징 실패";
+		}
+		else {
+			List<Map<String, Object>> mapList = memberService.loadSiteInfo();
+			Map<String,Object> map = mapList.get(0);
+			mv.addObject("siteInfo", map);
+		}
+		
+		mv.addObject("msg", msg);
+		mv.addObject("loc", loc);
+		mv.setViewName("common/msg");
+		
+		return mv;
+	}
+	
 	
 	@RequestMapping("/admin/warningContent.do")
 	public ModelAndView warningContentView(ModelAndView mv) {

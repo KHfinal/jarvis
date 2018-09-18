@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="post">
+   <select id="loadCategory" resultType="map">
+   	  select * from category
+   </select>
+	
    <select id="selectMemberList" resultType="member" resultMap="memberMap">
       SELECT * FROM MEMBER
    </select>
@@ -19,27 +23,31 @@
       VALUES(attachment_seq.nextval, #{postNo}, #{originalFileName}, #{renamedFileName}, systimestamp)
    </insert>
 
-   <!-- post, attachment 수정 및 삭제 -->
+   <!-- post, comment 수정 및 삭제 -->
    <update id="updatePost" parameterType="post">
-      UPDATE POST SET POST_CONTENTS = #{postContents}, PRIVACY_BOUND = #{privacyBound}, POST_DATE = systimestamp
+      UPDATE POST SET POST_CONTENTS = #{postContents}, PRIVACY_BOUND = #{privacyBound}
       WHERE POST_NO = #{postNo}
    </update>
    
-   <delete id="deletePost" parameterType="post">
-      DELETE FROM POST WHERE POST_NO = #{postNo}
+   <delete id="deleteAttach" parameterType="_int">
+        DELETE FROM ATTACHMENT WHERE POST_NO = #{postNo}
    </delete>
    
-   <delete id="deletePostDeleteAttach" parameterType="post">
-      DELETE FROM ATTACHMENT WHERE POST_NO = #{postNo}
+   <delete id="deletePost" parameterType="int">
+      DELETE FROM POST WHERE POST_NO = #{postNo} 
    </delete>
    
-   <delete id="deletePostDeleteLike" parameterType="post">
-      DELETE FROM JARVIS_LIKE WHERE POST_REF = #{postNo}
+   <delete id="deleteComment" parameterType="int">
+      DELETE FROM JARVIS_COMMENT WHERE COMMENT_NO = #{commentNo} OR COMMENT_REF = #{commentNo}
    </delete>
-   
    
    <select id="selectPostList" resultType="post" resultMap="postMap">
-      SELECT * FROM POST ORDER BY POST_DATE DESC
+      <!-- SELECT * FROM POST ORDER BY POST_DATE DESC -->
+      SELECT * 
+  	  FROM POST  
+	  WHERE POST_WRITER IN ((SELECT F1.F_FRIEND_EMAIL FROM FRIEND F1 WHERE F1.F_MEMBER_EMAIL = #{memberEmail}))
+	  OR POST_WRITER IN((SELECT F2.F_MEMBER_EMAIL FROM FRIEND F2 WHERE F2.F_FRIEND_EMAIL = #{memberEmail})) OR POST_WRITER = #{memberEmail}
+	  ORDER BY POST_DATE DESC
    </select>
    
    <select id="selectAttachList" parameterType="attach" resultType="attach" resultMap="attachMap">
@@ -93,19 +101,32 @@
       DELETE FROM JARVIS_LIKE WHERE COMMENT_REF = #{commentRef} AND LIKE_MEMBER = #{likeMember} AND LIKE_CHECK = #{likeCheck}
    </delete>
    
-   <!-- 최초 로그인시 count값 받기 위한 select -->
+   <!-- count 값이 0일때 빈 하트 출력을 위해 사용 -->
    <select id="selectMyLike" parameterType="string" resultType="Integer">
       SELECT DISTINCT POST_REF FROM JARVIS_LIKE WHERE LIKE_MEMBER = #{memberEmail}
    </select>
    
-   <select id="myPostNoList" resultType="Integer">
-   	  SELECT DISTINCT POST_NO FROM POST
+   <!-- 최초 로그인 시 하트 변경 -->
+   <select id="selectMyLikeOn" parameterType="string" resultMap="likeOn"> 
+      SELECT POST_REF, COMMENT_REF, LIKE_CHECK FROM JARVIS_LIKE WHERE LIKE_MEMBER = #{memberEmail}
    </select>
-   <select id="loadCategory" resultType="map">
-   	select * from category
+   
+   <!-- 최초 로그인 시 카운트 값 -->
+   <select id="startLikeCount" resultType="map">
+        SELECT POST_REF, COMMENT_REF, LIKE_CHECK, COUNT(*) AS CNT FROM JARVIS_LIKE WHERE POST_REF IS NOT NULL GROUP BY POST_REF, COMMENT_REF, LIKE_CHECK
    </select>
-   <resultMap type="String" id="cMap">
-   </resultMap>
+   
+   <!-- 마이페이지 -->
+   <select id="selectMyPageMember" resultMap="memberMap" parameterType="java.lang.String" resultType="string">
+   		SELECT * FROM MEMBER WHERE MEMBER_EMAIL = #{memberEmail}		
+   </select>
+   
+   <!-- 마이페이지 POST 호출! 중요! -->
+   <select id="selecyMyPagePostList" resultType="post" resultMap="postMap">
+   		SELECT * FROM POST WHERE POST_WRITER = #{memberEmail} ORDER BY POST_DATE DESC
+   </select>
+   
+   
    <!-- Map을 이용할 때, resultMap사용. id는 xml안에서 태그를 불러올 변수명이다. -->
    <resultMap type="post" id="postMap">  
       <result column="post_no" property="postNo"/>
@@ -158,4 +179,12 @@
       <result column="addinfo" property="addInfo"/>
       <result column="verify" property="verify"/>  
    </resultMap>
+   
+   <resultMap type="like" id="likeOn">
+      <result column="post_ref" property="postRef"/>
+      <result column="comment_ref" property="commentRef"/>
+      <result column="like_check" property="likeCheck"/>
+   </resultMap>
+   
+   
 </mapper>

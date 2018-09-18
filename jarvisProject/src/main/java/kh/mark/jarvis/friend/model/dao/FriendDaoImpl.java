@@ -27,7 +27,7 @@ public class FriendDaoImpl implements FriendDao{
 
 	@Override
 	public List<Member> selectselectCheckFriend(SqlSessionTemplate sqlSession, String email) {
-		return sqlSession.selectList("friend.selectselectCheckFriend",email);
+		return sqlSession.selectList("friend.selectCheckFriend",email);
 	}
 	@Override
 	public List<Member> selectRecognizableList(SqlSessionTemplate sqlSession, String email) {
@@ -74,6 +74,10 @@ public class FriendDaoImpl implements FriendDao{
 	public String friendOne(SqlSessionTemplate sqlSession, String fEmail) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("friend.friendOne",fEmail);
+	}
+	@Override
+	public List<Map<String, Object>> autoFriendList(SqlSessionTemplate sqlSession, Map<String,String> map) {
+		return sqlSession.selectList("friend.autoFriendList",map);
 	}
 
 	

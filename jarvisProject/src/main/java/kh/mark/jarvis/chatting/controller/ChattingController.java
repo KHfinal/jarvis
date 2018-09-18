@@ -63,21 +63,6 @@ public class ChattingController {
 	{
 		Member m = (Member)hs.getAttribute("memberLoggedIn");
 		String email = m.getMemberEmail();
-		/*친구목록-----------------------------------------------------*/
-		Map<String,String> chattingMap=new HashMap();
-		chattingMap.put("title", "MY_EMAIL");
-		chattingMap.put("email", email);
-		List<Map<String,Object>> roomList=chattingService.roomList(chattingMap);
-		chattingMap.put("title", "FRIEND_EMAIL");
-		List<Map<String,Object>> roomList1=chattingService.roomList(chattingMap);
-		
-		Map<String,String> map=new HashMap();
-		map.put("title", "F_MEMBER_EMAIL");
-		map.put("email", email);
-		List<Map<String,Object>> friendList=friendService.friendList(map);
-		map.put("title", "F_FRIEND_EMAIL");
-		List<Map<String,Object>> friendList1=friendService.friendList(map);
-
 		
 		/*채팅방찾기-----------------------------------------------------*/
 		Map<String,String> roomMap=new HashMap();
@@ -101,17 +86,23 @@ public class ChattingController {
 			int result=chattingService.createRoom(roomMap);
 			if(result>0) new ChattingController().createRoom(model,hs,request,fEmail);
 		}
+		
+		/*채팅방목록-----------------------------------------------------*/
+		Map<String,String> chattingMap=new HashMap();
+		chattingMap.put("title", "MY_EMAIL");
+		chattingMap.put("email", email);
+		List<Map<String,Object>> roomList=chattingService.roomList(chattingMap);
+		chattingMap.put("title", "FRIEND_EMAIL");
+		List<Map<String,Object>> roomList1=chattingService.roomList(chattingMap);
+		
 		/*채팅내용 가져오기-------------------------------------------------*/
 		Map<String,String> chatMap=new HashMap();
 		int room_no=selectRoom.getRoom_no();
-		List<Map<String,String>> chat_contents=chattingService.contentsList(room_no);
-		
+		List<Map<String,Object>> chat_contents=chattingService.contentsList(room_no);
+		System.out.println(chat_contents);
 		model.addAttribute("roomList",roomList);
 		model.addAttribute("roomList1",roomList1);
 		model.addAttribute("selectRoom",selectRoom);
-		model.addAttribute("friendList",friendList);
-		model.addAttribute("friendList1",friendList1);
-		//model.addAttribute("chat/friendChatting");
 		model.addAttribute("chat_contents", chat_contents);
 		model.addAttribute("host",request.getRemoteAddr());
 		return "chat/friendChatting";
