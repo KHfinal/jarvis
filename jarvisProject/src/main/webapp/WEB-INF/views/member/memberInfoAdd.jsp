@@ -177,4 +177,4 @@ function previewFile() {
             }
          }).open();
      }
-</script>
+  </script>
