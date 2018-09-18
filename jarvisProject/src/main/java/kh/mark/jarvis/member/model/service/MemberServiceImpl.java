@@ -87,4 +87,14 @@ public class MemberServiceImpl implements MemberService{
 		return memberDao.myPFPupdate(sqlSession,m);
 	}
 
+	@Override
+	public Member selectBlockMember(String memberEmail) {
+		return memberDao.selectBlockMember(sqlSession,memberEmail);
+	}
+
+	@Override
+	public List<Map<String, String>> searchList(Map map) {
+		return memberDao.searchList(sqlSession,map);
+	}
+
 }

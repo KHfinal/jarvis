@@ -44,4 +44,10 @@ public interface MemberDao {
 		int myPFPupdate(SqlSessionTemplate sqlSession, Member m); //프로필사진 업데이트
 
 
+		Member selectBlockMember(SqlSessionTemplate sqlSession, String memberEmail);
+
+
+		List<Map<String, String>> searchList(SqlSessionTemplate sqlSession, Map map);
+
+
 }

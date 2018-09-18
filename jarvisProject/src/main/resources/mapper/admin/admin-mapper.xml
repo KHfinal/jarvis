@@ -7,4 +7,14 @@
   	<update id="updateSide" parameterType="pageinfo">
 		update site_info set profile_font=#{profileFont},menu_bcol=#{menuBcol},menu_fontcol=#{menuCol},menu_font=#{menuFont},dropdown_bcol=#{dropdownBcol} where 1=1
 	</update>
+	<update id="memberLock" parameterType="map">
+		update member set block_date=sysdate+#{inputNo} where member_no=#{memberNo}
+	</update>
+	<update id="memberUnlock" parameterType="_int">
+		update member set block_date=null where member_no=#{memberNo}
+	</update>
+	<update id="unlock">
+		update member set block_date=null where block_date &lt; sysdate
+	</update>
+	
 </mapper>
