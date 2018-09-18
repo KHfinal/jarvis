@@ -47,7 +47,7 @@
 	    </div>
 	  </div>
 	  
-	  <a href="${path }/chat/chattingView.do" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
+	  <a href="${path }/chat/chattingView.do" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="far fa-comments"></i></a>
 	  <c:if test="${memberLoggedIn.memberEmail  eq 'admin'}">
 	  <div class="w3-dropdown-hover w3-hide-small">
 	  <button class="w3-button w3-padding-large" title="Notifications">
@@ -84,17 +84,16 @@
 	</div>
 	
 	<!-- Navbar on small screens 화면이 작아졌을 때의 상단 헤더 메뉴목록 형태로 바뀜-->
-	<div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
-	  <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 1</a>
-	  <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 2</a>
-	  <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 3</a>
-	  <a href="#" class="w3-bar-item w3-button w3-padding-large">My Profile</a>
+	<div id="navDemo" class="w3-bar-block w3-hide w3-hide-large w3-hide-medium w3-large">
+	  <a href="#" class="w3-bar-item w3-button w3-padding-large" title="News"><i class="fa fa-globe"></i></a>
+	  <a href="${path }/post/socialHomeView.do" class="w3-bar-item w3-button w3-padding-large" title="News"><i class="fa fa-globe"></i>  FriendNews</a>
+	  <a href="${path }/chat/chattingView.do" class="w3-bar-item w3-button w3-padding-large" title="Messages"><i class="far fa-comments"></i>  Chatting With Friends</a>
 	</div>
 </header>
 
 
 <!-- Page Container -->
-<div class="w3-container w3-content" style="max-width:1500px;margin-top:80px">
+<div class="w3-container w3-content" style="max-width:1400px;margin-top:80px">
   <!-- The Grid -->
   <div class="w3-row">
     <!-- 사이드 메뉴들 div 시작부분 -->
@@ -105,7 +104,7 @@
          <h4 class="w3-center" style="font-family: ${siteInfo.PROFILE_FONT}">${memberLoggedIn.memberName }님의 Profile</h4>
          <p class="w3-center"><img src="${path}/resources/profileImg/${memberLoggedIn.memberPFP}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
          <hr>
-         <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i>${memberLoggedIn.memberName }</p>
+         <p><i class="fas fa-id-card-alt fa-fw w3-margin-right w3-text-theme"></i>${memberLoggedIn.memberName }</p>
          <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme" id="addr2"></i></p>
          <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> ${memberLoggedIn.memberBirthday }</p>
         </div>
@@ -115,7 +114,7 @@
       <!-- 메뉴 DIV -->
       <div class="w3-card w3-round" style="background-color:${siteInfo.MENU_BCOL};color:${siteInfo.MENU_FONTCOL};font-family:${siteInfo.MENU_FONT};">
         <div>
-          <button onclick="selectGroup('selectGroup');" class="w3-button w3-block w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i>Groups</button>
+          <button onclick="selectGroup('selectGroup');" class="w3-button w3-block w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Groups</button>
           <div id="selectGroup" class="w3-hide w3-container" style="padding-left: 0; padding-right: 0;">
             <button onclick="goGroup();" class="btn btn-outline-secondary w3-block w3-left-align" style="background-color:${siteInfo.DROPDOWN_BCOL}"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Group List</button>
             <button onclick="goMyGroup();" class="btn btn-outline-secondary w3-block w3-left-align" style="background-color:${siteInfo.DROPDOWN_BCOL}"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> My Group</button>
@@ -124,7 +123,7 @@
           <div id="Demo2" class="w3-hide w3-container">
             <p>Some other text..</p>
           </div>
-          <button onclick="goMyPage(this)" title="${memberLoggedIn.memberEmail }" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Page</button>
+          <button onclick="goMyPage(this)" title="${memberLoggedIn.memberEmail }" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fas fa-atlas fa-fw w3-margin-right"></i> My Page</button>
           <button onclick="goFriend()" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Friends</button>
 
         </div>      
@@ -136,20 +135,9 @@
         <div class="w3-container">
           <p>Interests</p>
           <p>
-          <%-- <c:forEach items=${memberLoggedIn.memberConcern } var="c">
-          	<span class="w3-tag w3-small w3-theme-d5">z</span>
-          </c:forEach> --%>
-            <span class="w3-tag w3-small w3-theme-d5">News</span>
-            <span class="w3-tag w3-small w3-theme-d4">W3Schools</span>
-            <span class="w3-tag w3-small w3-theme-d3">Labels</span>
-            <span class="w3-tag w3-small w3-theme-d2">Games</span>
-            <span class="w3-tag w3-small w3-theme-d1">Friends</span>
-            <span class="w3-tag w3-small w3-theme">Games</span>
-            <span class="w3-tag w3-small w3-theme-l1">Friends</span>
-            <span class="w3-tag w3-small w3-theme-l2">Food</span>
-            <span class="w3-tag w3-small w3-theme-l3">Design</span>
-            <span class="w3-tag w3-small w3-theme-l4">Art</span>
-            <span class="w3-tag w3-small w3-theme-l5">Photos</span>
+          <c:forEach items="${categoryList }" var="c">
+          	<span class="w3-tag w3-small w3-theme-d5"><a href="${path}/group/groupFilter.do?category=${c.C_KEY}">${c.C_VALUE }</a></span>
+          </c:forEach>
           </p>
         </div>
       </div>
@@ -302,8 +290,9 @@
 	    }
 	}
 	}
-	
-	
+	function fn_friendAdd(data){
+		location.href="${path}/friend/friendRequest.do?fEmail="+data;
+	};
 	function fn_submit() {
 		submit();
 	};
@@ -318,7 +307,14 @@
 		location.href="${pageContext.request.contextPath}/post/myPage?memberEmail=" + memberEmail;
 		
 	}
-	
+	function openNav() {
+	    var x = document.getElementById("navDemo");
+	    if (x.className.indexOf("w3-show") == -1) {
+	        x.className += " w3-show";
+	    } else { 
+	        x.className = x.className.replace(" w3-show", "");
+	    }
+	}
 
 </script>
 

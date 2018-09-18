@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 public class Member {
 
+	private int memberNo;
 	private String memberEmail;  //이메일
 	private String memberPw;	//패스워드
 	private String memberName;	//이름
@@ -21,7 +22,7 @@ public class Member {
 	private String addr3;			//주소
 	private String addInfo;         //추가정보입력여부
 	private String verify;	//이메일인증여부
-	
+	private Date blockDate;
 	public Member() {
 		super();
 	}
@@ -174,6 +175,22 @@ public class Member {
 				+ memberPFP + ", memberConcern=" + Arrays.toString(memberConcern) + ", memberGender=" + memberGender
 				+ ", memberBirthday=" + memberBirthday + ", addr1=" + addr1 + ", addr2=" + addr2 + ", addr3=" + addr3
 				+ ", addInfo=" + addInfo + ", verify=" + verify + "]";
+	}
+
+	public Date getBlockDate() {
+		return blockDate;
+	}
+
+	public void setBlockDate(Date blockDate) {
+		this.blockDate = blockDate;
+	}
+
+	public int getMemberNo() {
+		return memberNo;
+	}
+
+	public void setMemberNo(int memberNo) {
+		this.memberNo = memberNo;
 	}
 	
 	

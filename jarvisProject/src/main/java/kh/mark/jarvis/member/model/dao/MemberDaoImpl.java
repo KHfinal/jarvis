@@ -82,5 +82,15 @@ public class MemberDaoImpl implements MemberDao{
 		return sqlSession.update("member.myPFPupdate", m);
 	}
 
+	@Override
+	public Member selectBlockMember(SqlSessionTemplate sqlSession, String memberEmail) {
+		return sqlSession.selectOne("member.blockMember",memberEmail);
+	}
+
+	@Override
+	public List<Map<String, String>> searchList(SqlSessionTemplate sqlSession, Map map) {
+		return sqlSession.selectList("member.searchList", map);
+	}
+
 	
 }
