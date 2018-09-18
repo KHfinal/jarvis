@@ -25,7 +25,7 @@ public interface PostService {
 
 	List<Attachment> selectAttachList();
 
-	List<Post> selectPostList();
+	List<Post> selectPostList(String memberEmail);
 
 	int insertComment(JarvisComment comment);
 
@@ -54,5 +54,10 @@ public interface PostService {
 	List<JarvisLike> selectMyLikeOn(String memberEmail);
 
 	List<Map<String, Object>> startLikeCount();
+
+	// 마이페이지
+	Member selectMyPageMember(String memberEmail);
+
+	List<Post> selecyMyPagePostList(String memberEmail);
 
 }

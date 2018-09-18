@@ -1,5 +1,8 @@
 @charset "UTF-8";
 
+a {
+	text-decoration:none !important;
+}
 
 /* Post게시물 출력 */
 
@@ -127,7 +130,7 @@
     border: 1px solid rgb(7, 48, 110); 
     border-radius:0;
     transition: box-shadow 0.5s;
-   margin-left: 11%;
+    margin-left: 11%;
     margin-top: 3%;
 }
 
@@ -137,7 +140,7 @@
 
 .panel-default > .panel-heading {
    background-image: none;
-    background-color: rgb(7, 48, 110);
+    background-color: rgb(77, 99, 111);
     color: white;
     padding: 15px;
     border-bottom: 1px solid transparent;
@@ -249,14 +252,15 @@
 }
 
 .likePostCount {
-   color: gold;/*#EE4035*/
+   color: gold;
    margin-bottom: 0;
-   font-size: 1em;
+   font-size: 1.5em;
    margin-left: -5px;
 }
 
-.likeCount {
-   color: gold;/*#EE4035*/
+
+.likeCommentCount {
+   color: gold;
    margin-bottom: 0;
    font-size: 0.8em;
    margin-left: -5px;

@@ -123,8 +123,9 @@
           <div id="Demo2" class="w3-hide w3-container">
             <p>Some other text..</p>
           </div>
-          <button onclick="#" class="w3-button w3-block w3-left-align"><i class="fas fa-user-circle fa-fw w3-margin-right"></i> My Post</button>
-          <button onclick="goFriend()" class="w3-button w3-block w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Friends</button>
+
+          <button onclick="goMyPage(this)" title="${memberLoggedIn.memberEmail }" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Page</button>
+          <button onclick="goFriend()" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Friends</button>
 
         </div>      
       </div>
@@ -316,5 +317,18 @@
 	function fn_submit() {
 		submit();
 	};
+
+	
+	function goMyPage(e) {
+		var btn = $(e);
+		var memberEmail;
+
+		memberEmail = btn.attr('title');
+		console.log('btn memberEmail = ' + memberEmail);
+		location.href="${pageContext.request.contextPath}/post/myPage?memberEmail=" + memberEmail;
+		
+	}
+	
+
 </script>
 

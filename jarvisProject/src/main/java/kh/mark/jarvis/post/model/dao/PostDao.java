@@ -28,7 +28,7 @@ public interface PostDao {
 
 	int deleteComment(SqlSessionTemplate sqlSession, int commentNo);
 
-	List<Post> selectPostList(SqlSessionTemplate sqlSession);
+	List<Post> selectPostList(SqlSessionTemplate sqlSession, String memberEmail);
 
 	List<Attachment> selectAttachList(SqlSessionTemplate sqlSession);
 
@@ -59,5 +59,9 @@ public interface PostDao {
 	List<JarvisLike> selectMyLikeOn(SqlSessionTemplate sqlSession, String memberEmail);
 
 	List<Map<String, Object>> startLikeCount(SqlSessionTemplate sqlSession);
+
+	Member selectMyPageMember(SqlSessionTemplate sqlSession, String memberEmail);
+
+	List<Post> selecyMyPagePostList(SqlSessionTemplate sqlSession, String memberEmail);
 
 }
