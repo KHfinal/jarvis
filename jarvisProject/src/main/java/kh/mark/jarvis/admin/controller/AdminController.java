@@ -6,12 +6,16 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.server.authentication.HttpBasicServerAuthenticationEntryPoint;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import kh.mark.jarvis.admin.model.service.AdminService;
+import kh.mark.jarvis.admin.model.service.AdminServiceImpl;
+import kh.mark.jarvis.admin.model.vo.PageInfo;
 import kh.mark.jarvis.member.model.vo.Member;
 import kh.mark.jarvis.schedule.controller.ScheduleController;
 
@@ -19,6 +23,9 @@ import kh.mark.jarvis.schedule.controller.ScheduleController;
 public class AdminController {
 	
 	private Logger logger = LoggerFactory.getLogger(ScheduleController.class);
+	
+	@Autowired
+	private AdminService service;
 	
 	//커스터마이징 가능한 UI 페이지로 이동
 	@RequestMapping("/admin/customizing.do")
@@ -47,6 +54,21 @@ public class AdminController {
 		return "admin/customizingView";
 	}
 
+	@RequestMapping("/admin/updateHeader.do")
+	public ModelAndView updateHeader(ModelAndView mv, PageInfo p) {
+		
+		logger.debug(p.toString());
+		int result = service.updateHeader(p);
+		
+		String msg="헤더 커스터마이징 완료";
+		String loc="/admin/customizing.do";
+		
+		mv.addObject("msg", msg);
+		mv.addObject("loc", loc);
+		mv.setViewName("common/msg");
+		
+		return mv;
+	}
 
 	
 	@RequestMapping("/admin/warningContent.do")

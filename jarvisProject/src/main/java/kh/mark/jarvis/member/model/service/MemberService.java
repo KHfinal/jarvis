@@ -24,6 +24,8 @@ public interface MemberService {
 
 	int pwUpdate(Member m);	//패스워드 변경하기
 
+	List<Map<String, Object>> loadSiteInfo();
+
 	
 
 }
