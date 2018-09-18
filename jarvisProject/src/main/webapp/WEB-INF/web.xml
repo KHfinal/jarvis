@@ -30,6 +30,7 @@
 			/WEB-INF/spring/appServlet/servlet-context.xml
 			/WEB-INF/spring/appServlet/friendsocket-context.xml
 			/WEB-INF/spring/appServlet/websocket-context.xml
+			/WEB-INF/spring/appServlet/groupsocket-context.xml
 			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>

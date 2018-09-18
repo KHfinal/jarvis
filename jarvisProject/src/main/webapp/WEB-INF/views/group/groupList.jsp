@@ -25,6 +25,8 @@
 	}); */
 	
    	$(function(){
+   		
+   		
    		$('#btn1').on("click",function(){
    			var name=$("[name=g_name]").val();
    			var intro=$("[name=g_intro]").val();
@@ -193,7 +195,7 @@
                 <form name="fmt" action="${path }/group/groupInsert.do?m=${memberLoggedIn.getMemberEmail()}" method="post" enctype="multipart/form-data">
                     <div class="modal-body">
                         <label for="groupName">그룹 이름 입력</label>
-                        <input type="text" class="form-control form-control-lg" id="groupName" name="g_name"/>
+                        <input type="text" id="titleCheck" class="form-control form-control-lg" id="groupName" name="g_name"/>
                         <label for="comment">그룹 소개 글</label>
 						<textarea class="form-control" name="g_intro" rows="5" id="comment" placeholder="간단한 소개 글을 입력해 주세요."></textarea>
 						<label for="upFile1">그룹 이미지</label>

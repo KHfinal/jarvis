@@ -30,6 +30,8 @@ public interface GroupService {
 	
 	List<Map<String, String>> selectGroupEnroll(int groupNo);
 	
+	List<Map<String, String>> selectAcceptMember(int groupNo);
+	
 	Group groupViewDetail(int groupNo);
 
 	int groupMemberInsert(Map groupM);
@@ -53,6 +55,9 @@ public interface GroupService {
 	List<Integer> myPostNoList();
 	
 	int groupMemberAccept(String mEmail);
+	int groupMemberReject(String mEmail);
 	
 	int groupMemberDelete(String mEmail);
+	
+	Map<String, String> selectMemberCheck(Map check);
 }

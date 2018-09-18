@@ -119,7 +119,7 @@ $(function() {
     /* 하트... */
     $.ajax({
        type: "POST",
-       url: "${pageContext.request.contextPath}/post/startLike.do",
+       url: "${pageContext.request.contextPath}/group/startLike.do",
        contentType : "application/x-www-form-urlencoded; charset=utf-8",
        dataType : "json",
         
@@ -154,24 +154,7 @@ $(function() {
                      $('.likeCommentCount-container[title=' + val.COMMENT_REF + ']').html(html);
                }
           });
-          
-          /* 
-          $.each(postCnt, function(idx, val) {
-               console.log("val.POST_REF = " + val.POST_REF);
-               if($('.likePostCount-container[title=' + val.POST_REF + ']').attr('title') == val.POST_REF) {
-                  var html = "<p class='likeCount'>" + val.CNT + "</p>";
-                     $('.likePostCount-container[title=' + val.POST_REF + ']').html(html);
-               }
-            });
-          
-          $.each(commentCnt, function(idx, val) {
-               console.log("val.COMMENT_REF= " + val.COMMENT_REF);
-               if($('.likeCommentCount-container[title=' + val.COMMENT_REF + ']').attr('title') == val.COMMENT_REF) {
-                  var html = "<p class='likeCount'>" + val.CNT + "</p>";
-                     $('.likeCommentCount-container[title=' + val.COMMENT_REF + ']').html(html);
-               }
-           });
-           */
+
       },
       
       error: function(xhr, status, errormsg) {
