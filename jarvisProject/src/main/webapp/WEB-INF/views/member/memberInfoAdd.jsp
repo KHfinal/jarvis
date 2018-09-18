@@ -61,12 +61,12 @@ function previewFile() {
 	                   <div class="form-row">
 		                   <label>성별:</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		                   <div class="custom-control custom-radio">
-		                              <input type="radio" class="custom-control-input" id="gender0" name="memberGender" value="남">>
+		                              <input type="radio" class="custom-control-input" id="gender0" name="memberGender" value="남">
 		                        <label class="custom-control-label" for="gender0">남</label>
 		                   </div>    
 		                   &nbsp;&nbsp;
 		                    <div class="custom-control custom-radio">
-		                              <input type="radio" class="custom-control-input" id="gender1" name="memberGender" value="여">>
+		                              <input type="radio" class="custom-control-input" id="gender1" name="memberGender" value="여">
 		                        <label class="custom-control-label" for="gender1">여</label>
 		                   </div>    
 	                  
@@ -94,49 +94,22 @@ function previewFile() {
 						</div>
 	
 	                    <hr>
+	                    
 	                    <div class="form-row">
 	                       <!--  <div class="col-md-12 content-right">    -->
 	                     	<button class="btn btn-info mt-2" type="submit">등록</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	                      	<button type="button"class="btn btn-info mt-2" data-toggle="modal" data-target="#myModal">건너뛰기</button>
+	                      	<button class="btn btn-info mt-2" type="button" data-toggle="modal" data-target="#myModal"  onclick="checkModal()">건너뛰기</button>
 	                   </div>
                    </form>
-                   <!-- 건너뛰기 확인 Modal -->
-  <!-- The Modal -->
-  <div class="modal fade" id="myModal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-      
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Modal Heading</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-          Modal body..
-        </div>
-        
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-                    <!-- </div> -->      
-                </div>
-
-
-<jsp:include page="/WEB-INF/views/common/firstFooter.jsp"/>
+ </div>
 
 <script>
    function checkModal(){
-	   $("#myModal").modal('show');
+	   $("#checkMessage").modal('show');
    };
-    //다음 API
-   function execPostCode() {
+   
+   //다음 API
+    function execPostCode() {
          new daum.Postcode({
              oncomplete: function(data) {
                 // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
@@ -179,3 +152,43 @@ function previewFile() {
          }).open();
      }
   </script>
+
+ <jsp:include page="/WEB-INF/views/common/firstFooter.jsp"/>
+  <!-- 건너뛰기 확인 Modal -->
+  <!-- The Modal -->
+  <div class="modal" id="checkMessage">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">회원님의 정보를 확인해주세요</h4>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form action="${path }/member/notDoAddInfo.do" id="inputFrm">
+        	<p>추가 정보를 입력하지 않으시면 사용자에게 맞는 추천서비스를 이용하실 수 없습니다.<br>
+        	이후 내용은 개인정보수정 메뉴에서 작성이 가능합니다.<br> 건너뛰시겠습니까?
+        </form>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success" data-dismiss="modal" onclick="fn_next()">네,다음에할게요</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">지금 하고갈게요</button>
+      </div>
+
+    </div>
+    </div>
+  </div>
+                         
+               
+
+
+
+
+
+
+
+

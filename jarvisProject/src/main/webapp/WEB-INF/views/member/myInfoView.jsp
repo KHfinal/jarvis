@@ -41,6 +41,10 @@
 		display: absolute;
 		left: 50px;
 	}
+	
+	.m8{
+		margin-left: 5%;
+	}
 		
 </style>
 	    
@@ -50,7 +54,7 @@
 	    
 <div class="w3-col m8"> <!-- 메인 컨텐츠 시작 -->
 	
-
+<div class="w3-card w3-round w3-white">
 <div class="container bootstrap snippet">
     <div class="row">
   		<div class="col-sm-10"><h1>프로필 정보</h1></div>
@@ -239,7 +243,7 @@
         </div><!--/col-9-->
     </div><!--/row-->	
 
-
+</div>
 </div> <!-- 메인 컨텐트 끝  -->
 
 	
