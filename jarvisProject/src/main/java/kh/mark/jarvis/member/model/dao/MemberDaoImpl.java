@@ -65,6 +65,11 @@ public class MemberDaoImpl implements MemberDao{
 		return sqlSession.update("member.pwUpdate", m);
 	}
 
+	@Override
+	public List<Map<String, Object>> loadSiteInfo(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectList("member.loadSiteInfo");
+	}
+
 
 	
 }

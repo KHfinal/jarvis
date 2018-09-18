@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -31,9 +32,9 @@ import com.sun.mail.util.logging.MailHandler;
 
 import kh.mark.jarvis.member.model.service.MemberService;
 import kh.mark.jarvis.member.model.vo.Member;
-@SessionAttributes(value= {"memberLoggedIn"})
+@SessionAttributes(value= {"memberLoggedIn","siteInfo"})
 @Controller
-public class MemberController {
+public class MemberController { 
 	
 	private Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
@@ -77,7 +78,12 @@ public class MemberController {
 			{
 				if(m.getVerify().equals("Y")) {//인증확인 인증이 된 멤버만 로그인가능
 					logger.debug("로그인성공");
+					List<Map<String, Object>> mapList = memberService.loadSiteInfo();
+					Map<String,Object> map = mapList.get(0);
+					logger.debug(map.toString());
+					
 					msg="로그인 성공";
+					mv.addObject("siteInfo", map);
 					mv.addObject("memberLoggedIn", m);
 					sessionList.add(m.getMemberEmail());
 					loc="/post/socialHomeView.do";

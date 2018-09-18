@@ -73,8 +73,6 @@
 	      	<button type="button" id="friend_refuse1" onclick="friend_refuse('${r1 }');">거절</button>
 	      </a>
 	    </c:forEach>
-	      <a href="#" class="w3-bar-item w3-button">John Doe posted on your wall</a>
-	      <a href="#" class="w3-bar-item w3-button">Jane likes your post</a>
 	    </div>
 	  </div>
 	  <a href="${path }/memberView.do" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
@@ -108,7 +106,7 @@
          <h4 class="w3-center">${memberLoggedIn.memberName }님의 Profile</h4>
          <p class="w3-center"><img src="${path}/resources/profileImg/${memberLoggedIn.memberPFP}" class="w3-circle" style="height:106px;width:106px" alt="Avatar"></p>
          <hr>
-         <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> ${memberLoggedIn.memberName }</p>
+         <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i>${memberLoggedIn.memberName }</p>
          <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme" id="addr2"></i></p>
          <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> ${memberLoggedIn.memberBirthday }</p>
         </div>

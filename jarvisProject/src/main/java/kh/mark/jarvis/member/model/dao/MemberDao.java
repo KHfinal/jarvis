@@ -37,4 +37,7 @@ public interface MemberDao {
 		int pwUpdate(SqlSessionTemplate sqlSession, Member m);	//암호 변경
 
 
+		List<Map<String, Object>> loadSiteInfo(SqlSessionTemplate sqlSession);
+
+
 }

@@ -70,4 +70,10 @@ public class MemberServiceImpl implements MemberService{
 		return memberDao.pwUpdate(sqlSession,m);
 	}
 
+	@Override
+	public List<Map<String, Object>> loadSiteInfo() {
+		return memberDao.loadSiteInfo(sqlSession);
+	}
+
+
 }

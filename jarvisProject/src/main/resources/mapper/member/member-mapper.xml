@@ -62,7 +62,9 @@
 <update id="pwUpdate"  parameterType="string" >
   	update member set member_pw=#{memberPw} where member_email = #{memberEmail}
  </update>
-  
+  <select id="loadSiteInfo" resultType="hashmap">
+  	select * from site_info
+  </select>
   
   
 </mapper>
