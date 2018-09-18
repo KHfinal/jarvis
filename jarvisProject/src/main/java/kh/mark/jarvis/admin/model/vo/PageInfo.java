@@ -9,6 +9,7 @@ public class PageInfo {
 	private String profileFont;
 	private String menuBcol;
 	private String menuCol;
+	private String menuFont;
 	private String dropdownBcol;
 	
 	public PageInfo() {}
@@ -99,12 +100,22 @@ public class PageInfo {
 		this.dropdownBcol = dropdownBcol;
 	}
 
+	public String getMenuFont() {
+		return menuFont;
+	}
+
+	public void setMenuFont(String menuFont) {
+		this.menuFont = menuFont;
+	}
+
 	@Override
 	public String toString() {
 		return "PageInfo [headerCol=" + headerCol + ", logoBagCol=" + logoBagCol + ", logoFont=" + logoFont
 				+ ", logoFontSize=" + logoFontSize + ", iconCol=" + iconCol + ", profileFont=" + profileFont
-				+ ", menuBcol=" + menuBcol + ", menuCol=" + menuCol + ", dropdownBcol=" + dropdownBcol + "]";
+				+ ", menuBcol=" + menuBcol + ", menuCol=" + menuCol + ", menuFont=" + menuFont + ", dropdownBcol="
+				+ dropdownBcol + "]";
 	}
+	
 	
 	
 }

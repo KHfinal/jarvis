@@ -10,7 +10,15 @@ public class AdminDaoImpl implements AdminDao {
 
 	@Override
 	public int updateHeader(SqlSessionTemplate sqlSession, PageInfo p) {
-		return sqlSession.update("siteinfo.updateHeader", p);
+		
+		int result = sqlSession.update("siteinfo.updateHeader", p);
+		System.out.println("mapper갔다왔음");
+		return result;
+	}
+
+	@Override
+	public int updateSide(SqlSessionTemplate sqlSession, PageInfo p) {
+		return sqlSession.update("siteinfo.updateSide",p);
 	}
 
 }

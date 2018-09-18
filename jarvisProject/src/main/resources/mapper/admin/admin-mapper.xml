@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="siteinfo">
+	<update id="updateHeader" parameterType="pageinfo">
+		update site_info set header_color=#{headerCol},logo_baground=#{logoBagCol},logo_font=#{logoFont},logo_fontsize=#{logoFontSize},icon_color=#{iconCol} where 1=1
+	</update>
+  	<update id="updateSide" parameterType="pageinfo">
+		update site_info set profile_font=#{profileFont},menu_bcol=#{menuBcol},menu_fontcol=#{menuCol},menu_font=#{menuFont},dropdown_bcol=#{dropdownBcol} where 1=1
+	</update>
+</mapper>

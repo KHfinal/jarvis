@@ -56,17 +56,17 @@ function previewFile() {
 		                        <label class="custom-control-label" for="${c.C_KEY }">${c.C_VALUE }</label>
 	                        </div>
 	                    </c:forEach>
-	                         </div> 
+	                         </div>
 	                         
 	                   <div class="form-row">
 		                   <label>성별:</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		                   <div class="custom-control custom-radio">
-		                              <input type="radio" class="custom-control-input" id="gender0" name="memberGender" value="남">
+		                              <input type="radio" class="custom-control-input" id="gender0" name="memberGender" value="남">>
 		                        <label class="custom-control-label" for="gender0">남</label>
 		                   </div>    
 		                   &nbsp;&nbsp;
 		                    <div class="custom-control custom-radio">
-		                              <input type="radio" class="custom-control-input" id="gender1" name="memberGender" value="여">
+		                              <input type="radio" class="custom-control-input" id="gender1" name="memberGender" value="여">>
 		                        <label class="custom-control-label" for="gender1">여</label>
 		                   </div>    
 	                  
@@ -177,4 +177,4 @@ function previewFile() {
             }
          }).open();
      }
-</script>
+  </script>
