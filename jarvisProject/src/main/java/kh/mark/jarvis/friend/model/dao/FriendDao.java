@@ -13,7 +13,7 @@ public interface FriendDao {
 	String selectConcernList(SqlSessionTemplate sqlSession,String email);
 	List<Member> selectMemberConcernList(SqlSessionTemplate sqlSession,String concern);
 	List<Member> selectSearch2(SqlSessionTemplate session, Map<String,String> map);
-	List<Member> selectselectCheckFriend(SqlSessionTemplate sqlSession,String email);
+	List<Member> selectCheckFriend(SqlSessionTemplate sqlSession,String email);
 	List<Member> selectRecognizableList(SqlSessionTemplate sqlSession, String email);
 	int friendRequest(SqlSessionTemplate sqlSession, Map<String, String> fr);
 	List<Map<String,Object>> requestList(SqlSessionTemplate sqlSession, Map<String,String> map);
