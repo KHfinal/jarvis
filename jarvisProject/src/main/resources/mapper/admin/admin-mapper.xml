@@ -16,5 +16,11 @@
 	<update id="unlock">
 		update member set block_date=null where block_date &lt; sysdate
 	</update>
-	
+	<resultMap type="notify" id="notifyMap"></resultMap>
+	<select id="notifyList" resultMap="notifyMap">
+		select * from notify order by notify_date desc
+	</select>
+	<select id="selectTotalCount" resultType="_int">
+		select count(*) from notify
+	</select>
 </mapper>

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.print.attribute.HashAttributeSet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -26,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kh.mark.jarvis.admin.model.service.AdminService;
 import kh.mark.jarvis.admin.model.vo.PageInfo;
+import kh.mark.jarvis.common.Page;
 import kh.mark.jarvis.member.model.service.MemberService;
 import kh.mark.jarvis.schedule.controller.ScheduleController;
 
@@ -179,4 +179,27 @@ public class AdminController {
 		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
 		return new ResponseEntity(json, responseHeaders, HttpStatus.CREATED);
 	} 
+	
+	@RequestMapping("/admin/notifyList.do")
+	@ResponseBody
+	public ResponseEntity notifyList(int cPage) throws JsonProcessingException {
+		Map<String,String> map = new HashMap<>();
+		int numPerPage=10;
+		List<Map<String, String>> mList = service.notifyList(cPage,numPerPage);
+		int totalCount = service.selectTotalcount();
+		String url = "notifyList.do";
+		logger.debug("totalCount : "+totalCount);
+		String pageBar = new Page().getPage(cPage, numPerPage, totalCount, url);
+		logger.debug("pageBar"+pageBar);
+		map.put("pageBar", pageBar);
+		//mList.add(map);
+
+		String json = new ObjectMapper().writeValueAsString(mList);
+	
+		logger.debug(json);
+		
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+		return new ResponseEntity(json, responseHeaders, HttpStatus.CREATED);
+	}
 }
