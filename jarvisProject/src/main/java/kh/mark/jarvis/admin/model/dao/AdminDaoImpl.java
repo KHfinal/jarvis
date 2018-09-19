@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import kh.mark.jarvis.admin.model.vo.Notify;
 import kh.mark.jarvis.admin.model.vo.PageInfo;
+import kh.mark.jarvis.post.model.vo.Attachment;
+import kh.mark.jarvis.post.model.vo.Post;
 
 @Repository
 public class AdminDaoImpl implements AdminDao {
@@ -54,6 +56,21 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public int insertPostNotify(SqlSessionTemplate sqlSession, Notify notify) {
 		return sqlSession.insert("siteinfo.insertPostNotify", notify);
+	}
+
+	@Override
+	public Notify selectNotifyInfo(SqlSessionTemplate sqlSession, int nNo) {
+		return sqlSession.selectOne("siteinfo.selectNotifyInfo", nNo);
+	}
+
+	@Override
+	public Post selectPostInfo(SqlSessionTemplate sqlSession, int pNo) {
+		return sqlSession.selectOne("siteinfo.selectPostInfo",pNo);
+	}
+
+	@Override
+	public List<Attachment> selectAttachInfo(SqlSessionTemplate sqlSession, int pNo) {
+		return sqlSession.selectList("siteinfo.selectAttachInfo",pNo);
 	}
 
 }
