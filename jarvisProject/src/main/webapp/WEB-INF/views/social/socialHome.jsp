@@ -278,10 +278,7 @@ function subMenuCommentDelete(e) {
 
 function goMyPage(e) {
 	var btn = $(e);
-	var memberEmail;
-
-	memberEmail = btn.attr('title');
-	console.log('btn memberEmail = ' + memberEmail);
+	var memberEmail = btn.attr('title');
 	location.href="${pageContext.request.contextPath}/post/myPage?memberEmail=" + memberEmail;
 	
 }
@@ -289,11 +286,7 @@ function goMyPage(e) {
 </script>
 
 <style>
-   .subMenu-container {
-      background-color: red;
-      color: white;
-      z-index: 100;
-   }
+
 </style>
        
 <div class="w3-col m6">
@@ -332,12 +325,15 @@ function goMyPage(e) {
                   <hr>
                   
                   <div class="privacyBoundContainer">
+                  <p>&nbsp;</p>
+                  <!-- 
                       <label for="privacyBound" style="display: inline;">공개 범위</label>
                       <select class="form-control" id="privacyBound" name="privacyBound">
                          <option value="public">전체 보기</option>
                          <option value="friend">친구만</option>
                          <option value="private">나만 보기</option>
                       </select>
+                  -->
                   </div>
                   
                   <div class="filebox"> <label for="imgInput">업로드</label> <input type="file" id="imgInput" name="upFile" multiple> </div>
@@ -424,12 +420,15 @@ function goMyPage(e) {
                         <div id="imgDisplayUpdateContainer"></div>
                         <hr>
                         <div class="privacyBoundContainer">
+                        <p>&nbsp;</p>
+                        <!--
                             <label for="privacyBound" style="display: inline; color: black;">공개 범위</label>
                             <select class="form-control" id="privacyBound" name="privacyBound">
                                <option value="public">전체 보기</option>
                                <option value="friend">친구만</option>
                                <option value="private">나만 보기</option>
                             </select>
+                        -->
                         </div> 
                         
                         <div class="filebox"> <label for="imgUpdateInput">업로드</label> <input type="file" id="imgUpdateInput" name="upFile1" multiple> </div>

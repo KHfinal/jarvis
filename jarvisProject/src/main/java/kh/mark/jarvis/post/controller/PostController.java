@@ -420,7 +420,7 @@ public class PostController {
 		
 		Member MpMember = service.selectMyPageMember(memberEmail); // 마이페이지 주인
 
-		List<Post> postList = service.selecyMyPagePostList(memberEmail); // 마이페이지 주인의 게시물 + 주인 친구 게시물
+		List<Post> postList = service.selecyMyPagePostList(memberEmail); // 마이페이지 주인의 게시물
 		List<Attachment> attachmentList = service.selectAttachList();
 		List<JarvisComment> commentList = service.selectCommentList();
 		List<Integer> myLikeList = service.selectMyLike(m.getMemberEmail()); // count 값이 0일때 빈 하트 출력을 위해 사용
