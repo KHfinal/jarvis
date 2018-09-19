@@ -37,6 +37,10 @@
       DELETE FROM POST WHERE POST_NO = #{postNo} 
    </delete>
    
+   <update id="updateComment" parameterType="comment">
+   	  UPDATE JARVIS_COMMENT SET COMMENT_CONTENTS = #{commentContents} WHERE COMMENT_NO = #{commentNo}
+   </update>
+   
    <delete id="deleteComment" parameterType="int">
       DELETE FROM JARVIS_COMMENT WHERE COMMENT_NO = #{commentNo} OR COMMENT_REF = #{commentNo}
    </delete>

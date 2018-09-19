@@ -308,7 +308,7 @@ img{ max-width:100%;}
 						</div>
 						<div class="msg_history">
 							<div id="chatdata" class="panel-body">
-							<c:forEach items="${roomList }" var="r">
+							<c:forEach items="${roomListReal }" var="r">
 								<div class="chat_list p-0">
 									<a href="${path}/chat/createRoom?fEmail=${r.MEMBER_EMAIL}&roomNo=${r.ROOM_NO}" class="p-0">
 										<div class="chat_list">
@@ -320,26 +320,12 @@ img{ max-width:100%;}
 													<h5>${r.MEMBER_NAME}
 														<span class="chat_date"></span>
 													</h5>
-													<p>Messenger에서 메시지를 주고받을 수 있습니다.</p>
-												</div>
-											</div>
-										</div>
-									</a>
-								</div>
-							</c:forEach>
-							<c:forEach items="${roomList1 }" var="r1">
-								<div class="chat_list p-0">
-									<a href="${path}/chat/createRoom?fEmail=${r1.MEMBER_EMAIL}&roomNo=${r1.ROOM_NO}" class="p-0">
-										<div class="chat_list">
-											<div class="chat_people">
-												<div class="chat_img">
-													<img src="${path}/resources/profileImg/${r1.MEMBER_PFP}" class="w3-circle" title="${r1.MEMBER_NAME }">
-												</div>
-												<div class="chat_ib">
-													<h5>${r1.MEMBER_NAME}
-														<span class="chat_date"></span>
-													</h5>
-													<p>Messenger에서 메시지를 주고받을 수 있습니다.</p>
+													<p>
+													<c:if test="${memberLoggedIn.getMemberEmail()==r.WRITER}">
+														회원님의 메세지 : 
+													</c:if>
+														${r.MESSAGE }
+													</p>
 												</div>
 											</div>
 										</div>

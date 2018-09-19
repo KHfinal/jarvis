@@ -43,8 +43,11 @@ function previewFile() {
 	                <div class="col-md-8">
 	                	<h3>프로필 사진</h3>
 	                	<img src="${path }/resources/profileImg/profileDefault.png" height="200" alt="이미지 미리보기..." id="profile">
-	                	<input type="file" onchange="previewFile()" class="form-control" id="profileFile" name="profileFile1">
-						
+	                	<hr>
+	                	<div class="custom-file">	
+	                		<input type="file" onchange="previewFile()" class="form-control" id="profileFile" name="profileFile1">
+							<label class="custom-file-label" for="profileFile" >이미지 선택하기</label>
+						</div>
 	                </div>
 	                
 	                    <hr>
@@ -61,12 +64,12 @@ function previewFile() {
 	                   <div class="form-row">
 		                   <label>성별:</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		                   <div class="custom-control custom-radio">
-		                              <input type="radio" class="custom-control-input" id="gender0" name="memberGender" value="남">>
+		                              <input type="radio" class="custom-control-input" id="gender0" name="memberGender" value="남">
 		                        <label class="custom-control-label" for="gender0">남</label>
 		                   </div>    
 		                   &nbsp;&nbsp;
 		                    <div class="custom-control custom-radio">
-		                              <input type="radio" class="custom-control-input" id="gender1" name="memberGender" value="여">>
+		                              <input type="radio" class="custom-control-input" id="gender1" name="memberGender" value="여">
 		                        <label class="custom-control-label" for="gender1">여</label>
 		                   </div>    
 	                  
@@ -97,10 +100,16 @@ function previewFile() {
 	                    <div class="form-row">
 	                       <!--  <div class="col-md-12 content-right">    -->
 	                     	<button class="btn btn-info mt-2" type="submit">등록</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	                      	<button type="button"class="btn btn-info mt-2" data-toggle="modal" data-target="#myModal">건너뛰기</button>
+	                      	<button type="button"class="btn btn-info mt-2" onclick="checkModal();">건너뛰기</button>
 	                   </div>
                    </form>
                    <!-- 건너뛰기 확인 Modal -->
+
+                    <!-- </div> -->      
+                </div>
+
+
+<jsp:include page="/WEB-INF/views/common/firstFooter.jsp"/>
   <!-- The Modal -->
   <div class="modal fade" id="myModal">
     <div class="modal-dialog">
@@ -108,32 +117,32 @@ function previewFile() {
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Modal Heading</h4>
+          <h4 class="modal-title">건너뛰기</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
         <!-- Modal body -->
         <div class="modal-body">
-          Modal body..
+          	추가정보를 입력하시지 않았을 경우 친구 추천 및 그룹 추천 서비스를 이용하실 수 없습니다. 건너 뛰시겠습니까?
         </div>
         
         <!-- Modal footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        	<button type="button" class = "btn btn-success" onclick="next()">확인</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
         </div>
         
       </div>
     </div>
   </div>
-                    <!-- </div> -->      
-                </div>
-
-
-<jsp:include page="/WEB-INF/views/common/firstFooter.jsp"/>
-
 <script>
+	function next(){
+		var memberNo = ${memberLoggedIn.memberNo};
+		console.log(memberNo);
+		location.href = "${path}/member/memberNext.do?memberNo="+memberNo;
+	}
    function checkModal(){
-	   $("#myModal").modal('show');
+	   $("#myModal").modal();
    };
     //다음 API
    function execPostCode() {

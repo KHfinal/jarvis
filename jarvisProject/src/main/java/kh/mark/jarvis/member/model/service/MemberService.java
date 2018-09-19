@@ -34,6 +34,9 @@ public interface MemberService {
 
 	List<Map<String, String>> searchList(Map map);
 
+	int memberNext(int memberNo);
+
+
 	
 
 }

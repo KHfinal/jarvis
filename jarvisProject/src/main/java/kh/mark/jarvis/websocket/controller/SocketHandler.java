@@ -19,7 +19,7 @@ import kh.mark.jarvis.member.model.vo.Member;
 
 public class SocketHandler extends TextWebSocketHandler {
 
-	private List<WebSocketSession> sessionList=new ArrayList();
+	private List<WebSocketSession> sessionList=new ArrayList<>();
 	private Logger logger=LoggerFactory.getLogger(SocketHandler.class);
 	private List<String> userName = new ArrayList<>();
 	

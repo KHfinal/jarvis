@@ -50,4 +50,7 @@ public interface MemberDao {
 		List<Map<String, String>> searchList(SqlSessionTemplate sqlSession, Map map);
 
 
+		int memberNext(SqlSessionTemplate sqlSession, int memberNo);
+
+
 }

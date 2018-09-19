@@ -48,6 +48,11 @@ public class PostDaoImpl implements PostDao {
 	public int deletePost(SqlSessionTemplate sqlSession, int postNo) {
 		return sqlSession.delete("post.deletePost", postNo);
 	}
+	
+	@Override
+	public int updateComment(SqlSessionTemplate sqlSession, JarvisComment comment) {
+		return sqlSession.update("post.updateComment", comment);
+	}
 
 	@Override
 	public int deleteComment(SqlSessionTemplate sqlSession, int commentNo) {
@@ -149,5 +154,7 @@ public class PostDaoImpl implements PostDao {
 	public List<Post> selecyMyPagePostList(SqlSessionTemplate sqlSession, String memberEmail) {
 		return sqlSession.selectList("post.selecyMyPagePostList", memberEmail);
 	}
+
+
 
 }

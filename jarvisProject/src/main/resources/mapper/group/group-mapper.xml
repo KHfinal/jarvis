@@ -119,18 +119,33 @@
 	</update>
 	<delete id="deleteGroupPostDeleteAttach" parameterType="groupPost">
     	DELETE FROM GROUP_ATTACHMENT WHERE G_POST_NO = #{g_post_no}
+
     </delete>
     
     <delete id="deleteGroupPostLike" parameterType="groupLike">
-    	DELETE FROM GROUP_LIKE WHERE G_POST_REF = #{g_post_ref} AND G_LIKE_MEMBER = #{g_like_member} AND G_LIKE_CHECK = #{g_like_check}
+       DELETE FROM GROUP_LIKE WHERE G_POST_REF = #{g_post_ref} AND G_LIKE_MEMBER = #{g_like_member} AND G_LIKE_CHECK = #{g_like_check}
     </delete>
-	<delete id="deleteGroupCommentLike" parameterType="groupLike">
-    	DELETE FROM GROUP_LIKE WHERE G_COMMENT_REF = #{g_comment_ref} AND G_LIKE_MEMBER = #{g_like_member} AND G_LIKE_CHECK = #{g_like_check}
+   <delete id="deleteGroupCommentLike" parameterType="groupLike">
+       DELETE FROM GROUP_LIKE WHERE G_COMMENT_REF = #{g_comment_ref} AND G_LIKE_MEMBER = #{g_like_member} AND G_LIKE_CHECK = #{g_like_check}
     </delete>
    
     <!-- 최초 로그인시 count값 받기 위한 select -->
     <select id="selectMyLike" parameterType="string" resultType="Integer">
-    	SELECT DISTINCT G_POST_REF FROM GROUP_LIKE WHERE G_LIKE_MEMBER = #{memberEmail}
+       SELECT DISTINCT G_POST_REF FROM GROUP_LIKE WHERE G_LIKE_MEMBER = #{memberEmail}
+    </select>
+    
+    <!-- 최초 로그인 시 하트 변경 -->
+    <select id="selectMyLikeOn" parameterType="string" resultType="groupLike"> 
+        SELECT G_POST_REF, G_COMMENT_REF, G_LIKE_CHECK 
+        FROM GROUP_LIKE 
+        WHERE G_LIKE_MEMBER = #{memberEmail}
+    </select>
+   
+    <!-- 최초 로그인 시 카운트 값 -->
+    <select id="startLikeCount" resultType="map">
+        SELECT G_POST_REF, G_COMMENT_REF, G_LIKE_CHECK, COUNT(*) AS CNT 
+        FROM GROUP_LIKE 
+        WHERE G_POST_REF IS NOT NULL GROUP BY G_POST_REF, G_COMMENT_REF, G_LIKE_CHECK
     </select>
     
     <!-- 최초 로그인 시 하트 변경 -->
@@ -148,7 +163,11 @@
     </select>
    
     <select id="myPostNoList" resultType="Integer">
-   		SELECT DISTINCT G_POST_NO FROM GROUP_POST
+         SELECT DISTINCT G_POST_NO FROM GROUP_POST
+    </select>
+    
+    <select id="selectAcceptMember" parameterType="_int" resultType="map">
+       SELECT * FROM GROUP_MEMBER JOIN MEMBER USING(MEMBER_EMAIL) WHERE G_NO=#{groupNo} AND G_MEMBER_STATUS='Y'
     </select>
     
     <select id="selectAcceptMember" parameterType="_int" resultType="map">
@@ -156,7 +175,7 @@
     </select>
     
     <update id="groupMemberAccept" parameterType="string">
-    	UPDATE GROUP_MEMBER SET G_MEMBER_STATUS='Y' WHERE MEMBER_EMAIL=#{mEmail} 
+       UPDATE GROUP_MEMBER SET G_MEMBER_STATUS='Y' WHERE MEMBER_EMAIL=#{mEmail} 
     </update>
 	
 	<delete id="groupMemberDelete" parameterType="string">

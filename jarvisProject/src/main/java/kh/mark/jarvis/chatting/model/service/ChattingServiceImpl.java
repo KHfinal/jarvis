@@ -60,10 +60,11 @@ public class ChattingServiceImpl implements ChattingService {
 		return dao.readCheck(sqlSession, roomMap);
 	}
 
-	@Override
-	public int countRead(String email) {
-		return dao.countRead(sqlSession, email);
-	}
+
+	/*@Override
+	public int countRead(String fEmail) {
+		return dao.countRead(sqlSession, fEmail);
+	}*/
 	
 	
 

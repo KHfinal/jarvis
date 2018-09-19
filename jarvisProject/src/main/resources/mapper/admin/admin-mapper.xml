@@ -16,5 +16,18 @@
 	<update id="unlock">
 		update member set block_date=null where block_date &lt; sysdate
 	</update>
+	<resultMap type="notify" id="notifyMap"></resultMap>
+	<select id="notifyList" resultMap="notifyMap">
+		select * from notify order by notify_date desc
+	</select>
+	<select id="selectTotalCount" resultType="_int">
+		select count(*) from notify
+	</select>
+	
+	<!-- 용 -->
+	<insert id="insertPostNotify" parameterType="notify">
+		INSERT INTO NOTIFY(NOTIFY_NO, POST_NO, POST_WRITER, NOTIFY_WRITER, NOTIFY_REASON, NOTIFY_DATE, STATUS)
+		VALUES(notify_seq.nextval, #{postNo}, #{postWriter}, #{notifyWriter}, #{notifyReason}, systimestamp, default)
+	</insert>
 	
 </mapper>

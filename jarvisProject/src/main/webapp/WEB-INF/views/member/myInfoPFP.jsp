@@ -17,6 +17,11 @@
 		width : 200px;
 		height: 200px;
 	}
+	
+	.m8{
+		margin-left: 5%;
+	}
+	
 </style>
 
 
@@ -32,7 +37,7 @@
 		display: absolute;
 		left: 50px;
 	}
-		
+	
 </style>
 	    
 	    
@@ -40,24 +45,31 @@
 	    
 	    
 <div class="w3-col m8"> <!-- 메인 컨텐츠 시작 -->
-	
 
-<div class="container bootstrap snippet">
+<div class="w3-card w3-round w3-white">  
+	<div class="container bootstrap snippet">
     <div class="row">
-  		<div class="col-sm-10"><h1>프로필 수정</h1></div>
+  		<div class="col-sm-10"><h1>프로필 사진</h1></div>
     </div><br>
-   
+ 
     	<div class="col-sm-9">
-            <ul class="nav nav-tabs">
-               <li class="active"><a href="${path }/myInfoView.do?member_email=${memberLoggedIn.memberEmail}">내 정보 </a></li> 
+           <ul class="nav nav-tabs" role="tablist">
+                <li >
+                	<a  href="${path }/myInfoView.do?member_email=${memberLoggedIn.memberEmail}">내 정보 </a>
+                </li> 
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <li><a href="${path }/myInfoUpdateView.do?member_email=${memberLoggedIn.memberEmail}">정보수정</a></li>
+                <li > 
+                	<a  href="${path }/myInfoUpdateView.do?member_email=${memberLoggedIn.memberEmail}">정보수정</a>
+                </li>
                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-               <li><a href="${path }/myInfoPFP.do?member_email=${memberLoggedIn.memberEmail}">프로필사진 </a></li>
+               <li class="nav-item">
+               		<a class="nav-link active" data-toggle="tab" href="${path }/myInfoPFP.do?member_email=${memberLoggedIn.memberEmail}">프로필사진 </a>
+               </li>
                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <li><a href="${path }/myinfoPwView.do?member_email=${memberLoggedIn.memberEmail}">비밀번호 변경 </a></li>
+                <li>
+                	<a href="${path }/myinfoPwView.do?member_email=${memberLoggedIn.memberEmail}">비밀번호 변경 </a>
+                </li>
               </ul>
-
               
           <div class="tab-content">
             <div class="tab-pane active" id="home">
@@ -66,9 +78,15 @@
                       <input type="hidden" name="memberEmail" value="${memberLoggedIn.memberEmail }">
                       <div class="form-group">
                          <div class="col-md-8">
-                				<h3>프로필 사진</h3>
-                				<img src="${path}/resources/profileImg/${memberLoggedIn.memberPFP}" height="200" alt="이미지 미리보기..." id="profile">
-                				<input type="file" onchange="previewFile()" class="form-control" id="profileFile" name="profileFile1">
+<!--                 				<h3>프로필 사진</h3>
+ -->                				<img src="${path}/resources/profileImg/${memberLoggedIn.memberPFP}" height="200" alt="이미지 미리보기..." id="profile">
+                			
+                			<hr>
+                			<div class="custom-file">	
+                					<input type="file" onchange="previewFile()" class="form-control" id="profileFile" name="profileFile1">
+                					<label class="custom-file-label" for="profileFile" >이미지 선택하기</label>
+                			</div>
+                		
                 		</div>
                       </div> 
                        
@@ -78,11 +96,15 @@
                       <div class="form-group">
                            <div class="col-xs-12">
                                 <br>
-                              	<button class="btn btn-lg btn-success" type="submit"><i class="glyphicon glyphicon-ok-sign"></i> 수정</button>
+                              	<button class="btn btn-info mt-2" type="submit">수정하기</button>
                                <!-- 	<button class="btn btn-lg" type="reset"><i class="glyphicon glyphicon-repeat" onclick="member_cancel();"></i> 취소하기</button> -->
                             </div>
                       </div>
+    
               	</form>
+     
+     		
+     
               
               <hr>
               
@@ -95,7 +117,7 @@
         </div><!--/col-9-->
   
 
-
+</div>
 </div> <!-- 메인 컨텐트 끝  -->
 
 <script>
