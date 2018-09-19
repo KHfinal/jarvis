@@ -11,6 +11,8 @@ import kh.mark.jarvis.admin.model.dao.AdminDao;
 import kh.mark.jarvis.admin.model.vo.Notify;
 import kh.mark.jarvis.admin.model.vo.PageInfo;
 import kh.mark.jarvis.chatting.model.dao.ChattingDao;
+import kh.mark.jarvis.post.model.vo.Attachment;
+import kh.mark.jarvis.post.model.vo.Post;
 
 
 @Service
@@ -61,6 +63,21 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int insertPostNotify(Notify notify) {
 		return dao.insertPostNotify(sqlSession, notify);
+	}
+
+	@Override
+	public Notify selectNotifyInfo(int nNo) {
+		return dao.selectNotifyInfo(sqlSession,nNo);
+	}
+
+	@Override
+	public Post selectPostInfo(int pNo) {
+		return dao.selectPostInfo(sqlSession,pNo);
+	}
+
+	@Override
+	public List<Attachment> selectAttachInfo(int pNo) {
+		return dao.selectAttachInfo(sqlSession,pNo);
 	}
 	
 }

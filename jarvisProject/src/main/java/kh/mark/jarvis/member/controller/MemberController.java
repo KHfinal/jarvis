@@ -111,7 +111,7 @@ public class MemberController {
 						loc="/post/socialHomeView.do";
 					}
 					else {
-						msg="현재 정지된 계정입니다.";
+						msg="관리자에 의해 정지된 계정입니다. "+blockM.getBlockDate()+"일 이후 이용이 가능합니다.";
 					}
 				}
 				else {//인증되지 않은 회원은 인증을 부탁하는 메세지를 띄어주고 로그인 불가

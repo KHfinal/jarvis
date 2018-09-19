@@ -6,7 +6,7 @@
 <c:set var="path" value="<%=request.getContextPath()%>"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Black+Han+Sans|Do+Hyeon|Dokdo|East+Sea+Dokdo|Gaegu|Gamja+Flower|Hi+Melody|Nanum+Brush+Script|Nanum+Gothic|Nanum+Pen+Script|Noto+Sans+KR" rel="stylesheet">
+
 <style>
 	.m8{
 		margin-left: 5%;

@@ -29,6 +29,8 @@ import kh.mark.jarvis.admin.model.vo.Notify;
 import kh.mark.jarvis.admin.model.vo.PageInfo;
 import kh.mark.jarvis.common.Page;
 import kh.mark.jarvis.member.model.service.MemberService;
+import kh.mark.jarvis.post.model.vo.Attachment;
+import kh.mark.jarvis.post.model.vo.Post;
 import kh.mark.jarvis.schedule.controller.ScheduleController;
 
 @SessionAttributes(value= {"siteInfo"})
@@ -195,7 +197,7 @@ public class AdminController {
 		String pageBar = new Page().getPage(cPage, numPerPage, totalCount, url);
 		logger.debug("pageBar"+pageBar);
 		map.put("pageBar", pageBar);
-		//mList.add(map);
+		mList.add(map);
 
 		String json = new ObjectMapper().writeValueAsString(mList);
 	
@@ -209,17 +211,36 @@ public class AdminController {
 	
 	// 용석
 	@RequestMapping("/admin/postNotify.do")
-	public ModelAndView insertPostNotify(Notify notify) {
+	public ModelAndView insertPostNotify(Notify notify,HttpServletRequest req) {
 		ModelAndView mv = new ModelAndView();
 		
-		System.out.println("notify 들어옴!");
-		System.out.println("notify postNO " + notify.getPostNo());
-		System.out.println("notify postWriter " + notify.getPostWriter());
-		System.out.println("notify notifyWriter " + notify.getNotifyWriter());
-		System.out.println("notify Reason " + notify.getNotifyReason());
-		
+		String[] arr = req.getHeader("REFERER").split("/");
+		String loc = "/"+arr[arr.length-2]+"/"+arr[arr.length-1];
+		String msg = "신고가 정상접수되었습니다.";
+		logger.debug(loc);
 		int result = service.insertPostNotify(notify);
+		if(result<=0) {
+			msg="신고등록에 실패하였습니다.";
+		}
+		mv.addObject("msg", msg);
+		mv.addObject("loc", loc);
+		mv.setViewName("common/msg");
 		
+		return mv;
+	}
+	
+	@RequestMapping("/admin/notifyView.do")
+	public ModelAndView notifyView(int nNo,int pNo,ModelAndView mv) {
+		Notify n = service.selectNotifyInfo(nNo);
+		Post p = service.selectPostInfo(pNo);
+		List<Attachment> aList = service.selectAttachInfo(pNo);
+		logger.debug(n.toString());
+		logger.debug(p.toString());
+		
+		mv.addObject("notify", n);
+		mv.addObject("post", p);
+		mv.addObject("attachmentList", aList);
+		mv.setViewName("admin/notifyView");
 		return mv;
 	}
 

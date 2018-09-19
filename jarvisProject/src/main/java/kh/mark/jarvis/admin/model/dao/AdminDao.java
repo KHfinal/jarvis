@@ -7,6 +7,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 
 import kh.mark.jarvis.admin.model.vo.Notify;
 import kh.mark.jarvis.admin.model.vo.PageInfo;
+import kh.mark.jarvis.post.model.vo.Attachment;
+import kh.mark.jarvis.post.model.vo.Post;
 
 public interface AdminDao {
 
@@ -26,6 +28,12 @@ public interface AdminDao {
 
 	// 용
 	int insertPostNotify(SqlSessionTemplate sqlSession, Notify notify);
+
+	Notify selectNotifyInfo(SqlSessionTemplate sqlSession, int nNo);
+
+	Post selectPostInfo(SqlSessionTemplate sqlSession, int pNo);
+
+	List<Attachment> selectAttachInfo(SqlSessionTemplate sqlSession, int pNo);
 
 
 
