@@ -47,9 +47,9 @@
 	</select>
 	
 	<insert id="insertGroupPost" parameterType="groupPost">
-		INSERT INTO GROUP_POST VALUES(GROUP_POST_SEQ.NEXTVAL,#{g_post_contents},#{g_no},#{g_post_writer},SYSTIMESTAMP)
+		INSERT INTO GROUP_POST VALUES(POST_SEQ.NEXTVAL,#{g_post_contents},#{g_no},#{g_post_writer},SYSTIMESTAMP)
 		<selectKey keyProperty="g_post_no" resultType="_int" order="AFTER">
-			SELECT GROUP_POST_SEQ.CURRVAL FROM DUAL
+			SELECT POST_SEQ.CURRVAL FROM DUAL
 		</selectKey>
 	</insert>
 	<insert id="insertAttach" parameterType="groupAttach">
