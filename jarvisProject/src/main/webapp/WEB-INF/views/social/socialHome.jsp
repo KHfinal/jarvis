@@ -667,7 +667,7 @@ var tr="";
 		data:{searchKeyword : searchKeyword,searchType:searchType },
 		dataType:"json",
 		success : function(data){
-			$('.tablefriendKeyword').append("<tr><th colspan='2' style='text- '>친구 목록</th></tr>");
+			$('.tablefriendKeyword').append("<tr><th colspan='2' style='text-align:center '>친구 목록</th></tr>");
 			
 			console.log("friendList : " + friendList);
 			
@@ -686,7 +686,7 @@ var tr="";
 				}
 				if(friendList.length >=1){
 				for(var i =0; i<friendList.length;i++){
-					friendConcernTag ="";
+					friendKeywordTag ="";
 					if(friendList[i]==searchEmail ){
 						friendConcernTag ;
 						break;
@@ -694,9 +694,9 @@ var tr="";
 						break;
 					}
 					if(i==friendList.length-1){
-						 friendConcernTag = "<tr ><td style='padding-right:0%;'><img src='${path}/resources/profileImg/"+searchPFP+"' class='w3-circle' style='height:13%;width:16%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+searchEmail+'<img style="float:right; padding-top:3%;  " src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+searchEmail+"'"+');"/></td></tr>';
+						friendKeywordTag = "<tr ><td style='padding-right:0%;'><img src='${path}/resources/profileImg/"+searchPFP+"' class='w3-circle' style='height:13%;width:16%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+searchEmail+'<img style="float:right; padding-top:3%;  " src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+searchEmail+"'"+');"/></td></tr>';
 						if(searchEmail!=myEmail){
-							$('.tablefriendKeyword').append(friendConcernTag);
+							$('.tablefriendKeyword').append(friendKeywordTag);
 						}
 					 break;
 					}	
@@ -716,13 +716,16 @@ function concernSearch() {
 			data:{email:myEmail},
 			dataType:"json",
 			success : function(data){
+				var friendConcernTag ="";
 				$('.tablefriendConcern').empty();
 				$('.tablefriendConcern').append("<tr><th colspan='2' style='text- '>관심사가 비슷한 친구</th></tr>");
 				$.each(data,function(i,item){
 					var a = item;
-					
-					friendKeywordTag = "<tr ><td style='padding-right:0%;'><img src='${path}/resources/profileImg/"+a.memberPFP+"' class='w3-circle' style='height:13%;width:16%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+a.memberEmail+'<img style="float:right; padding-top:3%; " src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+a.memberEmail+"'"+');"/></td></tr>';
-					$('.tablefriendConcern').append(friendKeywordTag);
+					friendConcernTag = "<tr ><td style='padding-right:0%;'><img src='${path}/resources/profileImg/"+a.memberPFP+"' class='w3-circle' style='height:13%;width:16%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+a.memberEmail+'<img style="float:right; padding-top:3%; " src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+a.memberEmail+"'"+');"/></td></tr>';
+					if(a==""){
+						friendConcernTag ="<tr ><td style='padding-right:0%;'>관심사가 같은 친구를 찾을 수 없습니다</td></tr>"
+					}
+					$('.tablefriendConcern').append(friendConcernTag);
 				}); 
 			}
 		});
@@ -737,12 +740,16 @@ function recognizableSearch() {
 		data:{email:myEmail},
 		dataType:"json",
 		success : function(data){
+			var friendReco ="";
 			$('.tablefriendRecognize').empty();
 			$('.tablefriendRecognize').append("<tr><th colspan='2' style='text- '>알 수도 있는 친구</th></tr>");
 			$.each(data,function(i,item){
 				var recoList = item;
-				friendKeywordTag = "<tr ><td style='padding-right:0%;'><img src='${path}/resources/profileImg/"+recoList.memberPFP+"' class='w3-circle' style='height:13%;width:16%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+recoList.memberEmail+'<img style="float:right; padding-top:3%; " src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+recoList.memberEmail+"'"+');"/></td></tr>';
-				$('.tablefriendRecognize').append(friendKeywordTag);
+				friendReco = "<tr ><td style='padding-right:0%;'><img src='${path}/resources/profileImg/"+recoList.memberPFP+"' class='w3-circle' style='height:13%;width:16%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+recoList.memberEmail+'<img style="float:right; padding-top:3%; " src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+recoList.memberEmail+"'"+');"/></td></tr>';
+				if(recoList==""){
+					friendReco ="<tr ><td style='padding-right:0%;'>알 수 있는 친구가 없습니다 ㅠㅠ</td></tr>"
+				}
+				$('.tablefriendRecognize').append(friendReco);
 			}); 
 		}
 	});
@@ -761,7 +768,7 @@ function fn_friendAdd(e,mail){
 			alert(msg);
 		
 		}
-	})
+	});
 };
 function fn_two(e,mail) {
 	$.ajax({
@@ -777,9 +784,17 @@ function fn_two(e,mail) {
 			alert(msg);
 		
 		}
-	})
+	});
 }
 
+function searchValidata(){
+
+	if($('#searchKeyword').val()==""){
+		alert("검색어를 입력하세요~");
+		return false;
+	}
+	return true;
+}
 
 
 </script>
@@ -795,7 +810,7 @@ function fn_two(e,mail) {
 				<option value="ADDR2" ${'ADDR2' eq param.searchType?"selected":"" }>지역</option>
 	           </select> 
             
-            <input type="search" id="searchKeyword" placeholder="Search..." onkeypress="if( event.keyCode == 13 ){searchsearch();}" style="width: 60%; " />
+            <input type="search" id="searchKeyword" placeholder="Search..." onkeypress=" if( event.keyCode == 13 && searchValidata()){searchsearch();}" style="width: 60%; " />
             </div>	           
     </div><hr>
     <div class="input-group custom-search-form" >
@@ -806,7 +821,7 @@ function fn_two(e,mail) {
     </table>
     <table class='tablefriendConcern' style="width: 100%; margin: 0%; ">
     </table>
-    <table class='tablefriendRecognize' style="width: 100%; margin: 0%;">
+    <table class='tablefriendRecognize' style="width: 100%; margin: 0%; ">
     </table>
    
    

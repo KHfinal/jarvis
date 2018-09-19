@@ -150,7 +150,7 @@ public class FriendController{
 		}catch (Exception e) {
 			e.getMessage();
 		}
-		
+		System.out.println("a concern" + a);
 		return a;
 	}
 	@RequestMapping("/friend/recognizableRecommendList.do")
@@ -164,7 +164,7 @@ public class FriendController{
 		String a = "";
 		try {
 			a = mapper.writeValueAsString(recognizeList);
-			System.out.println("a : " + a);
+			System.out.println("a reco : " + a);
 		}catch (Exception e) {
 		}
 		
