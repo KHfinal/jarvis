@@ -237,7 +237,7 @@ public class FriendController{
 		Member m = (Member)hs.getAttribute("memberLoggedIn");
 		String email = m.getMemberEmail();
 		ModelAndView mv=new ModelAndView();
-		List<Map<String,String>> list=memberService.memberList();
+		List<Map<String,String>> list=memberService.memberFriendList(email);
 		
 		Map<String,String> map=new HashMap();
 		map.put("title", "F_MEMBER_EMAIL");
@@ -250,15 +250,15 @@ public class FriendController{
 		
 		mv.addObject("requestList",requestList);		//본인 이메일이 f_member_email일때
 		mv.addObject("requestList1",requestList1);		//본인 이메일이 f_friend_email일때
-
+		System.out.println("friendList : "+friendList);
+		System.out.println("requestList : "+requestList);
 		mv.addObject("friendList",friendList);
 		mv.addObject("friendList1",friendList1);
 
+
 		// 접속한사람 친구목록 Member로 가져옴
 		List<Member> checkFriend = friendService.selectCheckFriend(email);
-	
-		System.out.println("asdasdasdasdasdasdasdasda"+friendList);
-		System.out.println("checkFriend : " + checkFriend);
+
 		mv.addObject("list",list);
 		mv.addObject("checkFriend",checkFriend);
 		mv.setViewName("friend/friendSearch");

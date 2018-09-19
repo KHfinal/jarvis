@@ -12,6 +12,8 @@ public interface MemberService {
 
 	List<Map<String,String>> memberList();			//회원리스트
 
+	List<Map<String,String>> memberFriendList(String email);
+	
 	Object selectOne(String userEmail);
 
 	int memberVerify(String memberEmail);

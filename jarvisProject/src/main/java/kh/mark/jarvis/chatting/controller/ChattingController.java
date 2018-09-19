@@ -88,31 +88,32 @@ public class ChattingController {
 		if(roomList1.size()>0) {
 			for(int i=0; i<roomList1.size(); i++)
 			{
+				Map<String,Object> rMap1 = new HashMap<>();
 				for(int j=0; j<roomList1.size(); j++)
 				{
 					chat_no=Integer.parseInt((String.valueOf(roomList1.get(i).get("CHAT_NO"))));
 					chat_no1=Integer.parseInt((String.valueOf(roomList1.get(j).get("CHAT_NO"))));
-					if(roomList1.get(i).get("ROOM_NO").equals(roomList1.get(j).get("ROOM_NO"))&&chat_no<chat_no1)
+					if(roomList1.get(i).get("ROOM_NO").equals(roomList1.get(j).get("ROOM_NO")))
 					{
-						listMap.put("ROOM_NO", roomList.get(j).get("ROOM_NO"));
-						listMap.put("CHAT_NO", roomList.get(j).get("CHAT_NO"));
-						listMap.put("MY_EMAIL", roomList.get(j).get("MY_EMAIL"));
-						listMap.put("FRIEND_EMAIL", roomList.get(j).get("FRIEND_EMAIL"));
-						listMap.put("MEMBER_EMAIL", roomList.get(j).get("MEMBER_EMAIL"));
-						listMap.put("MEMBER_NAME", roomList.get(j).get("MEMBER_NAME"));
-						listMap.put("MEMBER_PFP", roomList.get(j).get("MEMBER_PFP"));
-						listMap.put("WRITER", roomList.get(j).get("WRITER"));
-						listMap.put("MESSAGE", roomList.get(j).get("MESSAGE"));
-						listMap.put("WRITER_DATE", roomList.get(j).get("WRITER_DATE"));
-						listMap.put("READ", roomList.get(j).get("READ"));
+						rMap1.put("ROOM_NO", roomList1.get(j).get("ROOM_NO"));
+						rMap1.put("CHAT_NO", roomList1.get(j).get("CHAT_NO"));
+						rMap1.put("MY_EMAIL", roomList1.get(j).get("MY_EMAIL"));
+						rMap1.put("FRIEND_EMAIL", roomList1.get(j).get("FRIEND_EMAIL"));
+						rMap1.put("MEMBER_EMAIL", roomList1.get(j).get("MEMBER_EMAIL"));
+						rMap1.put("MEMBER_NAME", roomList1.get(j).get("MEMBER_NAME"));
+						rMap1.put("MEMBER_PFP", roomList1.get(j).get("MEMBER_PFP"));
+						rMap1.put("WRITER", roomList1.get(j).get("WRITER"));
+						rMap1.put("MESSAGE", roomList1.get(j).get("MESSAGE"));
+						rMap1.put("WRITER_DATE", roomList1.get(j).get("WRITER_DATE"));
+						rMap1.put("READ", roomList1.get(j).get("READ"));
 	
 						System.out.println("listMap : "+listMap);
 						System.out.println("--------------------------");
 					}
 				}
-				if(roomList1.get(i).get("CHAT_NO").equals(listMap.get("CHAT_NO")))
+				if(roomList1.get(i).get("CHAT_NO").equals(rMap1.get("CHAT_NO")))
 				{
-					roomListReal.add(listMap);
+					roomListReal.add(rMap1);
 					System.out.println("roomListReal : "+roomListReal);
 					System.out.println("--------------------------");
 					
@@ -139,87 +140,7 @@ public class ChattingController {
 	{
 		Member m = (Member)hs.getAttribute("memberLoggedIn");
 		String email = m.getMemberEmail();
-		
-		/*채팅방목록-----------------------------------------------------*/
 		Map<String,String> roomMap=new HashMap();
-		List<Map<String,Object>> roomListReal=new ArrayList<Map<String,Object>>();
-		
-		Map<String,Object> listMap=new HashMap<String,Object>(); 
-		roomMap.put("title", "MY_EMAIL");
-		roomMap.put("email", email);
-		List<Map<String,Object>> roomList=chattingService.roomList(roomMap);
-		int chat_no=0;
-		int chat_no1=0;
-		if(roomList.size()>0) {
-			for(int i=0; i<roomList.size(); i++)
-			{
-				for(int j=0; j<roomList.size(); j++)
-				{
-					chat_no=Integer.parseInt((String.valueOf(roomList.get(i).get("CHAT_NO"))));
-					chat_no1=Integer.parseInt((String.valueOf(roomList.get(j).get("CHAT_NO"))));
-					if(roomList.get(i).get("ROOM_NO").equals(roomList.get(j).get("ROOM_NO")))
-					{
-						listMap.put("ROOM_NO", roomList.get(j).get("ROOM_NO"));
-						listMap.put("CHAT_NO", roomList.get(j).get("CHAT_NO"));
-						listMap.put("MY_EMAIL", roomList.get(j).get("MY_EMAIL"));
-						listMap.put("FRIEND_EMAIL", roomList.get(j).get("FRIEND_EMAIL"));
-						listMap.put("MEMBER_EMAIL", roomList.get(j).get("MEMBER_EMAIL"));
-						listMap.put("MEMBER_NAME", roomList.get(j).get("MEMBER_NAME"));
-						listMap.put("MEMBER_PFP", roomList.get(j).get("MEMBER_PFP"));
-						listMap.put("WRITER", roomList.get(j).get("WRITER"));
-						listMap.put("MESSAGE", roomList.get(j).get("MESSAGE"));
-						listMap.put("WRITER_DATE", roomList.get(j).get("WRITER_DATE"));
-						listMap.put("READ", roomList.get(j).get("READ"));
-	
-						System.out.println("listMap : "+listMap);
-						System.out.println("--------------------------");
-					}
-				}
-				if(roomList.get(i).get("CHAT_NO").equals(listMap.get("CHAT_NO")))
-				{
-					roomListReal.add(listMap);
-					System.out.println("roomListReal : "+roomListReal);
-					System.out.println("--------------------------");
-					
-				}
-			}
-		}
-		roomMap.put("title", "FRIEND_EMAIL");
-		List<Map<String,Object>> roomList1=chattingService.roomList(roomMap);
-		if(roomList1.size()>0) {
-			for(int i=0; i<roomList1.size(); i++)
-			{
-				for(int j=0; j<roomList1.size(); j++)
-				{
-					chat_no=Integer.parseInt((String.valueOf(roomList1.get(i).get("CHAT_NO"))));
-					chat_no1=Integer.parseInt((String.valueOf(roomList1.get(j).get("CHAT_NO"))));
-					if(roomList1.get(i).get("ROOM_NO").equals(roomList1.get(j).get("ROOM_NO"))&&chat_no<chat_no1)
-					{
-						listMap.put("ROOM_NO", roomList.get(j).get("ROOM_NO"));
-						listMap.put("CHAT_NO", roomList.get(j).get("CHAT_NO"));
-						listMap.put("MY_EMAIL", roomList.get(j).get("MY_EMAIL"));
-						listMap.put("FRIEND_EMAIL", roomList.get(j).get("FRIEND_EMAIL"));
-						listMap.put("MEMBER_EMAIL", roomList.get(j).get("MEMBER_EMAIL"));
-						listMap.put("MEMBER_NAME", roomList.get(j).get("MEMBER_NAME"));
-						listMap.put("MEMBER_PFP", roomList.get(j).get("MEMBER_PFP"));
-						listMap.put("WRITER", roomList.get(j).get("WRITER"));
-						listMap.put("MESSAGE", roomList.get(j).get("MESSAGE"));
-						listMap.put("WRITER_DATE", roomList.get(j).get("WRITER_DATE"));
-						listMap.put("READ", roomList.get(j).get("READ"));
-	
-						System.out.println("listMap : "+listMap);
-						System.out.println("--------------------------");
-					}
-				}
-				if(roomList1.get(i).get("CHAT_NO").equals(listMap.get("CHAT_NO")))
-				{
-					roomListReal.add(listMap);
-					System.out.println("roomListReal : "+roomListReal);
-					System.out.println("--------------------------");
-					
-				}
-			}
-		}
 		
 		/*채팅방찾기-----------------------------------------------------*/
 		//Map<String,String> roomMap=new HashMap();
@@ -250,8 +171,95 @@ public class ChattingController {
 			roomMap.put("my_email", email);
 			roomMap.put("friend_email", fEmail);
 			result=chattingService.createRoom(roomMap);
+			roomMap.put("mytitle", "MY_EMAIL");
+			roomMap.put("ftitle", "FRIEND_EMAIL");
+			roomMap.put("myEmail", email);
+			roomMap.put("fEmail", fEmail);
+			selectRoom=chattingService.selectRoom(roomMap);
 		}
 		
+		/*채팅방목록-----------------------------------------------------*/
+		
+		List<Map<String,Object>> roomListReal=new ArrayList<Map<String,Object>>();
+		
+		Map<String,Object> listMap=new HashMap<String,Object>(); 
+		roomMap.put("title", "MY_EMAIL");
+		roomMap.put("email", email);
+		List<Map<String,Object>> roomList=chattingService.roomList(roomMap);
+		int chat_no=0;
+		int chat_no1=0;
+		if(roomList.size()>0) {
+			for(int i=0; i<roomList.size(); i++)
+			{
+				Map<String,Object> rMap = new HashMap<>();
+				for(int j=0; j<roomList.size(); j++)
+				{
+					chat_no=Integer.parseInt((String.valueOf(roomList.get(i).get("CHAT_NO"))));
+					chat_no1=Integer.parseInt((String.valueOf(roomList.get(j).get("CHAT_NO"))));
+					if(roomList.get(i).get("ROOM_NO").equals(roomList.get(j).get("ROOM_NO")))
+					{
+						rMap.put("ROOM_NO", roomList.get(j).get("ROOM_NO"));
+						rMap.put("CHAT_NO", roomList.get(j).get("CHAT_NO"));
+						rMap.put("MY_EMAIL", roomList.get(j).get("MY_EMAIL"));
+						rMap.put("FRIEND_EMAIL", roomList.get(j).get("FRIEND_EMAIL"));
+						rMap.put("MEMBER_EMAIL", roomList.get(j).get("MEMBER_EMAIL"));
+						rMap.put("MEMBER_NAME", roomList.get(j).get("MEMBER_NAME"));
+						rMap.put("MEMBER_PFP", roomList.get(j).get("MEMBER_PFP"));
+						rMap.put("WRITER", roomList.get(j).get("WRITER"));
+						rMap.put("MESSAGE", roomList.get(j).get("MESSAGE"));
+						rMap.put("WRITER_DATE", roomList.get(j).get("WRITER_DATE"));
+						rMap.put("READ", roomList.get(j).get("READ"));
+						
+						System.out.println("rMap : "+rMap);
+						System.out.println("--------------------------");
+					}
+				}
+				if(roomList.get(i).get("CHAT_NO").equals(rMap.get("CHAT_NO")))
+				{
+					roomListReal.add(rMap);
+					System.out.println("roomListReal : "+roomListReal);
+					System.out.println("--------------------------");
+					
+				}
+			}
+		}
+		roomMap.put("title", "FRIEND_EMAIL");
+		List<Map<String,Object>> roomList1=chattingService.roomList(roomMap);
+		if(roomList1.size()>0) {
+			for(int i=0; i<roomList1.size(); i++)
+			{
+				Map<String,Object> rMap1 = new HashMap<>();
+				for(int j=0; j<roomList1.size(); j++)
+				{
+					chat_no=Integer.parseInt((String.valueOf(roomList1.get(i).get("CHAT_NO"))));
+					chat_no1=Integer.parseInt((String.valueOf(roomList1.get(j).get("CHAT_NO"))));
+					if(roomList1.get(i).get("ROOM_NO").equals(roomList1.get(j).get("ROOM_NO")))
+					{
+						rMap1.put("ROOM_NO", roomList1.get(j).get("ROOM_NO"));
+						rMap1.put("CHAT_NO", roomList1.get(j).get("CHAT_NO"));
+						rMap1.put("MY_EMAIL", roomList1.get(j).get("MY_EMAIL"));
+						rMap1.put("FRIEND_EMAIL", roomList1.get(j).get("FRIEND_EMAIL"));
+						rMap1.put("MEMBER_EMAIL", roomList1.get(j).get("MEMBER_EMAIL"));
+						rMap1.put("MEMBER_NAME", roomList1.get(j).get("MEMBER_NAME"));
+						rMap1.put("MEMBER_PFP", roomList1.get(j).get("MEMBER_PFP"));
+						rMap1.put("WRITER", roomList1.get(j).get("WRITER"));
+						rMap1.put("MESSAGE", roomList1.get(j).get("MESSAGE"));
+						rMap1.put("WRITER_DATE", roomList1.get(j).get("WRITER_DATE"));
+						rMap1.put("READ", roomList1.get(j).get("READ"));
+						
+						System.out.println("listMap : "+rMap1);
+						System.out.println("--------------------------");
+					}
+				}
+				if(roomList1.get(i).get("CHAT_NO").equals(rMap1.get("CHAT_NO")))
+				{
+					roomListReal.add(rMap1);
+					System.out.println("roomListReal : "+roomListReal);
+					System.out.println("--------------------------");
+					
+				}
+			}
+		}
 		
 		/*채팅내용 가져오기-------------------------------------------------*/
 		if(result<1)
@@ -262,8 +270,8 @@ public class ChattingController {
 			System.out.println("날짜    :   "+chat_contents);
 			model.addAttribute("chat_contents", chat_contents);
 		}
-		model.addAttribute("roomListReal",roomListReal);
 		model.addAttribute("selectRoom",selectRoom);
+		model.addAttribute("roomListReal",roomListReal);
 		model.addAttribute("host",request.getRemoteAddr());
 		return "chat/friendChatting";
 	}

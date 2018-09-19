@@ -41,7 +41,7 @@ public class FriendDaoImpl implements FriendDao{
 	}
 	@Override
 	public int friendRequest(SqlSessionTemplate sqlSession, Map<String, String> fr) {
-		System.out.println("asdasd---------------------------"+fr);
+		System.out.println("friendRequest dao : "+fr);
 		return sqlSession.insert("friend.friendRequest",fr);
 	}
 
@@ -49,7 +49,7 @@ public class FriendDaoImpl implements FriendDao{
 	public List<Map<String,Object>> requestList(SqlSessionTemplate sqlSession, Map<String,String> map) {
 		System.out.println("dao : "+map);
 		List<Map<String,Object>> list=sqlSession.selectList("friend.requestList",map);
-		System.out.println("tkqnfjdkadhdsfenlwan aweihaslda sdljasndlj"+list);
+		System.out.println("requestList DAO : "+list);
 		return list;
 	}
 

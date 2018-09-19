@@ -13,7 +13,7 @@
 var sock=new SockJS("<c:url value='/chatting'/>")
 sock.onmessage = onMessage;
 sock.onclose = onClose;
-sock.sendmessage=sendMessage;
+//sock.sendmessage=sendMessage;
 
 	var today=null;
 
@@ -27,9 +27,6 @@ sock.sendmessage=sendMessage;
 				scrollTop: $('#chatdata').get(0).scrollHeight
 			}, 10);
 		});
-		/* $('#exitBtn').click(function(){
-			sock.onclose();
-		}); */
 		
 		$('#search').keyup(function(){
 			$.ajax({
@@ -68,6 +65,7 @@ sock.sendmessage=sendMessage;
 		message[1] = ${selectRoom.room_no};
 		
 		console.log("message : " + $("#message").val());
+		console.log("message 값 : "+message)
 		console.log("message1" + message[0]);
 		console.log("message2" + message[1]);
 		console.log("${selectRoom.room_no}");
@@ -93,9 +91,9 @@ sock.sendmessage=sendMessage;
 			host = strArray[2].substr(1, strArray[2].indexOf(":") - 1);//실제아이피주소만 남기기
 			room_no = strArray[3];//방번호
 			today = new Date();
-			printDate = today.getFullYear() + "년 "
-					+ leadingZeros(today.getMonth(), 2) + "월 "
-					+ today.getDate() + "일";
+			printDate = today.getFullYear() + "-"
+					+ leadingZeros(today.getMonth()+1, 2) + "- "
+					+ today.getDate() + " " + leadingZeros(today.getHours(), 2) + ":"+ leadingZeros(today.getMinutes(), 2)+":"+leadingZeros(today.getSeconds(), 2);
 			printHour = leadingZeros(today.getHours(), 2) + ":"
 					+ leadingZeros(today.getMinutes(), 2);
 			console.log(printDate);
@@ -112,7 +110,7 @@ sock.sendmessage=sendMessage;
 						printHTML += "<p>" + message + "</p>";
 						printHTML += "<span class='time_date'> ";
 						/* printHTML += "<img src='${path}/resources/img/read.jpg' class='w3-circle' style='width:15px;height:15px;'>"; */
-						printHTML += " | " + printDate + "</span>";
+						printHTML += printDate + "</span>";
 						printHTML += "</div></div>";
 						$("#chatdata").append(printHTML);
 					}
@@ -128,8 +126,7 @@ sock.sendmessage=sendMessage;
 						printHTML += "<div class='received_msg'>";
 						printHTML += "<div class='received_withd_msg'>";
 						printHTML += "<p>" + message + "</p>";
-						printHTML += "<span class='time_date'> " + printHour
-								+ " | " + printDate + "</span>";
+						printHTML += "<span class='time_date'> " + printDate + "</span>";
 						printHTML += "</div></div></div>";
 						$("#chatdata").append(printHTML);
 					}
@@ -320,15 +317,13 @@ img{ max-width:100%;}
 									<div class="received_msg">
 										<div class="received_withd_msg">
 											<p>${chat.MESSAGE }</p>
-											<span class="time_date"> ${chat.WRITER_DATE}<fmt:formatDate value="${chat.WRITER_DATE}" pattern="yy-MM-dd"/> | <fmt:formatDate value="${chat.WRITER_DATE}" pattern="HH:mm"/></span>
+											<span class="time_date"> ${chat.WRITER_DATE}</span>
 										</div>
 									</div>
 								</div>
 							</c:if>
-							</c:forEach>
 								
 							<!-- 보낸 메세지 -->
-							<c:forEach items="${chat_contents }" var="chat">
 							<c:if test="${chat.MEMBER_EMAIL==memberLoggedIn.getMemberEmail() }">
 								<div class="outgoing_msg m-1">
 								
@@ -338,8 +333,7 @@ img{ max-width:100%;}
 										<c:if test="${chat.READ=='Y'}">
 											<img src="${path}/resources/img/read.jpg" class="w3-circle" style="width:15px;height:15px;">
 										</c:if> 
-										<fmt:parseDate value="${chat.WRITER_DATE}" pattern="yyyy-MM-dd HH:mm" var="myDate"/>
-										<%-- <fmt:formatDate value="${chat.WRITER_DATE}" pattern="yy-MM-dd HH:mm"/> --%><%-- |  <fmt:formatDate value="${chat.WRITER_DATE}" pattern="HH:mm"/> --%></span>
+										 ${chat.WRITER_DATE}</span>
 									</div>
 								</div>
 							</c:if>
@@ -385,10 +379,13 @@ img{ max-width:100%;}
 												</div>
 												<div class="chat_ib">
 													<h5>${r.MEMBER_NAME}
-														<span class="chat_date">Dec 25</span>
+														<span class="chat_date">${r.WRITER_DATE }</span>
 													</h5>
-													<p>Test, which is a new approach to have all solutions
-														astrology under one roof.</p>
+													<p>
+													<c:if test="${memberLoggedIn.getMemberEmail()==r.WRITER}">
+														회원님의 메세지 : 
+													</c:if>
+														${r.MESSAGE }</p>
 												</div>
 											</div>
 										</div>
