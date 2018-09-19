@@ -795,7 +795,7 @@ function fn_friendAdd(e,mail){
 		success : function(data){
 			
 				$(e).attr("onclick","fn_two(this,'"+mail+"')");
-				$(e).attr("src","${path }/resources/img/request.png");
+				$(e).attr("src","${path }/resources/img/delete.png");
 				var msg = decodeURIComponent(data.msg);
 			alert(msg);
 		
@@ -810,7 +810,7 @@ function fn_two(e,mail) {
 		dataType:"json",
 		success : function(data){
 			
-				$(e).attr("onclick","fn_two(this,'"+mail+"')");
+				$(e).attr("onclick","fn_friendAdd(this,'"+mail+"')");
 				$(e).attr("src","${path }/resources/img/friendAdd.png");
 				var msg = decodeURIComponent(data.msg);
 			alert(msg);
