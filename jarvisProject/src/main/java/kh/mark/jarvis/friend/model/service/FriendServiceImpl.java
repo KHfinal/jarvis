@@ -37,7 +37,7 @@ public class FriendServiceImpl implements FriendService{
 
 	@Override
 	public List<Member> selectCheckFriend(String email) {
-		return dao.selectselectCheckFriend(sqlSession,email);
+		return dao.selectCheckFriend(sqlSession,email);
 	}
 	@Override
 	public List<Member> selectRecognizableList(String email) {
@@ -49,7 +49,6 @@ public class FriendServiceImpl implements FriendService{
 	}
 	@Override
 	public int friendRequest(Map<String, String> fr) {
-		// TODO Auto-generated method stub
 		return dao.friendRequest(sqlSession,fr);
 	}
 
@@ -58,7 +57,7 @@ public class FriendServiceImpl implements FriendService{
 		System.out.println("service : "+map);
 		return dao.requestList(sqlSession, map);
 	}
-
+	
 	@Override
 	public int friendAgree(Map<String, String> fr) {
 		// TODO Auto-generated method stub

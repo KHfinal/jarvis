@@ -86,15 +86,7 @@ public class FriendController{
 			/*System.out.println("memberConcernList 크기: "+ memberConcernList.size());*/
 			
 			for(int j=0;j<memberConcernList.size();j++){
-				/*if(j==memberConcernList.size()) {
-					break;
-				}else {
-					if( !(concernCompareList.contains(memberConcernList.get(j)) )) {
-						concernCompareList.add(memberConcernList.get(j));
-					}else {
-						continue;
-					}
-				}*/
+				
 				System.out.println("memberConcernList["+j+"] " + memberConcernList.get(j).getMemberEmail());
 				for(int l = 0 ; l<concernCompareList.size();l++) {
 					System.out.println("concernCompareList["+l+"] " + concernCompareList.get(l).getMemberEmail());
@@ -116,9 +108,7 @@ public class FriendController{
 				System.out.println("concernCompareList["+d+"] " + concernCompareList.get(d).getMemberEmail());
 				if(checkFriend.get(s).getMemberEmail().equals(concernCompareList.get(d).getMemberEmail())) {
 					concernCompareList.remove(d);
-					/*if(concernCompareList.size()<=0) {
-						break;
-					}*/
+					
 					d--;
 					continue;
 				}
@@ -140,14 +130,9 @@ public class FriendController{
 		for(int g =0; g< concernCompareList.size(); g++) {
 			System.out.println("최종 concernCompareList["+g+"] : " + concernCompareList.get(g));
 		}
-		
 		String a = "";
 		try {
-			a = mapper.writeValueAsString(concernCompareList);
-			if(a==null) {
-				a="";
-			}
-			
+				a = mapper.writeValueAsString(concernCompareList);
 		}catch (Exception e) {
 			e.getMessage();
 		}
@@ -160,14 +145,12 @@ public class FriendController{
 		
 		List<Member> recognizeList = friendService.selectRecognizableList(email);
 		System.out.println("recognizeList : " + recognizeList);
-		
 		String a = "";
 		try {
-			a = mapper.writeValueAsString(recognizeList);
-			System.out.println("a reco : " + a);
+				a = mapper.writeValueAsString(recognizeList);
 		}catch (Exception e) {
+			e.getStackTrace();
 		}
-		
 		return a;
 	}
 	@RequestMapping("/friend/friendRequestSocial.do")
@@ -241,8 +224,6 @@ public class FriendController{
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-		
-		
 		return a;
 	}
 	
@@ -272,21 +253,14 @@ public class FriendController{
 
 		mv.addObject("friendList",friendList);
 		mv.addObject("friendList1",friendList1);
-		/*if(friendList.size()>0) {
-			for(int i=0;i<friendList1.size();i++)
-			{
-				if(!friendList.contains(friendList1.get(i)))
-				{
-					friendList.add(friendList1.get(i));	
-				}
-			}
-		}
-		else
-		{
-			friendList=friendList1;
-		}*/
+
+		// 접속한사람 친구목록 Member로 가져옴
+		List<Member> checkFriend = friendService.selectCheckFriend(email);
+	
 		System.out.println("asdasdasdasdasdasdasdasda"+friendList);
+		System.out.println("checkFriend : " + checkFriend);
 		mv.addObject("list",list);
+		mv.addObject("checkFriend",checkFriend);
 		mv.setViewName("friend/friendSearch");
 		
 		return mv;

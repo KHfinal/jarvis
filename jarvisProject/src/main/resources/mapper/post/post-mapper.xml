@@ -47,11 +47,7 @@
    
    <select id="selectPostList" resultType="post" resultMap="postMap">
       <!-- SELECT * FROM POST ORDER BY POST_DATE DESC -->
-      SELECT * 
-  	  FROM POST  
-	  WHERE POST_WRITER IN ((SELECT F1.F_FRIEND_EMAIL FROM FRIEND F1 WHERE F1.F_MEMBER_EMAIL = #{memberEmail}))
-	  OR POST_WRITER IN((SELECT F2.F_MEMBER_EMAIL FROM FRIEND F2 WHERE F2.F_FRIEND_EMAIL = #{memberEmail})) OR POST_WRITER = #{memberEmail}
-	  ORDER BY POST_DATE DESC
+    SELECT * FROM POST  WHERE POST_WRITER in (select f1.f_friend_email as a from friend f1 where f1.f_member_email =#{memberEmail} and f1.f_status ='Y' union select f2.f_member_email as a from friend f2 where f2.f_friend_email =#{memberEmail} and f2.f_status ='Y') OR POST_WRITER IN((SELECT F2.F_MEMBER_EMAIL FROM FRIEND F2 WHERE F2.F_FRIEND_EMAIL = #{memberEmail})) OR POST_WRITER = #{memberEmail} ORDER BY POST_DATE DESC
    </select>
    
    <select id="selectAttachList" parameterType="attach" resultType="attach" resultMap="attachMap">
