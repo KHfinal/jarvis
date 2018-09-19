@@ -45,13 +45,13 @@
 	    
 	    
 <div class="w3-col m8"> <!-- 메인 컨텐츠 시작 -->
-<div class="w3-card w3-round w3-white">
-	
+
+<div class="w3-card w3-round w3-white">  
 	<div class="container bootstrap snippet">
     <div class="row">
   		<div class="col-sm-10"><h1>프로필 사진</h1></div>
     </div><br>
-   
+ 
     	<div class="col-sm-9">
             <ul class="nav nav-tabs">
                <li class="active"><a href="${path }/myInfoView.do?member_email=${memberLoggedIn.memberEmail}">내 정보 </a></li> 
@@ -73,7 +73,13 @@
                          <div class="col-md-8">
 <!--                 				<h3>프로필 사진</h3>
  -->                				<img src="${path}/resources/profileImg/${memberLoggedIn.memberPFP}" height="200" alt="이미지 미리보기..." id="profile">
-                				<input type="file" onchange="previewFile()" class="form-control" id="profileFile" name="profileFile1">
+                			
+                			<hr>
+                			<div class="custom-file">	
+                					<input type="file" onchange="previewFile()" class="form-control" id="profileFile" name="profileFile1">
+                					<label class="custom-file-label" for="profileFile" >이미지 선택하기</label>
+                			</div>
+                		
                 		</div>
                       </div> 
                        
