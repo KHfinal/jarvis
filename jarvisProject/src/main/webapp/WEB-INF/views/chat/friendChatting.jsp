@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="java.util.*"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
@@ -66,6 +66,7 @@ sock.sendmessage=sendMessage;
 		var message = new Array();
 		message[0] = $("#message").val();
 		message[1] = ${selectRoom.room_no};
+		
 		console.log("message : " + $("#message").val());
 		console.log("message1" + message[0]);
 		console.log("message2" + message[1]);
@@ -111,7 +112,7 @@ sock.sendmessage=sendMessage;
 						printHTML += "<p>" + message + "</p>";
 						printHTML += "<span class='time_date'> ";
 						/* printHTML += "<img src='${path}/resources/img/read.jpg' class='w3-circle' style='width:15px;height:15px;'>"; */
-						printHour += " | " + printDate + "</span>";
+						printHTML += " | " + printDate + "</span>";
 						printHTML += "</div></div>";
 						$("#chatdata").append(printHTML);
 					}
@@ -319,7 +320,7 @@ img{ max-width:100%;}
 									<div class="received_msg">
 										<div class="received_withd_msg">
 											<p>${chat.MESSAGE }</p>
-											<span class="time_date"> ${chat.WRITER_DATE}<%-- <fmt:formatDate value="${chat.WRITER_DATE}" pattern="yy-MM-dd"/> | <fmt:formatDate value="${chat.WRITER_DATE}" pattern="HH:mm"/> --%></span>
+											<span class="time_date"> ${chat.WRITER_DATE}<fmt:formatDate value="${chat.WRITER_DATE}" pattern="yy-MM-dd"/> | <fmt:formatDate value="${chat.WRITER_DATE}" pattern="HH:mm"/></span>
 										</div>
 									</div>
 								</div>
@@ -333,7 +334,12 @@ img{ max-width:100%;}
 								
 									<div class="sent_msg">
 										<p>${chat.MESSAGE }</p>
-										<span class="time_date"><c:if test="${chat.READ=='Y'}"><img src="${path}/resources/img/read.jpg" class="w3-circle" style="width:15px;height:15px;"></c:if> ${chat.WRITER_DATE}<%-- <fmt:formatDate value="${chat.WRITER_DATE}" pattern="yy-MM-dd"/> | <fmt:formatDate value="${chat.WRITER_DATE}" pattern="HH:mm"/> --%></span>
+										<span class="time_date">
+										<c:if test="${chat.READ=='Y'}">
+											<img src="${path}/resources/img/read.jpg" class="w3-circle" style="width:15px;height:15px;">
+										</c:if> 
+										<fmt:parseDate value="${chat.WRITER_DATE}" pattern="yyyy-MM-dd HH:mm" var="myDate"/>
+										<%-- <fmt:formatDate value="${chat.WRITER_DATE}" pattern="yy-MM-dd HH:mm"/> --%><%-- |  <fmt:formatDate value="${chat.WRITER_DATE}" pattern="HH:mm"/> --%></span>
 									</div>
 								</div>
 							</c:if>
@@ -369,7 +375,7 @@ img{ max-width:100%;}
 							</div>
 						</div>
 						<div id="inbox_chat" class="inbox_chat p-0">
-							<c:forEach items="${roomList }" var="r">
+							<c:forEach items="${roomListReal }" var="r">
 								<div class="chat_list active_chat p-0">
 									<a href="${path}/chat/createRoom?fEmail=${r.MEMBER_EMAIL}" class="p-0">
 										<div class="chat_list active_chat">
@@ -389,7 +395,7 @@ img{ max-width:100%;}
 									</a>
 								</div>
 							</c:forEach>
-							<c:forEach items="${roomList1 }" var="r1">
+							<%-- <c:forEach items="${roomList1 }" var="r1">
 								<div class="chat_list p-0">
 									<a href="${path}/chat/createRoom?fEmail=${r1.MEMBER_EMAIL}" class="p-0">
 										<div class="chat_list active_chat">
@@ -408,7 +414,7 @@ img{ max-width:100%;}
 										</div>
 									</a>
 								</div>
-							</c:forEach>
+							</c:forEach> --%>
 						</div>
 					</div>
 				</div>
