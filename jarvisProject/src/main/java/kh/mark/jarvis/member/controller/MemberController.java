@@ -49,7 +49,25 @@ public class MemberController {
 	
 	private static List<String> sessionList = new ArrayList<>();
 	
-	
+	//추가정보 입력 안하고 건너뛰기
+	@RequestMapping("/member/memberNext.do")
+	public ModelAndView memberNext(ModelAndView mv, int memberNo) {
+		
+		int result = memberService.memberNext(memberNo);
+		
+		String msg = "이후 추가 정보입력은 내 정보 수정에서 가능합니다.";
+		String loc = "/post/socialHomeView.do";
+		if(result<=0) {
+			msg = "건너뛰기 실패. 다시 시도해 주세요";
+			loc="/";
+		}
+		
+		mv.addObject("msg", msg);
+		mv.addObject("loc", loc);
+		mv.setViewName("common/msg");
+		
+		return mv;
+	}
 	// 로그인 정보
 	@RequestMapping(value="/member/login.do",method=RequestMethod.POST)
 	public ModelAndView memberLogin(String memberEmail, String memberPw) {

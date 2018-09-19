@@ -90,5 +90,7 @@
   <select id="searchList" parameterType="map" resultMap="memberMap">
   	select * from member where ${type} like '%'||#{keyword}||'%'
   </select>
-  
+  <update id="memberNext" parameterType="_int">
+  	update member set addinfo='Y' where member_no = #{memberNo}
+  </update>
 </mapper>

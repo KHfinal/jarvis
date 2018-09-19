@@ -92,5 +92,10 @@ public class MemberDaoImpl implements MemberDao{
 		return sqlSession.selectList("member.searchList", map);
 	}
 
+	@Override
+	public int memberNext(SqlSessionTemplate sqlSession, int memberNo) {
+		return sqlSession.update("member.memberNext",memberNo);
+	}
+
 	
 }

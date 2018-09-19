@@ -97,10 +97,16 @@ function previewFile() {
 	                    <div class="form-row">
 	                       <!--  <div class="col-md-12 content-right">    -->
 	                     	<button class="btn btn-info mt-2" type="submit">등록</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	                      	<button type="button"class="btn btn-info mt-2" data-toggle="modal" data-target="#myModal">건너뛰기</button>
+	                      	<button type="button"class="btn btn-info mt-2" onclick="checkModal();">건너뛰기</button>
 	                   </div>
                    </form>
                    <!-- 건너뛰기 확인 Modal -->
+
+                    <!-- </div> -->      
+                </div>
+
+
+<jsp:include page="/WEB-INF/views/common/firstFooter.jsp"/>
   <!-- The Modal -->
   <div class="modal fade" id="myModal">
     <div class="modal-dialog">
@@ -108,32 +114,32 @@ function previewFile() {
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Modal Heading</h4>
+          <h4 class="modal-title">건너뛰기</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
         <!-- Modal body -->
         <div class="modal-body">
-          Modal body..
+          	추가정보를 입력하시지 않았을 경우 친구 추천 및 그룹 추천 서비스를 이용하실 수 없습니다. 건너 뛰시겠습니까?
         </div>
         
         <!-- Modal footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        	<button type="button" class = "btn btn-success" onclick="next()">확인</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">닫기</button>
         </div>
         
       </div>
     </div>
   </div>
-                    <!-- </div> -->      
-                </div>
-
-
-<jsp:include page="/WEB-INF/views/common/firstFooter.jsp"/>
-
 <script>
+	function next(){
+		var memberNo = ${memberLoggedIn.memberNo};
+		console.log(memberNo);
+		location.href = "${path}/member/memberNext.do?memberNo="+memberNo;
+	}
    function checkModal(){
-	   $("#myModal").modal('show');
+	   $("#myModal").modal();
    };
     //다음 API
    function execPostCode() {
