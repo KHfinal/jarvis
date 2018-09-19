@@ -36,6 +36,8 @@ public interface MemberService {
 
 	int memberNext(int memberNo);
 
+	Member selectMemberNo(int memberNo);
+
 
 	
 

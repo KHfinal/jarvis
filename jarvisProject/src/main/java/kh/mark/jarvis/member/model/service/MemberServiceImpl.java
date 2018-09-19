@@ -102,4 +102,9 @@ public class MemberServiceImpl implements MemberService{
 		return memberDao.memberNext(sqlSession,memberNo);
 	}
 
+	@Override
+	public Member selectMemberNo(int memberNo) {
+		return memberDao.selectMemberNo(sqlSession,memberNo);
+	}
+
 }

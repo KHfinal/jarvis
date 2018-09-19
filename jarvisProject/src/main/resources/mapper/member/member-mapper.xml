@@ -91,6 +91,9 @@
   	select * from member where ${type} like '%'||#{keyword}||'%'
   </select>
   <update id="memberNext" parameterType="_int">
-  	update member set addinfo='Y' where member_no = #{memberNo}
+  	update member set addinfo='Y',member_pfp='profileDefault.png' where member_no = #{memberNo}
   </update>
+  <select id="selectMemberNo" parameterType="_int" resultMap="memberMap">
+  	select * from member where member_no=#{memberNo}
+  </select>
 </mapper>

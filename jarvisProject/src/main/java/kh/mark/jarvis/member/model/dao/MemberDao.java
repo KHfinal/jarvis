@@ -53,4 +53,7 @@ public interface MemberDao {
 		int memberNext(SqlSessionTemplate sqlSession, int memberNo);
 
 
+		Member selectMemberNo(SqlSessionTemplate sqlSession, int memberNo);
+
+
 }

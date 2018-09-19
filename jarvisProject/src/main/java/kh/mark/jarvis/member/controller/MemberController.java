@@ -54,6 +54,7 @@ public class MemberController {
 	public ModelAndView memberNext(ModelAndView mv, int memberNo) {
 		
 		int result = memberService.memberNext(memberNo);
+		Member m = memberService.selectMemberNo(memberNo);
 		
 		String msg = "이후 추가 정보입력은 내 정보 수정에서 가능합니다.";
 		String loc = "/post/socialHomeView.do";
@@ -61,7 +62,7 @@ public class MemberController {
 			msg = "건너뛰기 실패. 다시 시도해 주세요";
 			loc="/";
 		}
-		
+		mv.addObject("memberLoggedIn", m);
 		mv.addObject("msg", msg);
 		mv.addObject("loc", loc);
 		mv.setViewName("common/msg");
