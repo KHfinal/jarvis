@@ -43,8 +43,11 @@ function previewFile() {
 	                <div class="col-md-8">
 	                	<h3>프로필 사진</h3>
 	                	<img src="${path }/resources/profileImg/profileDefault.png" height="200" alt="이미지 미리보기..." id="profile">
-	                	<input type="file" onchange="previewFile()" class="form-control" id="profileFile" name="profileFile1">
-						
+	                	<hr>
+	                	<div class="custom-file">	
+	                		<input type="file" onchange="previewFile()" class="form-control" id="profileFile" name="profileFile1">
+							<label class="custom-file-label" for="profileFile" >이미지 선택하기</label>
+						</div>
 	                </div>
 	                
 	                    <hr>
@@ -61,12 +64,12 @@ function previewFile() {
 	                   <div class="form-row">
 		                   <label>성별:</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		                   <div class="custom-control custom-radio">
-		                              <input type="radio" class="custom-control-input" id="gender0" name="memberGender" value="남">>
+		                              <input type="radio" class="custom-control-input" id="gender0" name="memberGender" value="남">
 		                        <label class="custom-control-label" for="gender0">남</label>
 		                   </div>    
 		                   &nbsp;&nbsp;
 		                    <div class="custom-control custom-radio">
-		                              <input type="radio" class="custom-control-input" id="gender1" name="memberGender" value="여">>
+		                              <input type="radio" class="custom-control-input" id="gender1" name="memberGender" value="여">
 		                        <label class="custom-control-label" for="gender1">여</label>
 		                   </div>    
 	                  
