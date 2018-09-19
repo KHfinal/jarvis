@@ -56,8 +56,8 @@ public class Page {
 		}
 		pageBar+="</ul>";
 		pageBar+="<script>";
-		pageBar+="function fn_paging(cPage,numPerPage){";
-		pageBar+="location.href='"+url+"?cPage='+cPage;";
+		pageBar+="function fn_paging(cPage){";
+		pageBar+="drawBoard(cPage)";
 		pageBar+="}";
 		pageBar+="</script>";
 		return pageBar;

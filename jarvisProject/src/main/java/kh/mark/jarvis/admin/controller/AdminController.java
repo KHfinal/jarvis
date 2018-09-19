@@ -24,6 +24,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kh.mark.jarvis.admin.model.service.AdminService;
+import kh.mark.jarvis.admin.model.vo.Notify;
 import kh.mark.jarvis.admin.model.vo.PageInfo;
 import kh.mark.jarvis.common.Page;
 import kh.mark.jarvis.member.model.service.MemberService;
@@ -186,13 +187,15 @@ public class AdminController {
 		Map<String,String> map = new HashMap<>();
 		int numPerPage=10;
 		List<Map<String, String>> mList = service.notifyList(cPage,numPerPage);
+		Notify n = (Notify)mList.get(0);
+		logger.debug(n.getNotifyDate().toString());
 		int totalCount = service.selectTotalcount();
 		String url = "notifyList.do";
 		logger.debug("totalCount : "+totalCount);
 		String pageBar = new Page().getPage(cPage, numPerPage, totalCount, url);
 		logger.debug("pageBar"+pageBar);
 		map.put("pageBar", pageBar);
-		//mList.add(map);
+		mList.add(map);
 
 		String json = new ObjectMapper().writeValueAsString(mList);
 	

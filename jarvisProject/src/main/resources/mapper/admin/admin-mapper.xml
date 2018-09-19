@@ -16,7 +16,14 @@
 	<update id="unlock">
 		update member set block_date=null where block_date &lt; sysdate
 	</update>
-	<resultMap type="notify" id="notifyMap"></resultMap>
+	<resultMap type="notify" id="notifyMap">
+		<result column="notify_no" property="notifyNo"/>
+		<result column="post_no" property="postNo"/>
+		<result column="post_writer" property="postWriter"/>
+		<result column="notify_writer" property="notifyWriter"/>
+		<result column="notify_reason" property="notifyReason"/>
+		<result column="notify_date" property="notifyDate"/>
+	</resultMap>
 	<select id="notifyList" resultMap="notifyMap">
 		select * from notify order by notify_date desc
 	</select>
