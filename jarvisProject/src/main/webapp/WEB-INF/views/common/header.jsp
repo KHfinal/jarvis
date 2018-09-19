@@ -196,16 +196,15 @@
 			var size =userIdList.length;
 			$.each(data,function(i,item){
 				var fList= item.memberEmail;
-				
 				friendList.push(item.memberEmail);
 				for(var k =0; k<size;k++){
 					console.log("userIdList[k] : "+userIdList[k]);
 				    if(fList==userIdList[k]){																																			
-						friendListTag = "<a href='#' class='w3-bar-item w3-button' style='text-decoration:none'><img src='${path}/resources/profileImg/"+item.memberPFP+"' class='w3-circle' style='height:3%;width:15%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+item.memberEmail+"&nbsp;&nbsp;&nbsp;&nbsp;<span aria-label='현재 활동 중' style='text-align: right;background: rgb(66, 183, 42); border-radius: 50%; display: inline-block; height: 6px; margin-left: 4px; width: 6px;'></span></a><br>";
+						friendListTag = "<a href='javascript:void(0)' onclick='goMyPage(this)'title='"+item.memberEmail+"' class='w3-bar-item w3-button' style='text-decoration:none'><img src='${path}/resources/profileImg/"+item.memberPFP+"' class='w3-circle' style='height:3%;width:15%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+item.memberEmail+"&nbsp;&nbsp;&nbsp;&nbsp;<span aria-label='현재 활동 중' style='text-align: right;background: rgb(66, 183, 42); border-radius: 50%; display: inline-block; height: 6px; margin-left: 4px; width: 6px;'></span></a><br>";
 						su++;
 						break;
 				    }else{
-				    	friendListTag = "<a href='#' class='w3-bar-item w3-button' style='text-decoration:none'><img src='${path}/resources/profileImg/"+item.memberPFP+"' class='w3-circle' style='height:3%;width:15%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+item.memberEmail+"</a><br>";
+				    	friendListTag = "<a href='javascript:void(0)' onclick='goMyPage(this)'title='"+item.memberEmail+"' class='w3-bar-item w3-button' style='text-decoration:none'><img src='${path}/resources/profileImg/"+item.memberPFP+"' class='w3-circle' style='height:3%;width:15%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+item.memberEmail+"</a><br>";
 				    }
 				} 
 				$('#myDropdown').append(friendListTag);
@@ -217,7 +216,7 @@
 	$.ajax({
 		url:"${path}/chat/countRead",
 		type:"get",
-		data:{email,email},
+		data:{email:email},
 		dataType:"json",
 		success : function(data){
 			$('#messanger').html("<i class='fa fa-envelope'></i><span id='su' class='w3-badge w3-right w3-small w3-green'>"+data+"</span>");

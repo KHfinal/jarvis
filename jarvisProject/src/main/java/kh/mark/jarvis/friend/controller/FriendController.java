@@ -86,9 +86,7 @@ public class FriendController{
 			/*System.out.println("memberConcernList 크기: "+ memberConcernList.size());*/
 			
 			for(int j=0;j<memberConcernList.size();j++){
-				
-				
-				if(j==memberConcernList.size()) {
+				/*if(j==memberConcernList.size()) {
 					break;
 				}else {
 					if( !(concernCompareList.contains(memberConcernList.get(j)) )) {
@@ -96,54 +94,63 @@ public class FriendController{
 					}else {
 						continue;
 					}
+				}*/
+				System.out.println("memberConcernList["+j+"] " + memberConcernList.get(j).getMemberEmail());
+				for(int l = 0 ; l<concernCompareList.size();l++) {
+					System.out.println("concernCompareList["+l+"] " + concernCompareList.get(l).getMemberEmail());
+					if(memberConcernList.get(j).getMemberEmail().equals(concernCompareList.get(l).getMemberEmail())) {
+						concernCompareList.remove(l);
+						l--;
+						continue;
+					}
 				}
+				concernCompareList.add(memberConcernList.get(j));
+				
 			}
 		}
 		List<Member> checkFriend = friendService.selectCheckFriend(email);
+		
 		for(int s = 0; s <checkFriend.size();s++) {
-			if(s == checkFriend.size()) {
-				break;
-			}
+			System.out.println("checkFriend["+s+"] " + checkFriend.get(s).getMemberEmail());
 			for(int d=0;d< concernCompareList.size();d++) {
-				if(d == concernCompareList.size()) {
+				System.out.println("concernCompareList["+d+"] " + concernCompareList.get(d).getMemberEmail());
+				if(checkFriend.get(s).getMemberEmail().equals(concernCompareList.get(d).getMemberEmail())) {
+					concernCompareList.remove(d);
+					/*if(concernCompareList.size()<=0) {
+						break;
+					}*/
+					d--;
+					continue;
+				}
+				
+			}
+		};
+		for(int q =0; q< concernCompareList.size();q++) {
+			if(concernCompareList.get(q).getMemberEmail().equals(email)) {
+				concernCompareList.remove(q);
+				
+				if(concernCompareList.size()<=0) {
 					break;
 				}
-				if(checkFriend.get(s).getMemberEmail().equals(concernCompareList.get(d).getMemberEmail())) {
-					System.out.println("d : " +d);
-					System.out.println("checkFriend 값 : "+checkFriend.get(s).getMemberEmail());
-					System.out.println("concernCompareList 값 : "+concernCompareList.get(d).getMemberEmail());
-					
-					concernCompareList.remove(d);
-					d--;
-					continue;
-				}if(concernCompareList.get(d).getMemberEmail().equals(email)) {
-					System.out.println("d : " +d);
-					concernCompareList.remove(d);
-					d--;
-					continue;
-					
-				}
+				q--;
+						
 			}
-		};/*selectCheckFriend*/
-		/*System.out.println("내 친구 목록 ");
-		for(int z =0; z<checkFriend.size();z++) {
-			System.out.println("checkFriend["+z+"] "+checkFriend.get(z));
+			
 		}
-		System.out.println("관심사 같은 멤버 목록");
-		for(int x =0; x<concernCompareList.size();x++) {
-			System.out.println("concernCompareList["+x+"] "+concernCompareList.get(x));
-		}*/
-	
+		for(int g =0; g< concernCompareList.size(); g++) {
+			System.out.println("최종 concernCompareList["+g+"] : " + concernCompareList.get(g));
+		}
+		
+		
 		String a = "";
 		try {
-			
 			a = mapper.writeValueAsString(concernCompareList);
 			
 			
 		}catch (Exception e) {
 			e.getMessage();
 		}
-		
+		System.out.println("a concern" + a);
 		return a;
 	}
 	@RequestMapping("/friend/recognizableRecommendList.do")
@@ -157,7 +164,7 @@ public class FriendController{
 		String a = "";
 		try {
 			a = mapper.writeValueAsString(recognizeList);
-			System.out.println("a : " + a);
+			System.out.println("a reco : " + a);
 		}catch (Exception e) {
 		}
 		

@@ -180,6 +180,7 @@ public class AdminController {
 		return new ResponseEntity(json, responseHeaders, HttpStatus.CREATED);
 	} 
 	
+
 	@RequestMapping("/admin/notifyList.do")
 	@ResponseBody
 	public ResponseEntity notifyList(int cPage) throws JsonProcessingException {
@@ -202,4 +203,14 @@ public class AdminController {
 		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
 		return new ResponseEntity(json, responseHeaders, HttpStatus.CREATED);
 	}
+
+	
+	// 용석
+//	@RequestMapping("/admin/postNotify.do")
+//	public ModelAndView insertPostNotify(Notify notify) {
+//		ModelAndView mv = new ModelAndView();
+//		
+//		return mv;
+//	}
+
 }

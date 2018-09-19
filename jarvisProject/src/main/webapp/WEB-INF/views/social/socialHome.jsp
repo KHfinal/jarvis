@@ -143,14 +143,14 @@ $(function() {
           
           $.each(count, function(idx, val) {
               if($('.likePostCount-container[title=' + val.POST_REF + ']').attr('title') == val.POST_REF && val.LIKE_CHECK == 1) {
-                  var html = "<p class='likePostCount'>" + val.CNT + "</p>";
+                     var html = "<p class='likePostCount'>" + val.CNT + "</p>";
                      $('.likePostCount-container[title=' + val.POST_REF + ']').html(html);
-                }
+              }
               
               if($('.likeCommentCount-container[title=' + val.COMMENT_REF + ']').attr('title') == val.COMMENT_REF && val.LIKE_CHECK == 2) {
-                  var html = "<p class='likeCommentCount'>" + val.CNT + "</p>";
+                     var html = "<p class='likeCommentCount'>" + val.CNT + "</p>";
                      $('.likeCommentCount-container[title=' + val.COMMENT_REF + ']').html(html);
-               }
+              }
           });
           
       },
@@ -166,7 +166,7 @@ $(function() {
 });
 
 /* 좋아요 전송 */
-function fn_postLike(e) { 
+function fn_postLike(e) { /* 좋아요 전송 */
    
    var btn = $(e)
    var likeFrm = btn.next($('.likeFrm'));
@@ -181,7 +181,7 @@ function fn_postLike(e) {
    else{
       btn.children().removeClass();
       btn.children().addClass('far fa-heart like');
-      likeUrl="${pageContext.request.contextPath}/post/likeDeleteAndSelect.do";
+      likeUrl = "${pageContext.request.contextPath}/post/likeDeleteAndSelect.do";
    }
    
    $.ajaxSettings.traditional = true;
@@ -195,7 +195,7 @@ function fn_postLike(e) {
          likeCheck : likeFrm.children('.likeCheck').val(),
       },
       contentType : "application/x-www-form-urlencoded; charset=utf-8",
-      dataType : "json",
+       dataType : "json",
         
       success: function(data) {
          var likeMember;
@@ -208,20 +208,17 @@ function fn_postLike(e) {
             postRef = item.postRef;
             commentRef = item.commentRef;
             likeCheck = item.likeCheck;
-            
-            /* 버튼 클릭 이후 Count 출력 */
-            if(data.count == 0 || likeFrm.children('.postRef').val() == postRef && likeFrm.children('.likeCheck').val() == 1) {
-               var html = "<p class='likePostCount'>" + data.count + "</p>";
-               likeFrm.next($('.likePostCount-container')).html(html);
-            }
-            
-            if(data.count == 0 || likeFrm.children('.commentRef').val() == commentRef && likeFrm.children('.likeCheck').val() == 2) {
-               var html = "<p class='likeCommentCount'>" + data.count  + "</p>";
-               likeFrm.next($('.likeCommentCount-container')).html(html);
-            }
          });
          
+         if(data.count == 0 || likeFrm.children('.postRef').val() == postRef && likeFrm.children('.likeCheck').val() == 1) {
+            var html = "<p class='likePostCount'>" + data.count + "</p>";
+            likeFrm.next($('.likePostCount-container')).html(html);
+         }
          
+         if(data.count == 0 || likeFrm.children('.commentRef').val() == commentRef && likeFrm.children('.likeCheck').val() == 2) {
+            var html = "<p class='likeCommentCount'>" + data.count + "</p>";
+            likeFrm.next($('.likeCommentCount-container')).html(html);
+         } 
       },
       
       error: function(xhr, status, errormsg) {
@@ -230,8 +227,8 @@ function fn_postLike(e) {
          console.log(errormsg);
       }
    });
-
 }
+
 
 function subMenuPostUpdate(e) {
    var btn = $(e);
@@ -258,6 +255,12 @@ function subMenuCommentDelete(e) {
    var btnCommentNo = btn.attr('title');
    
    location.href="${pageContext.request.contextPath}/post/deleteComment.do?commentNo=" + btnCommentNo;
+}
+
+function subMenuPostNotify(e) {
+	var btn = $(e);
+	var frm = $('#updatePostFrm');
+	
 }
 
 function goMyPage(e) {
@@ -372,13 +375,12 @@ function goMyPage(e) {
               <div class="subMenu-container dropdown-menu">
                 <a href="javascript:void(0);" onclick="subMenuPostUpdate(this)" title="${post.getPostNo() }" class="dropdown-item" data-toggle="modal" data-target="#postUpdateModal">수정하기</a>
                 <a href="javascript:void(0);" onclick="subMenuPostDelete(this)" title="${post.getPostNo() }" class="dropdown-item" data-toggle="modal" data-target="#postDeleteModal">삭제하기</a>
-                <%-- <a href="javascript:void(0);" onclick="subMenuPostReport(this)" title="${post.getPostNo() }" class="dropdown-item">신고하기</a> --%>
               </div>
               </c:when>
               
               <c:otherwise>
               <div class="subMenu-container dropdown-menu">
-                <a href="javascript:void(0);" onclick="subMenuPostReport(this)" title="${post.getPostNo() }" class="dropdown-item">신고하기</a>
+                <a href="javascript:void(0);" onclick="subMenuPostNotify(this)" title="${post.getPostNo() }" class="dropdown-item" data-toggle="modal" data-target="#postNotifyModal">신고하기</a>
               </div>
               </c:otherwise>
               </c:choose>
@@ -408,6 +410,7 @@ function goMyPage(e) {
                         
                         <div id="imgDisplayUpdateContainer"></div>
                         <hr>
+                        <!--
                         
                         <div class="privacyBoundContainer">
                             <label for="privacyBound" style="display: inline; color: black;">공개 범위</label>
@@ -416,7 +419,8 @@ function goMyPage(e) {
                                <option value="friend">친구만</option>
                                <option value="private">나만 보기</option>
                             </select>
-                        </div>
+                        </div> 
+                        -->
                         
                         <div class="filebox"> <label for="imgUpdateInput">업로드</label> <input type="file" id="imgUpdateInput" name="upFile1" multiple> </div>
                      </div>
@@ -448,6 +452,40 @@ function goMyPage(e) {
                        <button type="submit" class="btn btn-primary text-center">삭제하기</button>
                        <input type="reset" class="btn btn-danger text-center" value="취소" data-dismiss="modal"/>
                    </div>
+                
+                </div>
+              </div>
+           </div>
+           
+           <!-- 게시글 신고 모달!! -->
+          <div class="modal fade" id="postNotifyModal">
+             <div class="modal-dialog">
+                <div class="modal-content">
+                
+                   <div class="modal-header">
+                      <h3 class="modal-title" style='color: black;'><strong>선택한 게시물</strong>을 신고하시겠습니까??</h3>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                   </div>
+                   
+                   <form id="NotifyPostFrm" method="post" action="${path }/admin/postNotify.do">
+	                   <div class="modal-body">
+	                   	  <p style="color: black;">소중한 의견을 보내주셔서 감사합니다.</p>
+	                      <input type="hidden" id="postNo" name="postNo" value="${post.getPostNo() }"/>
+	                      <input type="hidden" id="postWriter" name="postWriter" value="${post.getPostWriter() }"/>
+	                      <input type="hidden" id="notifyWriter" name="notifyWriter" value="${memberLoggedIn.getMemberEmail() }"/>
+	                      <select class="form-control" id="notifyReason" name="notifyReason">
+							<option value="폭력적인 내용이 포함되어 있습니다.">폭력적인 내용이 포함되어 있습니다.</option>
+							<option value="과도한 노출 이미지가 포함되어 있습니다.">과도한 노출 이미지가 포함되어 있습니다.</option>
+							<option value="자살 또는 자해 게시글입니다.">자살 또는 자해 게시글입니다.</option>
+							<option value="지나친 광고성 게시글 입니다.">지나친 광고성 게시글 입니다.</option>
+				          </select> 
+	                   </div>
+	                   
+	                   <div class="modal-footer">
+	                       <button type="submit" class="btn btn-primary text-center">삭제하기</button>
+	                       <input type="reset" class="btn btn-danger text-center" value="취소" data-dismiss="modal"/>
+	                   </div>
+                   </form>
                 
                 </div>
               </div>
@@ -497,7 +535,7 @@ function goMyPage(e) {
                     </c:otherwise>
                    </c:choose>
                    
-                     <!-- 댓글 수정 모달!! -->
+                   <!-- 댓글 수정 모달!! -->
                    <div class="modal fade" id="commentUpdateModal">
                      <div class="modal-dialog">
                         <div class="modal-content">
@@ -667,7 +705,7 @@ var tr="";
 		data:{searchKeyword : searchKeyword,searchType:searchType },
 		dataType:"json",
 		success : function(data){
-			$('.tablefriendKeyword').append("<tr><th colspan='2' style='text- '>친구 목록</th></tr>");
+			$('.tablefriendKeyword').append("<tr><th colspan='2' style='text-align:center '>친구 목록</th></tr>");
 			
 			console.log("friendList : " + friendList);
 			
@@ -686,7 +724,7 @@ var tr="";
 				}
 				if(friendList.length >=1){
 				for(var i =0; i<friendList.length;i++){
-					friendConcernTag ="";
+					friendKeywordTag ="";
 					if(friendList[i]==searchEmail ){
 						friendConcernTag ;
 						break;
@@ -694,9 +732,9 @@ var tr="";
 						break;
 					}
 					if(i==friendList.length-1){
-						 friendConcernTag = "<tr ><td style='padding-right:0%;'><img src='${path}/resources/profileImg/"+searchPFP+"' class='w3-circle' style='height:13%;width:16%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+searchEmail+'<img style="float:right; padding-top:3%;  " src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+searchEmail+"'"+');"/></td></tr>';
+						friendKeywordTag = "<tr ><td style='padding-right:0%;'><img src='${path}/resources/profileImg/"+searchPFP+"' class='w3-circle' style='height:13%;width:16%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+searchEmail+'<img style="float:right; padding-top:3%;  " src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+searchEmail+"'"+');"/></td></tr>';
 						if(searchEmail!=myEmail){
-							$('.tablefriendKeyword').append(friendConcernTag);
+							$('.tablefriendKeyword').append(friendKeywordTag);
 						}
 					 break;
 					}	
@@ -716,13 +754,16 @@ function concernSearch() {
 			data:{email:myEmail},
 			dataType:"json",
 			success : function(data){
+				var friendConcernTag ="";
 				$('.tablefriendConcern').empty();
 				$('.tablefriendConcern').append("<tr><th colspan='2' style='text- '>관심사가 비슷한 친구</th></tr>");
 				$.each(data,function(i,item){
 					var a = item;
-					
-					friendKeywordTag = "<tr ><td style='padding-right:0%;'><img src='${path}/resources/profileImg/"+a.memberPFP+"' class='w3-circle' style='height:13%;width:16%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+a.memberEmail+'<img style="float:right; padding-top:3%; " src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+a.memberEmail+"'"+');"/></td></tr>';
-					$('.tablefriendConcern').append(friendKeywordTag);
+					friendConcernTag = "<tr ><td style='padding-right:0%;'><img src='${path}/resources/profileImg/"+a.memberPFP+"' class='w3-circle' style='height:13%;width:16%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+a.memberEmail+'<img style="float:right; padding-top:3%; " src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+a.memberEmail+"'"+');"/></td></tr>';
+					if(a==""){
+						friendConcernTag ="<tr ><td style='padding-right:0%;'>관심사가 같은 친구를 찾을 수 없습니다</td></tr>"
+					}
+					$('.tablefriendConcern').append(friendConcernTag);
 				}); 
 			}
 		});
@@ -737,12 +778,16 @@ function recognizableSearch() {
 		data:{email:myEmail},
 		dataType:"json",
 		success : function(data){
+			var friendReco ="";
 			$('.tablefriendRecognize').empty();
 			$('.tablefriendRecognize').append("<tr><th colspan='2' style='text- '>알 수도 있는 친구</th></tr>");
 			$.each(data,function(i,item){
 				var recoList = item;
-				friendKeywordTag = "<tr ><td style='padding-right:0%;'><img src='${path}/resources/profileImg/"+recoList.memberPFP+"' class='w3-circle' style='height:13%;width:16%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+recoList.memberEmail+'<img style="float:right; padding-top:3%; " src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+recoList.memberEmail+"'"+');"/></td></tr>';
-				$('.tablefriendRecognize').append(friendKeywordTag);
+				friendReco = "<tr ><td style='padding-right:0%;'><img src='${path}/resources/profileImg/"+recoList.memberPFP+"' class='w3-circle' style='height:13%;width:16%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+recoList.memberEmail+'<img style="float:right; padding-top:3%; " src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+recoList.memberEmail+"'"+');"/></td></tr>';
+				if(recoList==""){
+					friendReco ="<tr ><td style='padding-right:0%;'>알 수 있는 친구가 없습니다 ㅠㅠ</td></tr>"
+				}
+				$('.tablefriendRecognize').append(friendReco);
 			}); 
 		}
 	});
@@ -761,7 +806,7 @@ function fn_friendAdd(e,mail){
 			alert(msg);
 		
 		}
-	})
+	});
 };
 function fn_two(e,mail) {
 	$.ajax({
@@ -777,9 +822,17 @@ function fn_two(e,mail) {
 			alert(msg);
 		
 		}
-	})
+	});
 }
 
+function searchValidata(){
+
+	if($('#searchKeyword').val()==""){
+		alert("검색어를 입력하세요~");
+		return false;
+	}
+	return true;
+}
 
 
 </script>
@@ -789,13 +842,13 @@ function fn_two(e,mail) {
             <label style="width: 100%; margin: 0%; text-align: center;" >친구찾기</label>
             
            <div class="input-group custom-search-form" >
-	          <select class="form-control" name="searchType" id='searchType' style="width: 20%;">
+	           <select class="form-control" name="searchType" id='searchType' style="width: 20%;">
 				<option value="member_email" ${'member_email' eq param.searchType?"selected":"" }>이메일</option>
 				<option value="member_name" ${'member_name'==param.searchType?"selected":"" }>이름</option>
 				<option value="ADDR2" ${'ADDR2' eq param.searchType?"selected":"" }>지역</option>
 	           </select> 
             
-            <input type="search" id="searchKeyword" placeholder="Search..." onkeypress="if( event.keyCode == 13 ){searchsearch();}" style="width: 60%; " />
+            <input type="search" id="searchKeyword" placeholder="Search..." onkeypress=" if( event.keyCode == 13 && searchValidata()){searchsearch();}" style="width: 60%; " />
             </div>	           
     </div><hr>
     <div class="input-group custom-search-form" >
@@ -806,7 +859,7 @@ function fn_two(e,mail) {
     </table>
     <table class='tablefriendConcern' style="width: 100%; margin: 0%; ">
     </table>
-    <table class='tablefriendRecognize' style="width: 100%; margin: 0%;">
+    <table class='tablefriendRecognize' style="width: 100%; margin: 0%; ">
     </table>
    
    
