@@ -25,6 +25,8 @@ public interface PostDao {
 	int deleteAttach(SqlSessionTemplate sqlSession, int postNo);
 
 	int deletePost(SqlSessionTemplate sqlSession, int postNo);
+	
+	int updateComment(SqlSessionTemplate sqlSession, JarvisComment comment);
 
 	int deleteComment(SqlSessionTemplate sqlSession, int commentNo);
 

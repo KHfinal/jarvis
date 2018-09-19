@@ -80,7 +80,7 @@ $(function() {
    
    /* reply 아이콘 클릭. 답글 달기! */ 
    $('.inputReplyIcon').click(function() {
-      var replyProfile = $('.postProfile').attr('src');
+      var replyProfile = $('#commentPro').attr('src');
       var replyPostRef = $(this).attr("title");
       var replyCommentRef = $(this).val();
       
@@ -230,18 +230,6 @@ function fn_postLike(e) { /* 좋아요 전송 */
 }
 
 
-function subMenuPostUpdate(e) {
-   var btn = $(e);
-   var btnPostNo = btn.attr('title');
-   var frm = $('#updatePostFrm');
-   
-   frm.find('#postNo').val(btnPostNo);
-}
-
-function subMenuCommentUpdate(e) {
-   
-}
-
 function subMenuPostDelete(e) {
    var btn = $(e);
    var btnPostNo = btn.attr('title');
@@ -250,17 +238,42 @@ function subMenuPostDelete(e) {
    
 }
 
+function subMenuPostUpdate(e) {
+   var btn = $(e);
+   var btnPostNo = btn.attr('title');
+   var frm = $('#updatePostFrm');
+   
+   frm.find('#postNo').val(btnPostNo);
+}
+
+function subMenuPostNotify(e) {
+	var btn = $(e);
+	var btnPostNo = btn.attr('title');
+	var btnPostWriter = btn.attr('id');
+	var frm = $('#notifyPostFrm');
+	
+	console.log("btnPostNo = " + btnPostNo);
+	console.log("btnPostWriter = " + btnPostWriter);
+	
+	frm.find('#postNo').val(btnPostNo);
+	frm.find('#postWriter').val(btnPostWriter);
+}
+
+function subMenuCommentUpdate(e) {
+   var btn = $(e);
+   var btnCommentNo = btn.attr('title');
+   var frm = $('#updateCommentFrm')
+   
+   frm.find('#commentNo').val(btnCommentNo);
+   console.log(btnCommentNo);
+}
+
+
 function subMenuCommentDelete(e) {
    var btn = $(e);
    var btnCommentNo = btn.attr('title');
    
    location.href="${pageContext.request.contextPath}/post/deleteComment.do?commentNo=" + btnCommentNo;
-}
-
-function subMenuPostNotify(e) {
-	var btn = $(e);
-	var frm = $('#updatePostFrm');
-	
 }
 
 function goMyPage(e) {
@@ -380,7 +393,7 @@ function goMyPage(e) {
               
               <c:otherwise>
               <div class="subMenu-container dropdown-menu">
-                <a href="javascript:void(0);" onclick="subMenuPostNotify(this)" title="${post.getPostNo() }" class="dropdown-item" data-toggle="modal" data-target="#postNotifyModal">신고하기</a>
+                <a href="javascript:void(0);" onclick="subMenuPostNotify(this)" title="${post.getPostNo() }" id="${post.getPostWriter() }" class="dropdown-item" data-toggle="modal" data-target="#postNotifyModal">신고하기</a>
               </div>
               </c:otherwise>
               </c:choose>
@@ -410,8 +423,6 @@ function goMyPage(e) {
                         
                         <div id="imgDisplayUpdateContainer"></div>
                         <hr>
-                        <!--
-                        
                         <div class="privacyBoundContainer">
                             <label for="privacyBound" style="display: inline; color: black;">공개 범위</label>
                             <select class="form-control" id="privacyBound" name="privacyBound">
@@ -420,7 +431,6 @@ function goMyPage(e) {
                                <option value="private">나만 보기</option>
                             </select>
                         </div> 
-                        -->
                         
                         <div class="filebox"> <label for="imgUpdateInput">업로드</label> <input type="file" id="imgUpdateInput" name="upFile1" multiple> </div>
                      </div>
@@ -467,7 +477,7 @@ function goMyPage(e) {
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                    </div>
                    
-                   <form id="NotifyPostFrm" method="post" action="${path }/admin/postNotify.do">
+                   <form id="notifyPostFrm" method="post" action="${path }/admin/postNotify.do">
 	                   <div class="modal-body">
 	                   	  <p style="color: black;">소중한 의견을 보내주셔서 감사합니다.</p>
 	                      <input type="hidden" id="postNo" name="postNo" value="${post.getPostNo() }"/>
@@ -482,7 +492,7 @@ function goMyPage(e) {
 	                   </div>
 	                   
 	                   <div class="modal-footer">
-	                       <button type="submit" class="btn btn-primary text-center">삭제하기</button>
+	                       <button type="submit" class="btn btn-primary text-center">신고하기</button>
 	                       <input type="reset" class="btn btn-danger text-center" value="취소" data-dismiss="modal"/>
 	                   </div>
                    </form>
@@ -518,23 +528,16 @@ function goMyPage(e) {
                 <c:if test="${comment.getCommentWriter() eq member.getMemberEmail() }">
                 <span><img class='commentProfile rounded-circle' src='${path }/resources/profileImg/${member.getMemberPFP() }'></span>
                 <a href="javascript:void(0)" onclick="goMyPage(this)" title="${member.getMemberEmail() }"><span class="goCommentWriter" style="color: #EE4035">${member.getMemberName() }</span></a>
-                  <!-- 댓글 서브 메뉴 -->
+                 
+                 <!-- 댓글 서브 메뉴 -->
+                 <c:if test="${comment.getCommentWriter() eq memberLoggedIn.getMemberEmail() }">
                  <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" title="${comment.getCommentNo() }" style="float: right; padding-top: 10px;"><i class="fas fa-angle-double-down subAwe" style="font-size: 1.1em;"></i></a>
-                 <c:choose>
-                    <c:when test="${comment.getCommentWriter() eq memberLoggedIn.getMemberEmail() }">
-                    <div class="subMenu-container dropdown-menu">
-                      <a href="javascript:void(0);" onclick="subMenuCommentUpdate(this)" title="${comment.getCommentNo() }" class="dropdown-item" data-toggle="modal" data-target="#commentUpdateModal">수정하기</a>
-                      <a href="javascript:void(0);" onclick="subMenuCommentDelete(this)" title="${comment.getCommentNo() }" class="dropdown-item" data-toggle="modal" data-target="#commentDeleteModal">삭제하기</a>
-                    </div>
-                    </c:when>
-                    
-                    <c:otherwise>
-                    <div class="subMenu-container dropdown-menu">
-                      <a href="javascript:void(0);" onclick="subMenuCommentReport(this)" title="${comment.getCommentNo() }" class="dropdown-item">신고하기</a>
-                    </div>
-                    </c:otherwise>
-                   </c:choose>
-                   
+                 </c:if>
+                 <div class="subMenu-container dropdown-menu">
+                   <a href="javascript:void(0);" onclick="subMenuCommentUpdate(this)" title="${comment.getCommentNo() }" class="dropdown-item" data-toggle="modal" data-target="#commentUpdateModal">수정하기</a>
+                   <a href="javascript:void(0);" onclick="subMenuCommentDelete(this)" title="${comment.getCommentNo() }" class="dropdown-item" data-toggle="modal" data-target="#commentDeleteModal">삭제하기</a>
+                 </div>
+
                    <!-- 댓글 수정 모달!! -->
                    <div class="modal fade" id="commentUpdateModal">
                      <div class="modal-dialog">
@@ -545,10 +548,11 @@ function goMyPage(e) {
                               <button type="button" class="close" data-dismiss="modal">&times;</button>
                            </div>
                                  
-                           <form id="updatePostFrm" method="post" action="${path }/post/postUpdate.do">
+                           <form id="updateCommentFrm" method="post" action="${path }/post/commentUpdate.do">
                               <div class="modal-body">
                                  <p>내용을 입력하세요</p>
-                                 <input type="text" id="updateCommentContents" name="updateCommentContents" class="form-control"/>
+                                 <input type="hidden" id="commentNo" name="commentNo"/>
+                                 <input type="text" id="commentContents" name="commentContents" class="form-control"/>
                                  <hr>
                               </div>
                               
@@ -625,23 +629,14 @@ function goMyPage(e) {
                   <c:if test="${comment.getCommentWriter() eq member.getMemberEmail() }">
                   <span><img class='replyProfile rounded-circle' src='${path }/resources/profileImg/${member.getMemberPFP() }'></span>
                   <a href="javascript:void(0)" onclick="goMyPage(this)" title="${member.getMemberEmail() }"><span class="goCommentWriter" style="color: #EE4035">${member.getMemberName() }</span></a>
-                  <!-- 답글 서브메뉴 -->
-                  <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" title="${comment.getCommentNo() }" style="float: right; padding-top: 10px;"><i class="fas fa-angle-double-down subAwe" style="font-size: 1.1em;"></i></a>
-                    <c:choose>
-                       <c:when test="${comment.getCommentWriter() eq memberLoggedIn.getMemberEmail() }">
-                       <div class="subMenu-container dropdown-menu">
-                         <a href="javascript:void(0);" onclick="subMenuCommentUpdate(this)" title="${comment.getCommentNo() }" class="dropdown-item" data-toggle="modal" data-target="#commentUpdateModal">수정하기</a>
-                         <a href="javascript:void(0);" onclick="subMenuCommentDelete(this)" title="${comment.getCommentNo() }" class="dropdown-item" data-toggle="modal" data-target="#commentDeleteModal">삭제하기</a>
-                         <%-- <a href="javascript:void(0);" onclick="subMenuCommentReport(this)" title="${comment.getCommentNo() }" class="dropdown-item">신고하기</a> --%>
-                       </div>
-                       </c:when>
-                       
-                       <c:otherwise>
-                       <div class="subMenu-container dropdown-menu">
-                         <a href="javascript:void(0);" onclick="subMenuCommentReport(this)" title="${comment.getCommentNo() }" class="dropdown-item">신고하기</a>
-                       </div>
-                       </c:otherwise>
-                    </c:choose>
+                     <!-- 댓글 서브 메뉴 -->
+	                 <c:if test="${comment.getCommentWriter() eq memberLoggedIn.getMemberEmail() }">
+	                 <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" title="${comment.getCommentNo() }" style="float: right; padding-top: 10px;"><i class="fas fa-angle-double-down subAwe" style="font-size: 1.1em;"></i></a>
+	                 </c:if>
+	                 <div class="subMenu-container dropdown-menu">
+	                   <a href="javascript:void(0);" onclick="subMenuCommentUpdate(this)" title="${comment.getCommentNo() }" class="dropdown-item" data-toggle="modal" data-target="#commentUpdateModal">수정하기</a>
+	                   <a href="javascript:void(0);" onclick="subMenuCommentDelete(this)" title="${comment.getCommentNo() }" class="dropdown-item" data-toggle="modal" data-target="#commentDeleteModal">삭제하기</a>
+	                 </div>
                   </c:if>
                </c:forEach>
                <span>&nbsp;&nbsp;${comment.getCommentContents() }</span>
@@ -669,7 +664,7 @@ function goMyPage(e) {
          <!-- 댓글 쓰기 -->
          <div id="inputComment-container">
             <form id="createCommentFrm" method="post" action="${path }/post/postCommentInsert.do">
-               <span><img class='commentProfile rounded-circle' src='${path }/resources/profileImg/${memberLoggedIn.getMemberPFP() }'></span>
+               <span><img class='commentProfile rounded-circle' src='${path }/resources/profileImg/${memberLoggedIn.getMemberPFP() }' id='commentPro'></span>
                <input type="text" id="inputCommentTxt" name="commentContents" class="form-control" placeholder=" 댓글을 입력하세요..."/>
                <input type="hidden" id="reply_postRef" name="postRef" value="${post.getPostNo() }"/>
                <input type="hidden" name="commentWriter" value="${memberLoggedIn.getMemberEmail() }"/>
