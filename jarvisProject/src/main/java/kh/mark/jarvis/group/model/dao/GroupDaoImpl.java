@@ -20,6 +20,42 @@ public class GroupDaoImpl implements GroupDao {
 	
 	
 	@Override
+	public int deleteComment(SqlSessionTemplate Session, int commentNo) {
+		// TODO Auto-generated method stub
+		return Session.delete("group.deleteComment", commentNo);
+	}
+
+	@Override
+	public int deleteGroup(SqlSessionTemplate Session, int groupNo) {
+		// TODO Auto-generated method stub
+		return Session.delete("group.deleteGroup", groupNo);
+	}
+
+	@Override
+	public List<GroupLike> selectMyLikeOn(SqlSessionTemplate Session, String memberEmail) {
+		// TODO Auto-generated method stub
+		return Session.selectList("group.selectMyLikeOn", memberEmail);
+	}
+
+	@Override
+	public List<Map<String, Object>> startLikeCount(SqlSessionTemplate Session) {
+		// TODO Auto-generated method stub
+		return Session.selectList("group.startLikeCount");
+	}
+
+	@Override
+	public List<Map<String, String>> selectAcceptMember(SqlSessionTemplate Session, int groupNo) {
+		// TODO Auto-generated method stub
+		return Session.selectList("group.selectAcceptMember", groupNo);
+	}
+
+	@Override
+	public int groupMemberReject(SqlSessionTemplate Session, String mEmail) {
+		// TODO Auto-generated method stub
+		return Session.delete("group.groupMemberReject", mEmail);
+	}
+
+	@Override
 	public int groupMemberDelete(SqlSessionTemplate Session, String mEmail) {
 		// TODO Auto-generated method stub
 		return Session.delete("group.groupMemberDelete", mEmail);
@@ -225,6 +261,12 @@ public class GroupDaoImpl implements GroupDao {
 	public List<Integer> myPostNoList(SqlSessionTemplate Session) {
 		// TODO Auto-generated method stub
 		return Session.selectList("group.myPostNoList");
+	}
+
+	@Override
+	public Map<String, String> selectMemberCheck(SqlSessionTemplate Session, Map check) {
+		// TODO Auto-generated method stub
+		return Session.selectOne("group.selectMemberCheck", check);
 	}
 	
 	
