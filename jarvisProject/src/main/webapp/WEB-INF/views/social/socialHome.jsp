@@ -744,6 +744,7 @@ var tr="";
 function concernSearch() {
 	ajax();
 		$('.tablefriendConcern').empty();
+		$('.tablefriendRecognize').empty();
 		var myEmail = '${memberLoggedIn.memberEmail}';
 		$.ajax({
 			url:"${path}/friend/concernRecommendList.do",
@@ -768,6 +769,7 @@ function concernSearch() {
 function recognizableSearch() {
 	ajax();
 	$('.tablefriendRecognize').empty();
+	$('.tablefriendConcern').empty();
 	var myEmail = '${memberLoggedIn.memberEmail}';
 	$.ajax({
 		url:"${path}/friend/recognizableRecommendList.do",
