@@ -41,6 +41,10 @@
 		display: absolute;
 		left: 50px;
 	}
+	
+	.m8{
+		margin-left: 5%;
+	}
 		
 </style>
 	    
@@ -50,25 +54,30 @@
 	    
 <div class="w3-col m8"> <!-- 메인 컨텐츠 시작 -->
 	
+<div class="w3-card w3-round w3-white">
+	<div class="container bootstrap snippet">
+	    <div class="row">
+	  		<div class="col-sm-10"><h1>프로필 정보</h1></div>
+	    </div>
+	<br>
 
-<div class="container bootstrap snippet">
-    <div class="row">
-  		<div class="col-sm-10"><h1>프로필 정보</h1></div>
-    </div>
-<br>
-
-
-        
-        
     	<div class="col-sm-9">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="${path }/myInfoView.do?member_email=${memberLoggedIn.memberEmail}">내 정보 </a></li> 
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                	<a class="nav-link active" data-toggle="tab" href="${path }/myInfoView.do?member_email=${memberLoggedIn.memberEmail}">내 정보 </a>
+                </li> 
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <li><a href="${path }/myInfoUpdateView.do?member_email=${memberLoggedIn.memberEmail}">정보수정</a></li>
+                <li > 
+                	<a  href="${path }/myInfoUpdateView.do?member_email=${memberLoggedIn.memberEmail}">정보수정</a>
+                </li>
                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-               <li><a href="${path }/myInfoPFP.do?member_email=${memberLoggedIn.memberEmail}">프로필사진 </a></li>
+               <li>
+               		<a href="${path }/myInfoPFP.do?member_email=${memberLoggedIn.memberEmail}">프로필사진 </a>
+               </li>
                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <li><a href="${path }/myinfoPwView.do?member_email=${memberLoggedIn.memberEmail}">비밀번호 변경 </a></li>
+                <li>
+                	<a href="${path }/myinfoPwView.do?member_email=${memberLoggedIn.memberEmail}">비밀번호 변경 </a>
+                </li>
               </ul>
 				
 		
@@ -78,8 +87,6 @@
             <div class="tab-pane active" id="home">
                 <hr>
                   <form class="form" action="#" method="post" id="registrationForm">
-                       
-                
                  
                      <div class="form-group">
                           <div class="col-xs-6">
@@ -239,7 +246,7 @@
         </div><!--/col-9-->
     </div><!--/row-->	
 
-
+</div>
 </div> <!-- 메인 컨텐트 끝  -->
 
 	
