@@ -1,6 +1,7 @@
 package kh.mark.jarvis.chatting.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,71 +39,190 @@ public class ChattingController {
 		String email = m.getMemberEmail();
 		Map<String,String> roomMap=new HashMap();
 		List<Map<String,Object>> roomListReal=new ArrayList<Map<String,Object>>();
-		
+
 		Map<String,Object> listMap=new HashMap<String,Object>(); 
 		roomMap.put("title", "MY_EMAIL");
 		roomMap.put("email", email);
 		List<Map<String,Object>> roomList=chattingService.roomList(roomMap);
-
-		roomMap.put("title", "FRIEND_EMAIL");
-		List<Map<String,Object>> roomList1=chattingService.roomList(roomMap);
-	
-		/*for(int i=0; i<roomList.size(); i++)
-		{
-			for(int j=0; j<roomList.size(); j++)
+		int chat_no=0;
+		int chat_no1=0;
+		if(roomList.size()>0) {
+			for(int i=0; i<roomList.size(); i++)
 			{
-				if(roomList.get(i).get("ROOM_NO")==roomList.get(j).get("ROOM_NO"))
+				Map<String,Object> rMap = new HashMap<>();
+				for(int j=0; j<roomList.size(); j++)
 				{
-					//roomListReal.add(roomList.get(j));
-					listMap.put("ROOM_NO", roomList.get(j).get("ROOM_NO"));
-					listMap.put("MY_EMAIL", roomList.get(j).get("MY_EMAIL"));
-					listMap.put("FRIEND_EMAIL", roomList.get(j).get("FRIEND_EMAIL"));
-					listMap.put("MEMBER_EMAIL", roomList.get(j).get("MEMBER_EMAIL"));
-					listMap.put("MEMBER_NAME", roomList.get(j).get("MEMBER_NAME"));
-					listMap.put("MEMBER_PFP", roomList.get(j).get("MEMBER_PFP"));
-					listMap.put("WRITER", roomList.get(j).get("WRITER"));
-					listMap.put("MESSAGE", roomList.get(j).get("MESSAGE"));
-					listMap.put("WRITER_DATE", roomList.get(j).get("WRITER_DATE"));
-					listMap.put("READ", roomList.get(j).get("READ"));
-					System.out.println("이중포문안에 roomList--------"+roomList.get(j));
-					roomListReal.add(listMap);
-					System.out.println("이중포문안에 roomListReal--------"+roomListReal);
+					chat_no=Integer.parseInt((String.valueOf(roomList.get(i).get("CHAT_NO"))));
+					chat_no1=Integer.parseInt((String.valueOf(roomList.get(j).get("CHAT_NO"))));
+					if(roomList.get(i).get("ROOM_NO").equals(roomList.get(j).get("ROOM_NO")))
+					{
+						rMap.put("ROOM_NO", roomList.get(j).get("ROOM_NO"));
+						rMap.put("CHAT_NO", roomList.get(j).get("CHAT_NO"));
+						rMap.put("MY_EMAIL", roomList.get(j).get("MY_EMAIL"));
+						rMap.put("FRIEND_EMAIL", roomList.get(j).get("FRIEND_EMAIL"));
+						rMap.put("MEMBER_EMAIL", roomList.get(j).get("MEMBER_EMAIL"));
+						rMap.put("MEMBER_NAME", roomList.get(j).get("MEMBER_NAME"));
+						rMap.put("MEMBER_PFP", roomList.get(j).get("MEMBER_PFP"));
+						rMap.put("WRITER", roomList.get(j).get("WRITER"));
+						rMap.put("MESSAGE", roomList.get(j).get("MESSAGE"));
+						rMap.put("WRITER_DATE", roomList.get(j).get("WRITER_DATE"));
+						rMap.put("READ", roomList.get(j).get("READ"));
+	
+						System.out.println("listMap : "+listMap);
+						System.out.println("--------------------------");
+						
+					}
+					
+				}
+				if(roomList.get(i).get("CHAT_NO").equals(rMap.get("CHAT_NO")))
+				{
+					roomListReal.add(rMap);
+					System.out.println("roomListReal : "+roomListReal);
+					System.out.println("--------------------------");
+					
 				}
 			}
-		}*/
+		}
+		roomMap.put("title", "FRIEND_EMAIL");
+		List<Map<String,Object>> roomList1=chattingService.roomList(roomMap);
+		if(roomList1.size()>0) {
+			for(int i=0; i<roomList1.size(); i++)
+			{
+				for(int j=0; j<roomList1.size(); j++)
+				{
+					chat_no=Integer.parseInt((String.valueOf(roomList1.get(i).get("CHAT_NO"))));
+					chat_no1=Integer.parseInt((String.valueOf(roomList1.get(j).get("CHAT_NO"))));
+					if(roomList1.get(i).get("ROOM_NO").equals(roomList1.get(j).get("ROOM_NO"))&&chat_no<chat_no1)
+					{
+						listMap.put("ROOM_NO", roomList.get(j).get("ROOM_NO"));
+						listMap.put("CHAT_NO", roomList.get(j).get("CHAT_NO"));
+						listMap.put("MY_EMAIL", roomList.get(j).get("MY_EMAIL"));
+						listMap.put("FRIEND_EMAIL", roomList.get(j).get("FRIEND_EMAIL"));
+						listMap.put("MEMBER_EMAIL", roomList.get(j).get("MEMBER_EMAIL"));
+						listMap.put("MEMBER_NAME", roomList.get(j).get("MEMBER_NAME"));
+						listMap.put("MEMBER_PFP", roomList.get(j).get("MEMBER_PFP"));
+						listMap.put("WRITER", roomList.get(j).get("WRITER"));
+						listMap.put("MESSAGE", roomList.get(j).get("MESSAGE"));
+						listMap.put("WRITER_DATE", roomList.get(j).get("WRITER_DATE"));
+						listMap.put("READ", roomList.get(j).get("READ"));
+	
+						System.out.println("listMap : "+listMap);
+						System.out.println("--------------------------");
+					}
+				}
+				if(roomList1.get(i).get("CHAT_NO").equals(listMap.get("CHAT_NO")))
+				{
+					roomListReal.add(listMap);
+					System.out.println("roomListReal : "+roomListReal);
+					System.out.println("--------------------------");
+					
+				}
+			}
+		}
+		
+		System.out.println("roomListReal : "+roomListReal);
 		Map<String,String> map=new HashMap();
 		map.put("title", "F_MEMBER_EMAIL");
 		map.put("email", email);
 		List<Map<String,Object>> friendList=friendService.friendList(map);
 		map.put("title", "F_FRIEND_EMAIL");
 		List<Map<String,Object>> friendList1=friendService.friendList(map);
-
-		model.addAttribute("roomList",roomList);
-		model.addAttribute("roomList1",roomList1);
+		model.addAttribute("roomListReal",roomListReal);
 		model.addAttribute("friendList",friendList);
 		model.addAttribute("friendList1",friendList1);
-		/*model.addAttribute("last_chat",last_chat);*/
-		/*model.addAttribute("last_chat1",last_chat1);*/
 		
 		return "chat/chattingView";
 	}
 	
 	@RequestMapping("/chat/createRoom")
-	public String createRoom(Model model, HttpSession hs, HttpServletRequest request, String fEmail, String roomNo)
+	public String createRoom(Model model, HttpSession hs, HttpServletRequest request, String fEmail)
 	{
 		Member m = (Member)hs.getAttribute("memberLoggedIn");
 		String email = m.getMemberEmail();
 		
 		/*채팅방목록-----------------------------------------------------*/
-		Map<String,String> chattingMap=new HashMap();
-		chattingMap.put("title", "MY_EMAIL");
-		chattingMap.put("email", email);
-		List<Map<String,Object>> roomList=chattingService.roomList(chattingMap);
-		
-		chattingMap.put("title", "FRIEND_EMAIL");
-		List<Map<String,Object>> roomList1=chattingService.roomList(chattingMap);
-		/*채팅방찾기-----------------------------------------------------*/
 		Map<String,String> roomMap=new HashMap();
+		List<Map<String,Object>> roomListReal=new ArrayList<Map<String,Object>>();
+		
+		Map<String,Object> listMap=new HashMap<String,Object>(); 
+		roomMap.put("title", "MY_EMAIL");
+		roomMap.put("email", email);
+		List<Map<String,Object>> roomList=chattingService.roomList(roomMap);
+		int chat_no=0;
+		int chat_no1=0;
+		if(roomList.size()>0) {
+			for(int i=0; i<roomList.size(); i++)
+			{
+				for(int j=0; j<roomList.size(); j++)
+				{
+					chat_no=Integer.parseInt((String.valueOf(roomList.get(i).get("CHAT_NO"))));
+					chat_no1=Integer.parseInt((String.valueOf(roomList.get(j).get("CHAT_NO"))));
+					if(roomList.get(i).get("ROOM_NO").equals(roomList.get(j).get("ROOM_NO")))
+					{
+						listMap.put("ROOM_NO", roomList.get(j).get("ROOM_NO"));
+						listMap.put("CHAT_NO", roomList.get(j).get("CHAT_NO"));
+						listMap.put("MY_EMAIL", roomList.get(j).get("MY_EMAIL"));
+						listMap.put("FRIEND_EMAIL", roomList.get(j).get("FRIEND_EMAIL"));
+						listMap.put("MEMBER_EMAIL", roomList.get(j).get("MEMBER_EMAIL"));
+						listMap.put("MEMBER_NAME", roomList.get(j).get("MEMBER_NAME"));
+						listMap.put("MEMBER_PFP", roomList.get(j).get("MEMBER_PFP"));
+						listMap.put("WRITER", roomList.get(j).get("WRITER"));
+						listMap.put("MESSAGE", roomList.get(j).get("MESSAGE"));
+						listMap.put("WRITER_DATE", roomList.get(j).get("WRITER_DATE"));
+						listMap.put("READ", roomList.get(j).get("READ"));
+	
+						System.out.println("listMap : "+listMap);
+						System.out.println("--------------------------");
+					}
+				}
+				if(roomList.get(i).get("CHAT_NO").equals(listMap.get("CHAT_NO")))
+				{
+					roomListReal.add(listMap);
+					System.out.println("roomListReal : "+roomListReal);
+					System.out.println("--------------------------");
+					
+				}
+			}
+		}
+		roomMap.put("title", "FRIEND_EMAIL");
+		List<Map<String,Object>> roomList1=chattingService.roomList(roomMap);
+		if(roomList1.size()>0) {
+			for(int i=0; i<roomList1.size(); i++)
+			{
+				for(int j=0; j<roomList1.size(); j++)
+				{
+					chat_no=Integer.parseInt((String.valueOf(roomList1.get(i).get("CHAT_NO"))));
+					chat_no1=Integer.parseInt((String.valueOf(roomList1.get(j).get("CHAT_NO"))));
+					if(roomList1.get(i).get("ROOM_NO").equals(roomList1.get(j).get("ROOM_NO"))&&chat_no<chat_no1)
+					{
+						listMap.put("ROOM_NO", roomList.get(j).get("ROOM_NO"));
+						listMap.put("CHAT_NO", roomList.get(j).get("CHAT_NO"));
+						listMap.put("MY_EMAIL", roomList.get(j).get("MY_EMAIL"));
+						listMap.put("FRIEND_EMAIL", roomList.get(j).get("FRIEND_EMAIL"));
+						listMap.put("MEMBER_EMAIL", roomList.get(j).get("MEMBER_EMAIL"));
+						listMap.put("MEMBER_NAME", roomList.get(j).get("MEMBER_NAME"));
+						listMap.put("MEMBER_PFP", roomList.get(j).get("MEMBER_PFP"));
+						listMap.put("WRITER", roomList.get(j).get("WRITER"));
+						listMap.put("MESSAGE", roomList.get(j).get("MESSAGE"));
+						listMap.put("WRITER_DATE", roomList.get(j).get("WRITER_DATE"));
+						listMap.put("READ", roomList.get(j).get("READ"));
+	
+						System.out.println("listMap : "+listMap);
+						System.out.println("--------------------------");
+					}
+				}
+				if(roomList1.get(i).get("CHAT_NO").equals(listMap.get("CHAT_NO")))
+				{
+					roomListReal.add(listMap);
+					System.out.println("roomListReal : "+roomListReal);
+					System.out.println("--------------------------");
+					
+				}
+			}
+		}
+		
+		/*채팅방찾기-----------------------------------------------------*/
+		//Map<String,String> roomMap=new HashMap();
 		roomMap.put("mytitle", "MY_EMAIL");
 		roomMap.put("ftitle", "FRIEND_EMAIL");
 		roomMap.put("myEmail", email);
@@ -115,13 +235,13 @@ public class ChattingController {
 		if(selectRoom==null) {
 			selectRoom=selectRoom1;
 		}
-		if(selectRoom!=null)
+		/*if(selectRoom!=null)
 		{
 			roomMap.put("mEmail", email);
 			roomMap.put("fEmail", fEmail);
 			roomMap.put("roomNo", roomNo);
-			int readResult=chattingService.readCheck(roomMap);
-		}
+			//int readResult=chattingService.readCheck(roomMap);
+		}*/
 		
 		/*채팅방생성-----------------------------------------------------*/
 		int result=0;
@@ -139,17 +259,16 @@ public class ChattingController {
 			Map<String,String> chatMap=new HashMap();
 			int room_no=selectRoom.getRoom_no();
 			List<Map<String,Object>> chat_contents=chattingService.contentsList(room_no);
-			System.out.println(chat_contents);
+			System.out.println("날짜    :   "+chat_contents);
 			model.addAttribute("chat_contents", chat_contents);
 		}
-		model.addAttribute("roomList",roomList);
-		model.addAttribute("roomList1",roomList1);
+		model.addAttribute("roomListReal",roomListReal);
 		model.addAttribute("selectRoom",selectRoom);
 		model.addAttribute("host",request.getRemoteAddr());
 		return "chat/friendChatting";
 	}
 	
-	@RequestMapping("/chat/countRead")
+	/*@RequestMapping("/chat/countRead")
 	public ModelAndView countRead(HttpSession hs) throws JsonProcessingException, UnsupportedEncodingException
 	{
 		ModelAndView mv=new ModelAndView();
@@ -161,6 +280,6 @@ public class ChattingController {
 		mv.setViewName("jsonView");
 		return mv;
 		
-	}
+	}*/
 	
 }

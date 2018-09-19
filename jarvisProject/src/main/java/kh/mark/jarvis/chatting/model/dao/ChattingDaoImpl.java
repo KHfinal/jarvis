@@ -52,8 +52,8 @@ public class ChattingDaoImpl implements ChattingDao {
 	}
 
 	@Override
-	public int countRead(SqlSessionTemplate sqlSession, String email) {
-		return sqlSession.selectOne("chatting.countRead", email);
+	public int countRead(SqlSessionTemplate sqlSession, String fEmail) {
+		return sqlSession.selectOne("chatting.countRead", fEmail);
 	}
 	
 	
