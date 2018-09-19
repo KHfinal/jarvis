@@ -59,7 +59,7 @@ public class MemberController {
 		
 		
 		String msg="";
-		String loc="";
+		String loc="/";
 		
 		//아래는 값이 들어오는지 확인 하는것
 		logger.debug("Member : " + m);
@@ -77,20 +77,27 @@ public class MemberController {
 			if (BCPE.matches(memberPw, m.getMemberPw()))
 			{
 				if(m.getVerify().equals("Y")) {//인증확인 인증이 된 멤버만 로그인가능
-					logger.debug("로그인성공");
-					List<Map<String, Object>> mapList = memberService.loadSiteInfo();
-					Map<String,Object> map = mapList.get(0);
-					logger.debug(map.toString());
-					
-					msg="로그인 성공";
-					mv.addObject("siteInfo", map);
-					mv.addObject("memberLoggedIn", m);
-					sessionList.add(m.getMemberEmail());
-					loc="/post/socialHomeView.do";
+					//블럭계정확인
+					Member blockM = memberService.selectBlockMember(memberEmail);
+					if(blockM==null) {
+						logger.debug("로그인성공");
+						List<Map<String, Object>> mapList = memberService.loadSiteInfo();
+						Map<String,Object> map = mapList.get(0);
+						logger.debug(map.toString());
+						
+						msg="로그인 성공";
+						mv.addObject("siteInfo", map);
+						mv.addObject("memberLoggedIn", m);
+						sessionList.add(m.getMemberEmail());
+						loc="/post/socialHomeView.do";
+					}
+					else {
+						msg="현재 정지된 계정입니다.";
+					}
 				}
 				else {//인증되지 않은 회원은 인증을 부탁하는 메세지를 띄어주고 로그인 불가
 					msg="이메일 인증 후 로그인해주세요";
-					loc="/";
+				
 				}
 				
 			} 
@@ -98,7 +105,7 @@ public class MemberController {
 			else 
 			{
 				msg="비밀번호가 일치하지 않습니다.";
-				loc="/";
+				
 			}
 				
 		}

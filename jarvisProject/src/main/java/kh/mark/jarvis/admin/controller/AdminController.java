@@ -1,26 +1,32 @@
 package kh.mark.jarvis.admin.controller;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.print.attribute.HashAttributeSet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.server.authentication.HttpBasicServerAuthenticationEntryPoint;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import kh.mark.jarvis.admin.model.service.AdminService;
-import kh.mark.jarvis.admin.model.service.AdminServiceImpl;
 import kh.mark.jarvis.admin.model.vo.PageInfo;
 import kh.mark.jarvis.member.model.service.MemberService;
-import kh.mark.jarvis.member.model.vo.Member;
 import kh.mark.jarvis.schedule.controller.ScheduleController;
 
 @SessionAttributes(value= {"siteInfo"})
@@ -112,12 +118,65 @@ public class AdminController {
 	
 	@RequestMapping("/admin/warningContent.do")
 	public ModelAndView warningContentView(ModelAndView mv) {
+		
+		mv.setViewName("admin/warningContent");
 		return mv;
 	}
 	
 	@RequestMapping("/admin/memberAdministration.do")
 	public ModelAndView memberAdministrationView(ModelAndView mv) {
+		List<Map<String,String>> mList=memberService.memberList();
+		
+		mv.addObject("mList",mList);
+		mv.setViewName("admin/memberAdmin");
 		return mv;
 	}
 	
+	@RequestMapping("/admin/selectAllmember.do")
+	@ResponseBody
+	public ResponseEntity selectAllmember() throws JsonProcessingException{
+		logger.debug("통신시도");
+		List<Map<String, String>> mList = memberService.memberList();
+		logger.debug("보내기직전");
+		String json = new ObjectMapper().writeValueAsString(mList);
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+		return new ResponseEntity(json, responseHeaders, HttpStatus.CREATED);
+	}
+	
+	@RequestMapping("/admin/memberLock.do")
+	public String memberLock(int memberNo, int inputNo) {
+		Map map = new HashMap<>();
+		map.put("memberNo", memberNo);
+		map.put("inputNo", inputNo);
+		int result = service.memberLock(map);
+		
+		return "admin/memberAdmin";
+	}
+	
+	@RequestMapping("/admin/memberUnlock.do")
+	public String memberUnlock(int memberNo) {
+		int result = service.memberUnlock(memberNo);
+		return "admin/memberAdmin";
+	}
+	
+	@RequestMapping("/admin/unlock.do")
+	public String unlock() {
+		int result = service.unlock();
+		return "admin/memberAdmin";
+	}
+	
+	@RequestMapping("/admin/searchMember.do")
+	@ResponseBody
+	public ResponseEntity searchMember(String type,String keyword) throws JsonProcessingException{
+		Map map = new HashMap<>();
+		map.put("type", type);
+		map.put("keyword", keyword);
+		List<Map<String, String>> mList = memberService.searchList(map);
+		logger.debug("보내기직전");
+		String json = new ObjectMapper().writeValueAsString(mList);
+		HttpHeaders responseHeaders = new HttpHeaders();
+		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
+		return new ResponseEntity(json, responseHeaders, HttpStatus.CREATED);
+	} 
 }

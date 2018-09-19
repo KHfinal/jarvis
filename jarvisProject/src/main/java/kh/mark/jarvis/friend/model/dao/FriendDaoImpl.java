@@ -26,6 +26,10 @@ public class FriendDaoImpl implements FriendDao{
 	
 
 	@Override
+	public List<Member> selectselectCheckFriend(SqlSessionTemplate sqlSession, String email) {
+		return sqlSession.selectList("friend.selectCheckFriend",email);
+	}
+	@Override
 	public List<Member> selectRecognizableList(SqlSessionTemplate sqlSession, String email) {
 		return sqlSession.selectList("friend.selectRecognizableList",email);
 	}

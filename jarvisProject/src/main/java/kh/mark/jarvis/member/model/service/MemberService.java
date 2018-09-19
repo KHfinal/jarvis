@@ -30,6 +30,10 @@ public interface MemberService {
 
 	int myPFPupdate(Member m); //프로필사진 수정
 
+	Member selectBlockMember(String memberEmail);
+
+	List<Map<String, String>> searchList(Map map);
+
 	
 
 }

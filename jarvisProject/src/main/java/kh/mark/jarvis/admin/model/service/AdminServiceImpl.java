@@ -1,5 +1,8 @@
 package kh.mark.jarvis.admin.model.service;
 
+import java.util.List;
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,4 +31,19 @@ public class AdminServiceImpl implements AdminService {
 		return dao.updateSide(sqlSession,p);
 	}
 
+	@Override
+	public int memberLock(Map map) {
+		return dao.memberLock(sqlSession,map);
+	}
+
+	@Override
+	public int memberUnlock(int memberNo) {
+		return dao.memberUnlock(sqlSession,memberNo);
+	}
+
+	@Override
+	public int unlock() {
+		return dao.unlock(sqlSession);
+	}
+	
 }

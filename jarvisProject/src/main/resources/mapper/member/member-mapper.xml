@@ -2,7 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="member"> 
 <resultMap type="member" id="memberMap">
-   <!-- column은 데이터베이스명칭 priperty는 vo명칭 -->   
+   <!-- column은 데이터베이스명칭 priperty는 vo명칭 --> 
+   <result column="member_no" property="memberNo"/>  
    <result column="member_email" property="memberEmail" />
    <result column="member_pw" property="memberPw" />
    <result column="member_name" property="memberName" />
@@ -17,7 +18,8 @@
    <result column="addr2" property="addr2" />
    <result column="addr3" property="addr3" />
    <result column="addinfo" property="addInfo"/>
-   <result column="verify" property="verify"/>  
+   <result column="verify" property="verify"/>
+   <result column="block_date" property="blockDate"></result>
 </resultMap>
    
    <select id="selectOne" resultMap="memberMap" parameterType="string">
@@ -29,7 +31,7 @@
    </select>
     
     <insert id="insertMember">
-     INSERT INTO MEMBER VALUES(#{memberEmail},#{memberPw},#{memberName},#{memberNickname},#{phone},default,null,null,null,null,null,null,null,default,default)
+     INSERT INTO MEMBER VALUES(member_seq.nextval,#{memberEmail},#{memberPw},#{memberName},#{memberNickname},#{phone},default,null,null,null,null,null,null,null,default,default,null)
       <!-- VO과 맞추면된다. #{approvalStatus},#{approvalKey},#{reg_date},#{log_data},#{memberPFP},#{memberConcern},#{memberGender},#{memberBirthday},#{addr1},#{addr2},#{addr3}-->
   </insert>
   
@@ -82,6 +84,11 @@
   		update member set member_pfp=#{memberPFP} where member_email=#{memberEmail}
   </update>
       
-  
+  <select id="blockMember" parameterType="string" resultMap="memberMap">
+  	select * from member where member_email=#{memberEmail} and block_date &gt; sysdate
+  </select>
+  <select id="searchList" parameterType="map" resultMap="memberMap">
+  	select * from member where ${type} like '%'||#{keyword}||'%'
+  </select>
   
 </mapper>
