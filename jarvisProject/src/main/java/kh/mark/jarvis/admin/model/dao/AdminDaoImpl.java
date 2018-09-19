@@ -73,4 +73,19 @@ public class AdminDaoImpl implements AdminDao {
 		return sqlSession.selectList("siteinfo.selectAttachInfo",pNo);
 	}
 
+	@Override
+	public int deletePost(SqlSessionTemplate sqlSession, int pNo) {
+		return sqlSession.delete("siteinfo.deletePost",pNo);
+	}
+
+	@Override
+	public int rejectNotify(SqlSessionTemplate sqlSession, int nNo) {
+		return sqlSession.update("siteinfo.rejectNotify", nNo);
+	}
+
+	@Override
+	public int deleteNotify(SqlSessionTemplate sqlSession, int nNo) {
+		return sqlSession.update("siteinfo.deleteNotify",nNo);
+	}
+
 }

@@ -15,7 +15,6 @@
         		<label class="text-secondary">Email</label>
         		<input type="text" name='memberEmail' required class="form-control" />
        		</div>
-  
        		<div class="form-group">
        			<label class="text-secondary">Password</label>
        			<input type="password" name="memberPw" required class="form-control" />

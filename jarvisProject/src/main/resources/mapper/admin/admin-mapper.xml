@@ -60,4 +60,13 @@
 	<select id="selectAttachInfo" parameterType="_int" resultMap="attachMap">
 		select * from attachment where post_no=#{pNo}
 	</select>
+	<delete id="deletePost" parameterType="_int">
+		delete from post where post_no=#{pNo}
+	</delete>
+	<update id="deleteNotify" parameterType="_int">
+		update notify set status='게시물삭제' where notify_no=#{nNo}
+	</update>
+	<update id="rejectNotify" parameterType="_int">
+		update notify set status='반려' where notify_no=#{nNo}
+	</update>
 </mapper>

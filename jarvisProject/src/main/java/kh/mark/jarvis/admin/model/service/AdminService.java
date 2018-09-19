@@ -34,5 +34,11 @@ public interface AdminService {
 
 	List<Attachment> selectAttachInfo(int pNo);
 
+	int deletePost(int pNo);
+
+	int rejectNotify(int nNo);
+
+	int deleteNotify(int nNo);
+
 
 }
