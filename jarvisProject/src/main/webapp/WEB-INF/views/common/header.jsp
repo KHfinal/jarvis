@@ -213,15 +213,7 @@
 			$('#su').append(su);
 		}
 	});
-	/* $.ajax({
-		url:"${path}/chat/countRead",
-		type:"get",
-		data:{email:email},
-		dataType:"json",
-		success : function(data){
-			$('#messanger').html("<i class='fa fa-envelope'></i><span id='su' class='w3-badge w3-right w3-small w3-green'>New</span>");
-		}
-	}); */
+
 	};
 
 	function onMessage(evt){
