@@ -200,11 +200,11 @@
 				for(var k =0; k<size;k++){
 					console.log("userIdList[k] : "+userIdList[k]);
 				    if(fList==userIdList[k]){																																			
-						friendListTag = "<a href='javascript:void(0)' onclick='goMyPage(this)'title='"+item.memberEmail+"' class='w3-bar-item w3-button' style='text-decoration:none'><img src='${path}/resources/profileImg/"+item.memberPFP+"' class='w3-circle' style='height:3%;width:15%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+item.memberEmail+"&nbsp;&nbsp;&nbsp;&nbsp;<span aria-label='현재 활동 중' style='text-align: right;background: rgb(66, 183, 42); border-radius: 50%; display: inline-block; height: 6px; margin-left: 4px; width: 6px;'></span></a><br>";
-						su++;
+						friendListTag = "<a  href='javascript:void(0)' onclick='goMyPage(this)'title='"+item.memberEmail+"'  style=' padding-right:0%;padding-left:2%; margin-top:5%;font-size: 17px;'><img src='${path}/resources/profileImg/"+item.memberPFP+"' class='rounded-circle' style='height:50px;width:50px;' >&nbsp;&nbsp;&nbsp;"+item.memberEmail+"<i style='float:right; margin-top:6% ;background: rgb(66, 183, 42); border-radius: 50%; display: inline-block; height: 10px; width: 10px;'/></a><br>";
+						su=size-1;
 						break;
 				    }else{
-				    	friendListTag = "<a href='javascript:void(0)' onclick='goMyPage(this)'title='"+item.memberEmail+"' class='w3-bar-item w3-button' style='text-decoration:none'><img src='${path}/resources/profileImg/"+item.memberPFP+"' class='w3-circle' style='height:3%;width:15%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+item.memberEmail+"</a><br>";
+				    	friendListTag = "<a  href='javascript:void(0)' onclick='goMyPage(this)'title='"+item.memberEmail+"'  style=' padding-right:0%;padding-left:2%; margin-top:5%;font-size: 17px;'><img src='${path}/resources/profileImg/"+item.memberPFP+"' class='rounded-circle' style='height:50px;width:50px;' >&nbsp;&nbsp;&nbsp;"+item.memberEmail+"</a><br>";
 				    }
 				} 
 				$('#myDropdown').append(friendListTag);

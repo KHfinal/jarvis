@@ -62,7 +62,7 @@ public class FriendController{
 		String a ="";
 		try {
 			a = mapper.writeValueAsString(friendList);
-			System.out.println("a : " + a);
+			System.out.println("친구접속목록 " + a);
 		}catch (Exception e) {
 		}
 		
@@ -141,16 +141,16 @@ public class FriendController{
 			System.out.println("최종 concernCompareList["+g+"] : " + concernCompareList.get(g));
 		}
 		
-		
 		String a = "";
 		try {
 			a = mapper.writeValueAsString(concernCompareList);
-			
+			if(a==null) {
+				a="";
+			}
 			
 		}catch (Exception e) {
 			e.getMessage();
 		}
-		System.out.println("a concern" + a);
 		return a;
 	}
 	@RequestMapping("/friend/recognizableRecommendList.do")

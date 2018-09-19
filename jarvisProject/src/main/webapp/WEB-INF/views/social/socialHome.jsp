@@ -646,6 +646,9 @@ function goMyPage(e) {
    </c:forEach>
 
 </div>
+<style>
+.a{ size: }
+</style>
 <script>
 
 function searchsearch(){
@@ -678,7 +681,7 @@ var tr="";
 				console.log("친구목록 : " + friendList);
 				if(friendList.length < 1){
 
-					friendKeywordTag = "<tr ><td style='padding-right:0%;'><img src='${path}/resources/profileImg/"+searchPFP+"' class='w3-circle' style='height:13%;width:16%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+searchEmail+'<img style="float:right; padding-top:3%; " src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+searchEmail+"'"+');"/></td></tr>';
+					friendKeywordTag = "<tr ><td style='padding-right:0%;padding-left:2%;font-size: 15px;'><img src='${path}/resources/profileImg/"+searchPFP+"' class='w3-circle' style='height:50px;width:50px' >&nbsp;&nbsp;&nbsp;"+searchEmail+'<img style=" float:right; margin-top:4%;" src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+searchEmail+"'"+');"/></td></tr>';
 					if(searchEmail !=myEmail){
 						$('.tablefriendKeyword').append(friendKeywordTag);
 					}
@@ -694,7 +697,7 @@ var tr="";
 						break;
 					}
 					if(i==friendList.length-1){
-						friendKeywordTag = "<tr ><td style='padding-right:0%;'><img src='${path}/resources/profileImg/"+searchPFP+"' class='w3-circle' style='height:13%;width:16%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+searchEmail+'<img style="float:right; padding-top:3%;  " src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+searchEmail+"'"+');"/></td></tr>';
+						friendKeywordTag = "<tr ><td style='padding-right:0%;padding-left:2%;font-size: 15px;'><img src='${path}/resources/profileImg/"+searchPFP+"' class='w3-circle' style='height:50px;width:50px' >&nbsp;&nbsp;&nbsp;"+searchEmail+'<img style=" float:right; margin-top:4%;" src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+searchEmail+"'"+');"/></td></tr>';
 						if(searchEmail!=myEmail){
 							$('.tablefriendKeyword').append(friendKeywordTag);
 						}
@@ -721,9 +724,9 @@ function concernSearch() {
 				$('.tablefriendConcern').append("<tr><th colspan='2' style='text- '>관심사가 비슷한 친구</th></tr>");
 				$.each(data,function(i,item){
 					var a = item;
-					friendConcernTag = "<tr ><td style='padding-right:0%;'><img src='${path}/resources/profileImg/"+a.memberPFP+"' class='w3-circle' style='height:13%;width:16%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+a.memberEmail+'<img style="float:right; padding-top:3%; " src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+a.memberEmail+"'"+');"/></td></tr>';
+					friendConcernTag = "<tr ><td style='padding-right:0%;padding-left:2%;font-size: 15px;'><img src='${path}/resources/profileImg/"+a.memberPFP+"' class='w3-circle' style='height:50px;width:50px' >&nbsp;&nbsp;&nbsp;"+a.memberEmail+'<img style=" float:right; margin-top:4%;" src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+a.memberEmail+"'"+');"/></td></tr>';
 					if(a==""){
-						friendConcernTag ="<tr ><td style='padding-right:0%;'>관심사가 같은 친구를 찾을 수 없습니다</td></tr>"
+						friendConcernTag ="<tr ><td style='padding-right:0%;padding-left:2%;font-size: 15px;'>관심사가 같은 친구를 찾을 수 없습니다</td></tr>"
 					}
 					$('.tablefriendConcern').append(friendConcernTag);
 				}); 
@@ -742,12 +745,12 @@ function recognizableSearch() {
 		success : function(data){
 			var friendReco ="";
 			$('.tablefriendRecognize').empty();
-			$('.tablefriendRecognize').append("<tr><th colspan='2' style='text- '>알 수도 있는 친구</th></tr>");
+			$('.tablefriendRecognize').append("<tr><th colspan='2' style='text-align:center; '>알 수도 있는 친구</th></tr>");
 			$.each(data,function(i,item){
 				var recoList = item;
-				friendReco = "<tr ><td style='padding-right:0%;'><img src='${path}/resources/profileImg/"+recoList.memberPFP+"' class='w3-circle' style='height:13%;width:16%' alt='Avatar'>&nbsp;&nbsp;&nbsp;"+recoList.memberEmail+'<img style="float:right; padding-top:3%; " src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+recoList.memberEmail+"'"+');"/></td></tr>';
+				friendReco = "<tr ><td style='padding-right:0%;padding-left:2%;font-size: 15px;'><img src='${path}/resources/profileImg/"+recoList.memberPFP+"' class='w3-circle' style='height:50px;width:50px' >&nbsp;&nbsp;"+recoList.memberEmail+'<img style=" float:right; margin-top:4%;"  src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+recoList.memberEmail+"'"+');"/></td></tr>';
 				if(recoList==""){
-					friendReco ="<tr ><td style='padding-right:0%;'>알 수 있는 친구가 없습니다 ㅠㅠ</td></tr>"
+					friendReco ="<tr ><td style='padding-right:0%;padding-left:2%;font-size: 15px; >알 수 있는 친구가 없습니다 ㅠㅠ</td></tr>"
 				}
 				$('.tablefriendRecognize').append(friendReco);
 			}); 
@@ -817,11 +820,11 @@ function searchValidata(){
     <input class ='input1' onclick="concernSearch();" style="width: 30%; margin: 0%; " value="관심사">
     <input class ='input1' onclick="recognizableSearch();" style="width: 60%;margin: 0%;" value="알 수도 있는 친구">
     </div>
-	<table cellspacing='0' class='tablefriendKeyword' style="width: 100%; margin: 0%; text-align: ">
+	<table  class='tablefriendKeyword' style="height:30%; width: 100%; margin: 0%;  overflow-y: scroll;">
     </table>
-    <table class='tablefriendConcern' style="width: 100%; margin: 0%; ">
+    <table class='tablefriendConcern' style="height:30%; width: 100%; margin: 0%;  overflow-y: scroll;">
     </table>
-    <table class='tablefriendRecognize' style="width: 100%; margin: 0%; ">
+    <table class='tablefriendRecognize' style="height:30%; width: 100%; margin: 0%;  overflow-y: scroll; ">
     </table>
    
    
