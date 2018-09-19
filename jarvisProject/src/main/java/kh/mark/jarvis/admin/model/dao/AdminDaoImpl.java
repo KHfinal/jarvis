@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import kh.mark.jarvis.admin.model.vo.Notify;
 import kh.mark.jarvis.admin.model.vo.PageInfo;
 
 @Repository
@@ -48,6 +49,11 @@ public class AdminDaoImpl implements AdminDao {
 	@Override
 	public int selectTotalCount(SqlSessionTemplate sqlSession) {
 		return sqlSession.selectOne("siteinfo.selectTotalCount");
+	}
+
+	@Override
+	public int insertPostNotify(SqlSessionTemplate sqlSession, Notify notify) {
+		return sqlSession.insert("siteinfo.insertPostNotify", notify);
 	}
 
 }

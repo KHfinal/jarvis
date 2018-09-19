@@ -24,6 +24,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kh.mark.jarvis.admin.model.service.AdminService;
+import kh.mark.jarvis.admin.model.vo.Notify;
 import kh.mark.jarvis.admin.model.vo.PageInfo;
 import kh.mark.jarvis.common.Page;
 import kh.mark.jarvis.member.model.service.MemberService;
@@ -206,11 +207,19 @@ public class AdminController {
 
 	
 	// 용석
-//	@RequestMapping("/admin/postNotify.do")
-//	public ModelAndView insertPostNotify(Notify notify) {
-//		ModelAndView mv = new ModelAndView();
-//		
-//		return mv;
-//	}
+	@RequestMapping("/admin/postNotify.do")
+	public ModelAndView insertPostNotify(Notify notify) {
+		ModelAndView mv = new ModelAndView();
+		
+		System.out.println("notify 들어옴!");
+		System.out.println("notify postNO " + notify.getPostNo());
+		System.out.println("notify postWriter " + notify.getPostWriter());
+		System.out.println("notify notifyWriter " + notify.getNotifyWriter());
+		System.out.println("notify Reason " + notify.getNotifyReason());
+		
+		int result = service.insertPostNotify(notify);
+		
+		return mv;
+	}
 
 }

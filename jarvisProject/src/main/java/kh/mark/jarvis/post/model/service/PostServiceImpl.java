@@ -70,6 +70,11 @@ public class PostServiceImpl implements PostService {
 	public int deletePost(int postNo) {
 		return dao.deletePost(sqlSession, postNo);
 	}
+	
+	@Override
+	public int updateComment(JarvisComment comment) {
+		return dao.updateComment(sqlSession, comment);
+	}
 
 	@Override
 	public int deleteComment(int commentNo) {
@@ -133,7 +138,7 @@ public class PostServiceImpl implements PostService {
 	public int deletePostLike(JarvisLike like) {
 		return dao.deletePostLike(sqlSession, like);
 	}
-
+	
 	@Override
 	public int deleteCommentLike(JarvisLike like) {
 		return dao.deleteCommentLike(sqlSession, like);
@@ -170,5 +175,6 @@ public class PostServiceImpl implements PostService {
 	public List<Post> selecyMyPagePostList(String memberEmail) {
 		return dao.selecyMyPagePostList(sqlSession, memberEmail);
 	}
+
 
 }

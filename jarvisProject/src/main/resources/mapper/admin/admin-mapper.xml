@@ -23,4 +23,11 @@
 	<select id="selectTotalCount" resultType="_int">
 		select count(*) from notify
 	</select>
+	
+	<!-- 용 -->
+	<insert id="insertPostNotify" parameterType="notify">
+		INSERT INTO NOTIFY(NOTIFY_NO, POST_NO, POST_WRITER, NOTIFY_WRITER, NOTIFY_REASON, NOTIFY_DATE, STATUS)
+		VALUES(notify_seq.nextval, #{postNo}, #{postWriter}, #{notifyWriter}, #{notifyReason}, systimestamp, default)
+	</insert>
+	
 </mapper>
