@@ -42,7 +42,7 @@
 	  <a href="#" class="w3-bar-item w3-button w3-padding-large" style="background-color:${siteInfo.LOGO_BAGROUND};font-family:${siteInfo.LOGO_FONT}; font-size:${siteInfo.LOGO_FONTSIZE}px;"><i class="fa fa-home w3-margin-right"></i>JARVIS</a>
 	  <a href="${path }/post/socialHomeView.do" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i class="fa fa-globe"></i></a>
 	  <div id='fr' class="w3-dropdown-hover w3-hide-small">
-	    <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-user"></i><span id='su' class="w3-badge w3-right w3-small w3-green">0</span></button>     
+	    <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-user"></i><span id='su' class="w3-badge w3-right w3-small w3-green"></span></button>     
 	    <div class="w3-dropdown-content w3-card-4 w3-bar-block dropdown" style="width:300px" id="myDropdown" >
 	   
 	    </div>
@@ -60,10 +60,7 @@
 	    </div>
 	   </div>
 	  </c:if>
-	  <div class="w3-dropdown-hover w3-hide-small">
-	    <button class="w3-button w3-padding-large" title="Notifications">
-	    	<i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">4</span>
-	    </button>     
+	  <div class="w3-dropdown-hover w3-hide-small">     
 	    <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
 	    <c:forEach items="${requestList1}" var="r1">
 	      <a href="#" class="w3-bar-item w3-button">
