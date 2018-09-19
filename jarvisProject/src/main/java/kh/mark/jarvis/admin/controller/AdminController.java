@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
@@ -244,4 +245,28 @@ public class AdminController {
 		return mv;
 	}
 
+	@RequestMapping("/admin/deletePost.do")
+	public ModelAndView deletePost(int pNo,int nNo,ModelAndView mv) {
+		int result = service.deletePost(pNo);
+		if(result>0) {
+			result = service.deleteNotify(nNo);
+		}
+		String msg = "신고 접수가 처리되었습니다.";
+		String loc = "/admin/warningContent.do";
+		mv.addObject("msg", msg);
+		mv.addObject("loc", loc);
+		mv.setViewName("common/msg");
+		return mv;
+	}
+	
+	@RequestMapping("/admin/rejectNotify.do")
+	public ModelAndView rejectNotify(int nNo,ModelAndView mv) {
+		int result = service.rejectNotify(nNo);
+		String msg = "신고접수가 반려되었습니다.";
+		String loc = "/admin/warningContent.do";
+		mv.addObject("msg", msg);
+		mv.addObject("loc", loc);
+		mv.setViewName("common/msg");
+		return mv;
+	}
 }

@@ -54,10 +54,11 @@
 					<div class="container">
 						<table class="table">
 							<tr>
-								<td><button class="btn btn-success">d</button></td>
-								<td><button class="btn btn-primary">g</button></td>
-								<td><button class="btn btn-danger">b</button></td>
+								<td><button class="btn btn-success" onclick="deletePost(${post.getPostNo()},${notify.notifyNo})">게시물 삭제</button></td>
+								<td><button class="btn btn-primary" onclick="rejectPost(${notify.notifyNo})">반려</button></td>
 								<td></td>
+								<td><button class="btn btn-danger" onclick="javascript:history.back()">이전페이지</button></td>
+								
 							</tr>
 						</table>
 					</div>
@@ -68,5 +69,13 @@
 		</div>
 
 	</div>
-	
+<script>
+	function deletePost(pNo,nNo){
+		location.href="${path}/admin/deletePost.do?pNo="+pNo+"&nNo="+nNo;
+	};
+	function rejectPost(nNo){
+		location.href="${path}/admin/rejectNotify.do?nNo="+nNo;
+	};
+
+</script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>

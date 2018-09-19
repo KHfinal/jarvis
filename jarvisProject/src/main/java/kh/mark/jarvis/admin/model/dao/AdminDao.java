@@ -35,6 +35,12 @@ public interface AdminDao {
 
 	List<Attachment> selectAttachInfo(SqlSessionTemplate sqlSession, int pNo);
 
+	int deletePost(SqlSessionTemplate sqlSession, int pNo);
+
+	int rejectNotify(SqlSessionTemplate sqlSession, int nNo);
+
+	int deleteNotify(SqlSessionTemplate sqlSession, int nNo);
+
 
 
 }

@@ -79,5 +79,20 @@ public class AdminServiceImpl implements AdminService {
 	public List<Attachment> selectAttachInfo(int pNo) {
 		return dao.selectAttachInfo(sqlSession,pNo);
 	}
+
+	@Override
+	public int deletePost(int pNo) {
+		return dao.deletePost(sqlSession,pNo);
+	}
+
+	@Override
+	public int rejectNotify(int nNo) {
+		return dao.rejectNotify(sqlSession,nNo);
+	}
+
+	@Override
+	public int deleteNotify(int nNo) {
+		return dao.deleteNotify(sqlSession,nNo);
+	}
 	
 }
