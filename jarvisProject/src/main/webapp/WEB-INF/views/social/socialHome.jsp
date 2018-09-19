@@ -743,7 +743,7 @@ var tr="";
 }
 function concernSearch() {
 	ajax();
-		$('.tablefriendConcern').empty();
+		$('.tablefriendKeyword').empty();
 		var myEmail = '${memberLoggedIn.memberEmail}';
 		$.ajax({
 			url:"${path}/friend/concernRecommendList.do",
@@ -752,22 +752,21 @@ function concernSearch() {
 			dataType:"json",
 			success : function(data){
 				var friendConcernTag ="";
-				$('.tablefriendConcern').empty();
-				$('.tablefriendConcern').append("<tr><th colspan='2' style='text-align:center '>관심사가 비슷한 친구</th></tr>");
+				$('.tablefriendKeyword').append("<tr><th colspan='2' style='text-align:center '>관심사가 비슷한 친구</th></tr>");
 			
 				
 				
 				$.each(data,function(i,item){
 					var a = item;
 					friendConcernTag = "<tr ><td style='padding-right:0%;padding-left:2%;font-size: 15px;'><img src='${path}/resources/profileImg/"+a.memberPFP+"' class='w3-circle' style='height:50px;width:50px' >&nbsp;&nbsp;&nbsp;"+a.memberEmail+'<img style=" float:right; margin-top:4%;" src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+a.memberEmail+"'"+');"/></td></tr>';
-					$('.tablefriendConcern').append(friendConcernTag);
+					$('.tablefriendKeyword').append(friendConcernTag);
 				}); 
 			}
 		});
 };
 function recognizableSearch() {
 	ajax();
-	$('.tablefriendRecognize').empty();
+	$('.tablefriendKeyword').empty();
 	var myEmail = '${memberLoggedIn.memberEmail}';
 	$.ajax({
 		url:"${path}/friend/recognizableRecommendList.do",
@@ -776,12 +775,11 @@ function recognizableSearch() {
 		dataType:"json",
 		success : function(data){
 			var friendReco ="";
-			$('.tablefriendRecognize').empty();
-			$('.tablefriendRecognize').append("<tr><th colspan='2' style='text-align:center; '>알 수도 있는 친구</th></tr>");
+			$('.tablefriendKeyword').append("<tr><th colspan='2' style='text-align:center; '>알 수도 있는 친구</th></tr>");
 			$.each(data,function(i,item){
 				var recoList = item;
 				friendReco = "<tr ><td style='padding-right:0%;padding-left:2%;font-size: 15px;'><img src='${path}/resources/profileImg/"+recoList.memberPFP+"' class='w3-circle' style='height:50px;width:50px' >&nbsp;&nbsp;"+recoList.memberEmail+'<img style=" float:right; margin-top:4%;"  src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+recoList.memberEmail+"'"+');"/></td></tr>';
-				$('.tablefriendRecognize').append(friendReco);
+				$('.tablefriendKeyword').append(friendReco);
 			}); 
 		}
 	});
