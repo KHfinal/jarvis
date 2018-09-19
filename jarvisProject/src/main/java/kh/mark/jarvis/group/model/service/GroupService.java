@@ -10,6 +10,7 @@ import kh.mark.jarvis.group.model.vo.GroupLike;
 import kh.mark.jarvis.group.model.vo.GroupPost;
 import kh.mark.jarvis.member.model.vo.Member;
 import kh.mark.jarvis.post.model.vo.Attachment;
+import kh.mark.jarvis.post.model.vo.JarvisLike;
 import kh.mark.jarvis.post.model.vo.Post;
 
 public interface GroupService {
@@ -29,6 +30,8 @@ public interface GroupService {
 	List<Map<String, String>> selectGroupMember(int groupNo);
 	
 	List<Map<String, String>> selectGroupEnroll(int groupNo);
+	
+	List<Map<String, String>> selectAcceptMember(int groupNo);
 	
 	Group groupViewDetail(int groupNo);
 
@@ -52,7 +55,17 @@ public interface GroupService {
 	List<Integer> selectMyLike(String memberEmail);
 	List<Integer> myPostNoList();
 	
+	List<GroupLike> selectMyLikeOn(String memberEmail);
+
+	List<Map<String, Object>> startLikeCount();
+	
 	int groupMemberAccept(String mEmail);
+	int groupMemberReject(String mEmail);
 	
 	int groupMemberDelete(String mEmail);
+	
+	Map<String, String> selectMemberCheck(Map check);
+	
+	int deleteGroup(int groupNo);
+	int deleteComment(int commentNo);
 }

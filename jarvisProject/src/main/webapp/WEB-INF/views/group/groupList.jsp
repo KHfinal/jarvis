@@ -51,7 +51,7 @@
    	});
    	$(document).ready(function() 
 			{
-				$("#lista1").als({
+				/* $("#lista1").als({
 					visible_items: 4,
 					scrolling_items: 1,
 					orientation: "horizontal",
@@ -63,7 +63,7 @@
 					direction: "right",
 					start_from: 0
 				});
-								
+					 */			
 				//logo hover
 				$("#logo_img").hover(function()
 				{
