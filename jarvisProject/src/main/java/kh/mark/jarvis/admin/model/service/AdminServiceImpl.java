@@ -45,5 +45,15 @@ public class AdminServiceImpl implements AdminService {
 	public int unlock() {
 		return dao.unlock(sqlSession);
 	}
+
+	@Override
+	public List<Map<String, String>> notifyList(int cPage, int numPerPage) {
+		return dao.notifyList(sqlSession,cPage,numPerPage);
+	}
+
+	@Override
+	public int selectTotalcount() {
+		return dao.selectTotalCount(sqlSession);
+	}
 	
 }

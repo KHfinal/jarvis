@@ -19,6 +19,10 @@ public interface AdminDao {
 
 	int unlock(SqlSessionTemplate sqlSession);
 
+	List<Map<String, String>> notifyList(SqlSessionTemplate sqlSession, int cPage, int numPerPage);
+
+	int selectTotalCount(SqlSessionTemplate sqlSession);
+
 
 
 }
