@@ -278,10 +278,7 @@ function subMenuCommentDelete(e) {
 
 function goMyPage(e) {
 	var btn = $(e);
-	var memberEmail;
-
-	memberEmail = btn.attr('title');
-	console.log('btn memberEmail = ' + memberEmail);
+	var memberEmail = btn.attr('title');
 	location.href="${pageContext.request.contextPath}/post/myPage?memberEmail=" + memberEmail;
 	
 }
@@ -289,11 +286,7 @@ function goMyPage(e) {
 </script>
 
 <style>
-   .subMenu-container {
-      background-color: red;
-      color: white;
-      z-index: 100;
-   }
+
 </style>
        
 <div class="w3-col m6">
@@ -332,12 +325,15 @@ function goMyPage(e) {
                   <hr>
                   
                   <div class="privacyBoundContainer">
+                  <p>&nbsp;</p>
+                  <!-- 
                       <label for="privacyBound" style="display: inline;">공개 범위</label>
                       <select class="form-control" id="privacyBound" name="privacyBound">
                          <option value="public">전체 보기</option>
                          <option value="friend">친구만</option>
                          <option value="private">나만 보기</option>
                       </select>
+                  -->
                   </div>
                   
                   <div class="filebox"> <label for="imgInput">업로드</label> <input type="file" id="imgInput" name="upFile" multiple> </div>
@@ -424,12 +420,15 @@ function goMyPage(e) {
                         <div id="imgDisplayUpdateContainer"></div>
                         <hr>
                         <div class="privacyBoundContainer">
+                        <p>&nbsp;</p>
+                        <!--
                             <label for="privacyBound" style="display: inline; color: black;">공개 범위</label>
                             <select class="form-control" id="privacyBound" name="privacyBound">
                                <option value="public">전체 보기</option>
                                <option value="friend">친구만</option>
                                <option value="private">나만 보기</option>
                             </select>
+                        -->
                         </div> 
                         
                         <div class="filebox"> <label for="imgUpdateInput">업로드</label> <input type="file" id="imgUpdateInput" name="upFile1" multiple> </div>
@@ -754,13 +753,13 @@ function concernSearch() {
 			success : function(data){
 				var friendConcernTag ="";
 				$('.tablefriendConcern').empty();
-				$('.tablefriendConcern').append("<tr><th colspan='2' style='text- '>관심사가 비슷한 친구</th></tr>");
+				$('.tablefriendConcern').append("<tr><th colspan='2' style='text-align:center '>관심사가 비슷한 친구</th></tr>");
+			
+				
+				
 				$.each(data,function(i,item){
 					var a = item;
 					friendConcernTag = "<tr ><td style='padding-right:0%;padding-left:2%;font-size: 15px;'><img src='${path}/resources/profileImg/"+a.memberPFP+"' class='w3-circle' style='height:50px;width:50px' >&nbsp;&nbsp;&nbsp;"+a.memberEmail+'<img style=" float:right; margin-top:4%;" src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+a.memberEmail+"'"+');"/></td></tr>';
-					if(a==""){
-						friendConcernTag ="<tr ><td style='padding-right:0%;padding-left:2%;font-size: 15px;'>관심사가 같은 친구를 찾을 수 없습니다</td></tr>"
-					}
 					$('.tablefriendConcern').append(friendConcernTag);
 				}); 
 			}
@@ -782,9 +781,6 @@ function recognizableSearch() {
 			$.each(data,function(i,item){
 				var recoList = item;
 				friendReco = "<tr ><td style='padding-right:0%;padding-left:2%;font-size: 15px;'><img src='${path}/resources/profileImg/"+recoList.memberPFP+"' class='w3-circle' style='height:50px;width:50px' >&nbsp;&nbsp;"+recoList.memberEmail+'<img style=" float:right; margin-top:4%;"  src="${path }/resources/img/friendAdd.png"  id="friend_add"  onclick="fn_friendAdd(this,'+"'"+recoList.memberEmail+"'"+');"/></td></tr>';
-				if(recoList==""){
-					friendReco ="<tr ><td style='padding-right:0%;padding-left:2%;font-size: 15px; >알 수 있는 친구가 없습니다 ㅠㅠ</td></tr>"
-				}
 				$('.tablefriendRecognize').append(friendReco);
 			}); 
 		}
@@ -799,7 +795,7 @@ function fn_friendAdd(e,mail){
 		success : function(data){
 			
 				$(e).attr("onclick","fn_two(this,'"+mail+"')");
-				$(e).attr("src","${path }/resources/img/request.png");
+				$(e).attr("src","${path }/resources/img/delete.png");
 				var msg = decodeURIComponent(data.msg);
 			alert(msg);
 		
@@ -814,7 +810,7 @@ function fn_two(e,mail) {
 		dataType:"json",
 		success : function(data){
 			
-				$(e).attr("onclick","fn_two(this,'"+mail+"')");
+				$(e).attr("onclick","fn_friendAdd(this,'"+mail+"')");
 				$(e).attr("src","${path }/resources/img/friendAdd.png");
 				var msg = decodeURIComponent(data.msg);
 			alert(msg);

@@ -6,6 +6,8 @@ import java.util.Map;
 
 import kh.mark.jarvis.admin.model.vo.Notify;
 import kh.mark.jarvis.admin.model.vo.PageInfo;
+import kh.mark.jarvis.post.model.vo.Attachment;
+import kh.mark.jarvis.post.model.vo.Post;
 
 public interface AdminService {
 
@@ -25,6 +27,18 @@ public interface AdminService {
 	
 	// 용
 	int insertPostNotify(Notify notify);
+
+	Notify selectNotifyInfo(int nNo);
+
+	Post selectPostInfo(int pNo);
+
+	List<Attachment> selectAttachInfo(int pNo);
+
+	int deletePost(int pNo);
+
+	int rejectNotify(int nNo);
+
+	int deleteNotify(int nNo);
 
 
 }

@@ -64,6 +64,9 @@ function drawBoard(cPage){
 				var d = new Date(json[i].notifyDate);
 				content+="<td>"+d.toLocaleString()+"</td>";
 				content+="<td>"+json[i].status+"</td>";
+				if(json[i].status=='대기중'){
+					content+="<td><button class='btn btn-primary' type='button' onclick='notifyView("+json[i].notifyNo+","+json[i].postNo+")'>상세보기</button>"
+				}			
 			}
 			var pageBar = json[json.length-1].pageBar;
 			$("#table").html(content);
@@ -76,5 +79,10 @@ function drawBoard(cPage){
 			console.log("ajax통신실패");
 		}
 	});
+	
 }
+function notifyView(nNo,pNo){
+	console.log(nNo,pNo);
+	location.href = "${path}/admin/notifyView.do?nNo="+nNo+"&pNo="+pNo;
+};
 </script>

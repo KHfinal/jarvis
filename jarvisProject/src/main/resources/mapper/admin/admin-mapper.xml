@@ -24,6 +24,20 @@
 		<result column="notify_reason" property="notifyReason"/>
 		<result column="notify_date" property="notifyDate"/>
 	</resultMap>
+   <resultMap type="post" id="postMap">  
+      <result column="post_no" property="postNo"/>
+      <result column="post_writer" property="postWriter"/>
+      <result column="post_contents" property="postContents"/>
+      <result column="privacy_bound" property="privacyBound"/>
+      <result column="post_date" property="postDate"/>
+   </resultMap>
+      <resultMap type="attach" id="attachMap">
+      <result column="attachment_no" property="attachmentNo"/>
+      <result column="post_no" property="postNo"/>
+      <result column="original_filename" property="originalFileName"/>
+      <result column="renamed_filename" property="renamedFileName"/>
+      <result column="upload_date" property="uploadDate"/>
+   </resultMap>
 	<select id="notifyList" resultMap="notifyMap">
 		select * from notify order by notify_date desc
 	</select>
@@ -37,4 +51,22 @@
 		VALUES(notify_seq.nextval, #{postNo}, #{postWriter}, #{notifyWriter}, #{notifyReason}, systimestamp, default)
 	</insert>
 	
+	<select id="selectNotifyInfo" parameterType="_int" resultMap="notifyMap">
+		select * from notify where notify_no=#{nNo}
+	</select>
+	<select id="selectPostInfo" parameterType="_int" resultMap="postMap">
+		select * from post where post_no=#{pNo}
+	</select>
+	<select id="selectAttachInfo" parameterType="_int" resultMap="attachMap">
+		select * from attachment where post_no=#{pNo}
+	</select>
+	<delete id="deletePost" parameterType="_int">
+		delete from post where post_no=#{pNo}
+	</delete>
+	<update id="deleteNotify" parameterType="_int">
+		update notify set status='게시물삭제' where notify_no=#{nNo}
+	</update>
+	<update id="rejectNotify" parameterType="_int">
+		update notify set status='반려' where notify_no=#{nNo}
+	</update>
 </mapper>

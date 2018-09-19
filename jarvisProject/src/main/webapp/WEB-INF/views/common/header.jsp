@@ -28,6 +28,7 @@
 <link href="https://fonts.googleapis.com/css?family=Gamja+Flower" rel="stylesheet">
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script> <!-- 다음 주소 API -->
 <link rel="stylesheet" href="//code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" />
+<link href="https://fonts.googleapis.com/css?family=Black+Han+Sans|Do+Hyeon|Dokdo|East+Sea+Dokdo|Gaegu|Gamja+Flower|Hi+Melody|Nanum+Brush+Script|Nanum+Gothic|Nanum+Pen+Script|Noto+Sans+KR" rel="stylesheet">
 </head>
 <style>
 	html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
@@ -41,7 +42,7 @@
 	  <a href="#" class="w3-bar-item w3-button w3-padding-large" style="background-color:${siteInfo.LOGO_BAGROUND};font-family:${siteInfo.LOGO_FONT}; font-size:${siteInfo.LOGO_FONTSIZE}px;"><i class="fa fa-home w3-margin-right"></i>JARVIS</a>
 	  <a href="${path }/post/socialHomeView.do" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i class="fa fa-globe"></i></a>
 	  <div id='fr' class="w3-dropdown-hover w3-hide-small">
-	    <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-user"></i><span id='su' class="w3-badge w3-right w3-small w3-green">0</span></button>     
+	    <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-user"></i><span id='su' class="w3-badge w3-right w3-small w3-green"></span></button>     
 	    <div class="w3-dropdown-content w3-card-4 w3-bar-block dropdown" style="width:300px" id="myDropdown" >
 	   
 	    </div>
@@ -59,10 +60,7 @@
 	    </div>
 	   </div>
 	  </c:if>
-	  <div class="w3-dropdown-hover w3-hide-small">
-	    <button class="w3-button w3-padding-large" title="Notifications">
-	    	<i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">4</span>
-	    </button>     
+	  <div class="w3-dropdown-hover w3-hide-small">     
 	    <div class="w3-dropdown-content w3-card-4 w3-bar-block" style="width:300px">
 	    <c:forEach items="${requestList1}" var="r1">
 	      <a href="#" class="w3-bar-item w3-button">
@@ -122,8 +120,8 @@
           <div id="Demo2" class="w3-hide w3-container">
             <p>Some other text..</p>
           </div>
-          <button onclick="goMyPage(this)" title="${memberLoggedIn.memberEmail }" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fas fa-atlas fa-fw w3-margin-right"></i> My Page</button>
-          <button onclick="goFriend()" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Friends</button>
+          <button onclick="goMyPage(this)" title="${memberLoggedIn.memberEmail }" class="w3-button w3-block w3-left-align"><i class="fas fa-atlas fa-fw w3-margin-right"></i> My Page</button>
+          <button onclick="goFriend()" class="w3-button w3-block w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i> My Friends</button>
 
         </div>      
       </div>
@@ -213,15 +211,7 @@
 			$('#su').append(su);
 		}
 	});
-	/* $.ajax({
-		url:"${path}/chat/countRead",
-		type:"get",
-		data:{email:email},
-		dataType:"json",
-		success : function(data){
-			$('#messanger').html("<i class='fa fa-envelope'></i><span id='su' class='w3-badge w3-right w3-small w3-green'>New</span>");
-		}
-	}); */
+
 	};
 
 	function onMessage(evt){
