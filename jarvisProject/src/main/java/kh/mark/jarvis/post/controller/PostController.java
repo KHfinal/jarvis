@@ -202,11 +202,29 @@ public class PostController {
 
 	// 3-1. 댓글 수정
 	@RequestMapping("/post/commentUpdate.do")
-	public ModelAndView commentUpdate(int commentNo) {
+	public ModelAndView commentUpdate(JarvisComment comment) {
 		ModelAndView mv = new ModelAndView();
+		System.out.println("commentNo = " + comment.getCommentNo());
+		System.out.println("commentContents = " + comment.getCommentContents());
+		
+		int result = service.updateComment(comment);
 
-		System.out.println("###########################################commentNo = " + commentNo);
+		String msg = "";
+		String loc = "";
 
+		if (result > 0) {
+			msg = "Comment를 성공적으로 수정하였습니다.";
+			loc = "/post/socialHomeView.do";
+		} else {
+			msg = "Comment 수정이 실패하였습니다.";
+			loc = "/post/socialHomeView.do";
+		}
+
+		mv.addObject("msg", msg);
+		mv.addObject("loc", loc);
+
+		mv.setViewName("common/msg");
+		
 		return mv;
 	}
 
@@ -307,7 +325,7 @@ public class PostController {
 			if (result > 0) {
 				likeList = service.selectPostLike(like);
 				int count = service.selectPostLikeCount(like);
-
+				System.out.println("#################################3COUNT = " + count);
 				mv.addObject("likeList", likeList);
 				mv.addObject("count", count);
 			}
@@ -316,7 +334,7 @@ public class PostController {
 			if (result > 0) {
 				likeList = service.selectCommentLike(like);
 				int count = service.selectCommentLikeCount(like);
-
+				System.out.println("#################################3COUNT = " + count);
 				mv.addObject("likeList", likeList);
 				mv.addObject("count", count);
 			}
@@ -347,6 +365,8 @@ public class PostController {
 				likeList = service.selectPostLike(like);
 
 				int count = service.selectPostLikeCount(like);
+				
+				System.out.println("#################################3COUNT = " + count);
 
 				mv.addObject("likeList", likeList);
 				mv.addObject("count", count);
@@ -357,6 +377,8 @@ public class PostController {
 				likeList = service.selectCommentLike(like);
 
 				int count = service.selectCommentLikeCount(like);
+				
+				System.out.println("#################################3COUNT = " + count);
 
 				mv.addObject("likeList", likeList);
 				mv.addObject("count", count);

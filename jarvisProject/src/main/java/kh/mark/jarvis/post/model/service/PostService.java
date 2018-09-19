@@ -21,6 +21,8 @@ public interface PostService {
 
 	int deletePost(int postNo);
 
+	int updateComment(JarvisComment comment);
+
 	int deleteComment(int commentNo);
 
 	List<Attachment> selectAttachList();
@@ -59,5 +61,6 @@ public interface PostService {
 	Member selectMyPageMember(String memberEmail);
 
 	List<Post> selecyMyPagePostList(String memberEmail);
+
 
 }

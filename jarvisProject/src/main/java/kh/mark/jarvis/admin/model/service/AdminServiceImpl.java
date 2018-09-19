@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kh.mark.jarvis.admin.model.dao.AdminDao;
+import kh.mark.jarvis.admin.model.vo.Notify;
 import kh.mark.jarvis.admin.model.vo.PageInfo;
 import kh.mark.jarvis.chatting.model.dao.ChattingDao;
 
@@ -54,6 +55,12 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public int selectTotalcount() {
 		return dao.selectTotalCount(sqlSession);
+	}
+
+	// 용
+	@Override
+	public int insertPostNotify(Notify notify) {
+		return dao.insertPostNotify(sqlSession, notify);
 	}
 	
 }

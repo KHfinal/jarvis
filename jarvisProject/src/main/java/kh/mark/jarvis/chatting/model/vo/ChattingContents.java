@@ -1,6 +1,6 @@
 package kh.mark.jarvis.chatting.model.vo;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class ChattingContents {
 

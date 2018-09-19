@@ -1,3 +1,4 @@
+
 package kh.mark.jarvis.admin.controller;
 
 import java.io.File;
@@ -181,21 +182,20 @@ public class AdminController {
 		return new ResponseEntity(json, responseHeaders, HttpStatus.CREATED);
 	} 
 	
+
 	@RequestMapping("/admin/notifyList.do")
 	@ResponseBody
 	public ResponseEntity notifyList(int cPage) throws JsonProcessingException {
 		Map<String,String> map = new HashMap<>();
 		int numPerPage=10;
 		List<Map<String, String>> mList = service.notifyList(cPage,numPerPage);
-		Notify n = (Notify)mList.get(0);
-		logger.debug(n.getNotifyDate().toString());
 		int totalCount = service.selectTotalcount();
 		String url = "notifyList.do";
 		logger.debug("totalCount : "+totalCount);
 		String pageBar = new Page().getPage(cPage, numPerPage, totalCount, url);
 		logger.debug("pageBar"+pageBar);
 		map.put("pageBar", pageBar);
-		mList.add(map);
+		//mList.add(map);
 
 		String json = new ObjectMapper().writeValueAsString(mList);
 	
@@ -205,4 +205,22 @@ public class AdminController {
 		responseHeaders.add("Content-Type", "text/html; charset=utf-8");
 		return new ResponseEntity(json, responseHeaders, HttpStatus.CREATED);
 	}
+
+	
+	// 용석
+	@RequestMapping("/admin/postNotify.do")
+	public ModelAndView insertPostNotify(Notify notify) {
+		ModelAndView mv = new ModelAndView();
+		
+		System.out.println("notify 들어옴!");
+		System.out.println("notify postNO " + notify.getPostNo());
+		System.out.println("notify postWriter " + notify.getPostWriter());
+		System.out.println("notify notifyWriter " + notify.getNotifyWriter());
+		System.out.println("notify Reason " + notify.getNotifyReason());
+		
+		int result = service.insertPostNotify(notify);
+		
+		return mv;
+	}
+
 }

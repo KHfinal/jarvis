@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import kh.mark.jarvis.admin.model.vo.Notify;
 import kh.mark.jarvis.admin.model.vo.PageInfo;
 
 public interface AdminDao {
@@ -22,6 +23,9 @@ public interface AdminDao {
 	List<Map<String, String>> notifyList(SqlSessionTemplate sqlSession, int cPage, int numPerPage);
 
 	int selectTotalCount(SqlSessionTemplate sqlSession);
+
+	// 용
+	int insertPostNotify(SqlSessionTemplate sqlSession, Notify notify);
 
 
 
