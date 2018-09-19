@@ -307,7 +307,7 @@ public class PostController {
 			if (result > 0) {
 				likeList = service.selectPostLike(like);
 				int count = service.selectPostLikeCount(like);
-
+				System.out.println("#################################3COUNT = " + count);
 				mv.addObject("likeList", likeList);
 				mv.addObject("count", count);
 			}
@@ -316,7 +316,7 @@ public class PostController {
 			if (result > 0) {
 				likeList = service.selectCommentLike(like);
 				int count = service.selectCommentLikeCount(like);
-
+				System.out.println("#################################3COUNT = " + count);
 				mv.addObject("likeList", likeList);
 				mv.addObject("count", count);
 			}
@@ -347,6 +347,8 @@ public class PostController {
 				likeList = service.selectPostLike(like);
 
 				int count = service.selectPostLikeCount(like);
+				
+				System.out.println("#################################3COUNT = " + count);
 
 				mv.addObject("likeList", likeList);
 				mv.addObject("count", count);
@@ -357,6 +359,8 @@ public class PostController {
 				likeList = service.selectCommentLike(like);
 
 				int count = service.selectCommentLikeCount(like);
+				
+				System.out.println("#################################3COUNT = " + count);
 
 				mv.addObject("likeList", likeList);
 				mv.addObject("count", count);
