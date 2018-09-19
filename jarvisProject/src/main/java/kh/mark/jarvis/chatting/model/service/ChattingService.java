@@ -15,4 +15,6 @@ public interface ChattingService {
 	String lastChatting(Map<String,String> roomMap);
 	
 	List<Map<String,Object>> contentsList(int room_no);
+	int readCheck(Map<String,String> roomMap);
+	int countRead(String email);
 }

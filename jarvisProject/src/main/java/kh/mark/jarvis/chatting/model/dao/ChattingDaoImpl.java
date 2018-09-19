@@ -45,6 +45,16 @@ public class ChattingDaoImpl implements ChattingDao {
 	public List<Map<String, Object>> contentsList(SqlSessionTemplate sqlSession, int room_no) {
 		return sqlSession.selectList("chatting.contentsList", room_no);
 	}
+
+	@Override
+	public int readCheck(SqlSessionTemplate sqlSession, Map<String, String> roomMap) {
+		return sqlSession.update("chatting.readCheck", roomMap);
+	}
+
+	@Override
+	public int countRead(SqlSessionTemplate sqlSession, String email) {
+		return sqlSession.selectOne("chatting.countRead", email);
+	}
 	
 	
 	

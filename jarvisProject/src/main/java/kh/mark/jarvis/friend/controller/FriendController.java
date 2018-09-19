@@ -393,7 +393,7 @@ public class FriendController{
 	}
 	
 	@RequestMapping("/friend/autoFriendList")
-	public ModelAndView autoFriendList(HttpServletRequest request, HttpSession hs)
+	public ModelAndView autoFriendList(HttpServletRequest request, HttpSession hs) throws JsonProcessingException, UnsupportedEncodingException
 	{
 		ModelAndView mv=new ModelAndView();
 		Member m = (Member)hs.getAttribute("memberLoggedIn");
@@ -403,30 +403,54 @@ public class FriendController{
 		List<Map<String,Object>> emailList=null;
 		List<Map<String,Object>> emailList1=null;
 		System.out.println("넘어오냐 검색어"+search);
-		/*List<Map<String,Object>> friendList=null;
-		List<Map<String,Object>> friendList1=null;
-		if(!search.trim().isEmpty())
-		{*/
-			map.put("title", "F_MEMBER_EMAIL");
-			map.put("search", search);
-			map.put("email", email);
-			emailList=friendService.autoFriendList(map);
-			map.put("title", "F_FRIEND_EMAIL");
-			emailList1=friendService.autoFriendList(map);
-		/*}
-		else
+
+		map.put("title", "F_MEMBER_EMAIL");
+		map.put("search", search);
+		map.put("email", email);
+		emailList=friendService.autoFriendList(map);
+		List<Map<String,String>> memberList=new ArrayList<Map<String,String>>();
+		Map<String,String> list=null;
+		
+		if(emailList.size()>0)
 		{
-			map.put("title", "F_MEMBER_EMAIL");
-			map.put("email", email);
-			friendList=friendService.friendList(map);
-			map.put("title", "F_FRIEND_EMAIL");
-			friendList1=friendService.friendList(map);
-		}*/
-		mv.addObject("emailList", emailList);
-		mv.addObject("emailList1", emailList1);
-		/*mv.addObject("friendList", friendList);
-		mv.addObject("friendList1", friendList1);*/
+			for(int i=0; i<emailList.size(); i++)
+			{
+				list=new HashMap<String,String>();
+				list.put("F_MEMBER_EMAIL", (String)emailList.get(i).get("F_MEMBER_EMAIL"));
+				list.put("F_FRIEND_EMAIL", (String)emailList.get(i).get("F_FRIEND_EMAIL"));
+				list.put("F_STATUS", (String)emailList.get(i).get("F_STATUS"));
+				list.put("MEMBER_EMAIL", (String)emailList.get(i).get("MEMBER_EMAIL"));
+				list.put("MEMBER_NAME", URLEncoder.encode((String)emailList.get(i).get("MEMBER_NAME"), "UTF-8"));
+				list.put("MEMBER_NICKNAME", URLEncoder.encode((String)emailList.get(i).get("MEMBER_NICKNAME"), "UTF-8"));
+				list.put("MEMBER_PFP", URLEncoder.encode((String)emailList.get(i).get("MEMBER_PFP"), "UTF-8"));
+				memberList.add(list);
+			}
+			System.out.println("memberList : "+memberList);
+			
+		}
+		
+		map.put("title", "F_FRIEND_EMAIL");
+		emailList1=friendService.autoFriendList(map);
+		if(emailList1.size()>0)
+		{
+			for(int i=0; i<emailList.size(); i++)
+			{
+				list=new HashMap<String,String>();
+				list.put("F_MEMBER_EMAIL", (String)emailList1.get(i).get("F_MEMBER_EMAIL"));
+				list.put("F_FRIEND_EMAIL", (String)emailList1.get(i).get("F_FRIEND_EMAIL"));
+				list.put("F_STATUS", (String)emailList1.get(i).get("F_STATUS"));
+				list.put("MEMBER_EMAIL", (String)emailList1.get(i).get("MEMBER_EMAIL"));
+				list.put("MEMBER_NAME", URLEncoder.encode((String)emailList1.get(i).get("MEMBER_NAME"), "UTF-8"));
+				list.put("MEMBER_NICKNAME", URLEncoder.encode((String)emailList1.get(i).get("MEMBER_NICKNAME"), "UTF-8"));
+				list.put("MEMBER_PFP", URLEncoder.encode((String)emailList.get(i).get("MEMBER_PFP"), "UTF-8"));
+				memberList.add(list);
+			}
+		}
+		
+		mv.addObject("memberList",  memberList);
 		mv.setViewName("jsonView");
 		return mv;
 	}
+	
+	
 }

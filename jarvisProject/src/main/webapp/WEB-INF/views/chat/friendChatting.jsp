@@ -38,19 +38,12 @@ sock.sendmessage=sendMessage;
 				data : "search=" + $("#search").val(),
 				dataType : "json",
 				success : function(data) {
-					var emailList=data.emailList;
-					var emailList1=data.emailList1;
 					var friendListTag="";
-					if(emailList!=null)
+					if(data.memberList!=null)
 					{
-						for (var i = 0; i < emailList.length; i++) {
-							friendListTag += "<div class='chat_list p-0'><a href='${path}/chat/createRoom?fEmail="+emailList[i].MEMBER_EMAIL+"' class='p-0'><div class='chat_list'><div class='chat_people'><div class='chat_img'><img src='${path}/resources/profileImg/"+emailList[i].MEMBER_PFP+"' class='w3-circle' title='"+emailList[i].MEMBER_NAME+"'></div><div class='chat_ib'><h5>"+emailList[i].MEMBER_NAME+"<span class='chat_date'></span></h5><p>"+emailList[i].MEMBER_NAME+"님과 Messenger에서 메시지를 주고받을 수 있습니다.</p></div></div></div></a></div>";
-						}
-					}
-					if(emailList1!=null)
-					{
-						for (var i = 0; i < emailList1.length; i++) {
-							friendListTag += "<div class='chat_list p-0'><a href='${path}/chat/createRoom?fEmail="+emailList1[i].MEMBER_EMAIL+"' class='p-0'><div class='chat_list'><div class='chat_people'><div class='chat_img'><img src='${path}/resources/profileImg/"+emailList1[i].MEMBER_PFP+"' class='w3-circle' title='"+emailList1[i].MEMBER_NAME+"'></div><div class='chat_ib'><h5>"+emailList1[i].MEMBER_NAME+"<span class='chat_date'></span></h5><p>"+emailList1[i].MEMBER_NAME+"님과 Messenger에서 메시지를 주고받을 수 있습니다.</p></div></div></div></a></div>";
+						for (var i = 0; i < data.memberList.length; i++) {
+							friendListTag +=decodeURIComponent("<div class='chat_list p-0'><a href='${path}/chat/createRoom?fEmail="+data.memberList[i].MEMBER_EMAIL+"' class='p-0'><div class='chat_list'><div class='chat_people'><div class='chat_img'><img src='${path}/resources/profileImg/"+data.memberList[i].MEMBER_PFP+"' class='w3-circle' title='"+data.memberList[i].MEMBER_NAME+"'></div><div class='chat_ib'><h5>"+decodeURIComponent(data.memberList[i].MEMBER_NAME)+"<span class='chat_date'></span></h5><p>"+data.memberList[i].MEMBER_NAME+"님과 Messenger에서 메시지를 주고받을 수 있습니다.</p></div></div></div></a></div>");
+							console.log(decodeURIComponent(data.memberList[i].MEMBER_EMAIL));
 						}
 					}
 					$('#inbox_chat').html(friendListTag);
@@ -70,13 +63,6 @@ sock.sendmessage=sendMessage;
 	}
 
 	function sendMessage() {
-		/* console.log('${selectRoom}'); */
-		/* var msg = $("#message").val();
-		if(msg != ""){
-			  message = {};
-		  	  message.room_no = ${selectRoom.room_no};
-			  message.message_contents = $("#message").val();
-		  } */
 		var message = new Array();
 		message[0] = $("#message").val();
 		message[1] = ${selectRoom.room_no};
@@ -85,14 +71,10 @@ sock.sendmessage=sendMessage;
 		console.log("message2" + message[1]);
 		console.log("${selectRoom.room_no}");
 		sock.send(message);
-		/* if('${memberLoggedIn.getMemberEmail()}'=='${selectRoom.getMy_email()}'||'${memberLoggedIn.getMemberEmail()}'=='${selectRoom.getFriend_email()}'){ */
-		/* sock.send($('#message').val()); */
-		/* } */
 
 		//handler객체 거기의 handlerTextMessage메소드가 실행
 	};
 	function onMessage(evt) {
-		console.log("----------------------");
 		var data = evt.data;//TextMessage생성 매게변수(아이디|값|아이피)
 		var host = null;
 		var strArray = data.split("|");
@@ -127,18 +109,12 @@ sock.sendmessage=sendMessage;
 						var printHTML = "<div class='outgoing_msg m-1'>";
 						printHTML += "<div class='sent_msg'>";
 						printHTML += "<p>" + message + "</p>";
-						printHTML += "<span class='time_date'> " + printHour
-								+ " | " + printDate + "</span>";
+						printHTML += "<span class='time_date'> ";
+						/* printHTML += "<img src='${path}/resources/img/read.jpg' class='w3-circle' style='width:15px;height:15px;'>"; */
+						printHour += " | " + printDate + "</span>";
 						printHTML += "</div></div>";
 						$("#chatdata").append(printHTML);
 					}
-					/* var printHTML="<c:if test='"+room_no+"=="+${selectRoom.room_no}+"'>"
-					printHTML+="<div class='outgoing_msg'>";
-					printHTML+="<div class='sent_msg'>";
-					printHTML+="<p>"+message+"</p>";
-					printHTML+="<span class='time_date'> "+ printHour+" | "+printDate+"</span>";
-					printHTML+="</div></div></c:if>";
-					$("#chatdata").append(printHTML); */
 				} else
 					alert("메세지를 입력하세요");
 			} else {
@@ -156,21 +132,12 @@ sock.sendmessage=sendMessage;
 						printHTML += "</div></div></div>";
 						$("#chatdata").append(printHTML);
 					}
-					/* var printHTML="<c:if test='"+room_no+"=="+${selectRoom.room_no}+"'>"
-					printHTML+="<div class='incoming_msg'>"
-					printHTML+="<div class='incoming_msg_img'>";
-					printHTML+="<img src='${path}/resources/profileImg/profileDefault.png' class='rounded-circle' title='"+userName+"'>";
-					printHTML+="<div class='received_msg'>";
-					printHTML+="<div class='received_withd_msg'>";
-					printHTML+="<p>"+message+"</p>";
-					printHTML+="<span class='time_date'> "+ printHour+" | "+printDate+"</span>";
-					printHTML+="</div></div></div></c:if>";
-					$("#chatdata").append(printHTML); */
 				} else
 					alert("메세지를 입력하세요");
 			}
 		} else {
 			message = strArray[0];
+			location.href='${path}/chat/chatReadCheck?roomNo='+${selectRoom.room_no};
 			var printHTML = "<strong>" + message + "</strong>";
 			if (message == userName + "님이 접속중입니다")
 				$("#friend_join").html(printHTML).css("color", "green");
@@ -323,13 +290,7 @@ img{ max-width:100%;}
   overflow-y: auto;
 }
 </style>
-<script>
-$(document).ready(function(){
-    $("#searchBtn").click(function(){
-        $("#m_search").slideToggle();
-    });
-});
-</script>
+
 <div class="w3-col m9">
 	<div class="w3-card w3-round w3-white">
 		<div class="w3-container">
@@ -337,7 +298,8 @@ $(document).ready(function(){
 				<div class="col-2">
 					<strong>Messenger</strong>
 				</div>
-				<div id="friend_join" class="col-10"></div>
+				<div id="friend_join" class="col-10">
+				</div>
 			</div>
 			<div class="messaging">
 				<div class="inbox_msg">
@@ -348,7 +310,6 @@ $(document).ready(function(){
 						<div class="msg_history">
 							<div id="chatdata" class="panel-body">
 							<!-- 받은 메세지 -->
-							
 							<c:forEach items="${chat_contents }" var="chat">
 							<c:if test="${chat.MEMBER_EMAIL!=memberLoggedIn.getMemberEmail() }">
 								<div class="incoming_msg m-1">
@@ -369,9 +330,10 @@ $(document).ready(function(){
 							<c:forEach items="${chat_contents }" var="chat">
 							<c:if test="${chat.MEMBER_EMAIL==memberLoggedIn.getMemberEmail() }">
 								<div class="outgoing_msg m-1">
+								
 									<div class="sent_msg">
 										<p>${chat.MESSAGE }</p>
-										<span class="time_date"> ${chat.WRITER_DATE}<%-- <fmt:formatDate value="${chat.WRITER_DATE}" pattern="yy-MM-dd"/> | <fmt:formatDate value="${chat.WRITER_DATE}" pattern="HH:mm"/> --%></span>
+										<span class="time_date"><c:if test="${chat.READ=='Y'}"><img src="${path}/resources/img/read.jpg" class="w3-circle" style="width:15px;height:15px;"></c:if> ${chat.WRITER_DATE}<%-- <fmt:formatDate value="${chat.WRITER_DATE}" pattern="yy-MM-dd"/> | <fmt:formatDate value="${chat.WRITER_DATE}" pattern="HH:mm"/> --%></span>
 									</div>
 								</div>
 							</c:if>

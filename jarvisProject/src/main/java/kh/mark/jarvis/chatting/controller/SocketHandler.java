@@ -38,7 +38,7 @@ public class SocketHandler extends TextWebSocketHandler {
 		for(WebSocketSession s : sessionList)
 		{
 			if(s==session) continue;
-			s.sendMessage(new TextMessage(login.getMemberName()+"님이 접속중입니다")); //chattingView.jsp onmessage 실행 이거랑 연결
+			s.sendMessage(new TextMessage(login.getMemberName())); //chattingView.jsp onmessage 실행 이거랑 연결
 		}
 		
 		
