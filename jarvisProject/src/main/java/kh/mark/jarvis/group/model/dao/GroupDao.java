@@ -61,8 +61,8 @@ public interface GroupDao {
 
 	List<Map<String, Object>> startLikeCount(SqlSessionTemplate Session);
 	
-	int groupMemberAccept(SqlSessionTemplate Session, String mEmail);
-	int groupMemberReject(SqlSessionTemplate Session, String mEmail);
+	int groupMemberAccept(SqlSessionTemplate Session, Map am);
+	int groupMemberReject(SqlSessionTemplate Session, Map rm);
 	
 	int groupMemberDelete(SqlSessionTemplate Session, String mEmail);
 	

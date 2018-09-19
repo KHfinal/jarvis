@@ -59,8 +59,8 @@ public interface GroupService {
 
 	List<Map<String, Object>> startLikeCount();
 	
-	int groupMemberAccept(String mEmail);
-	int groupMemberReject(String mEmail);
+	int groupMemberAccept(Map rm);
+	int groupMemberReject(Map rm);
 	
 	int groupMemberDelete(String mEmail);
 	

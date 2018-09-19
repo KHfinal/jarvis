@@ -226,12 +226,6 @@ var today=null;
 		self.close();
 	}
 
-
-
-	/* $('#chatdata').scrollTop($('#chatdata').height()); */
-	/* $("#chatdata").scrollTop($("#chatdata")[0].scrollHeight); */
-
-
 function readURL(input) {
    for(var i=0; i<input.files.length; i++) {
        if (input.files[i]) {
@@ -550,7 +544,7 @@ function subMenuCommentDelete(e) {
 	    <c:forEach items="${memberList }" var="member">
           <c:if test="${post.getG_post_writer() eq member.getMemberEmail() }">
           <span><img class='postProfile rounded-circle' src='${path }/resources/profileImg/${member.getMemberPFP() }'></span>
-           <span class="userName" style="font-size: 2em">${member.getMemberNickname() }</span>&nbsp;&nbsp;
+           <a href="javascript:void(0)" onclick="goMyPage(this)" title="${member.getMemberEmail() }"><span class="goPostWriter" style="font-size: 2em">${member.getMemberName() }</span></a>
            </c:if>
            </c:forEach>
 	        <span><fmt:formatDate value="${post.getG_post_date() }" pattern="yy-MM-dd HH:mm"/></span>
@@ -569,6 +563,7 @@ function subMenuCommentDelete(e) {
             </div>
 	        
 	        <!-- 게시물 서브 메뉴 -->
+	        <c:if test="${post.getG_post_writer() eq memberLoggedIn.getMemberEmail() or g.g_master eq memberLoggedIn.getMemberEmail() }">
            <a href="javascript:void(0);" onclick="fn_subMenu(this);" class="dropdown-toggle" data-toggle="dropdown" title="${post.getG_post_no() }" style="float: right; padding-top: 10px;"><i class="fas fa-angle-double-down subAwe" style="font-size: 2.3em;"></i></a>
 	           <c:choose>
 	              <c:when test="${post.getG_post_writer() eq memberLoggedIn.getMemberEmail()}">
@@ -582,17 +577,16 @@ function subMenuCommentDelete(e) {
 	              <c:when test="${g.g_master eq memberLoggedIn.getMemberEmail() }">
 		              <div class="subMenu-container dropdown-menu">
 		              	  <a href="javascript:void(0);" onclick="subMenuPostDelete(this)" title="${post.getG_post_no() }" class="dropdown-item" data-toggle="modal" data-target="#groupPostDeleteModal">삭제하기</a>
-	              		  
 		              </div>
 	              </c:when>
-	              
-	              <c:when test="${g.g_master ne member.getMemberEmail() and post.getG_post_writer() ne member.getMemberEmail() }">
-		              <div class="subMenu-container dropdown-menu">
-		              	  <a class="dropdown-item" href="subMenuPostReport(this)" title="${post.getG_post_no() }">신고하기</a>
-		              </div>
-	              </c:when>
-              
 	           </c:choose>
+	        </c:if>
+	           <!-- 멤버 이메일 -->
+              <c:forEach items="${memberList }" var="member">
+              <c:if test="${post.getG_post_writer() eq member.getMemberEmail() }">
+                <sub style="float: left; top: 55px; left: 80px;">${member.getMemberEmail() }</sub>
+              </c:if>
+              </c:forEach>
 
        <!-- 게시글 삭제 모달!! -->
           <div class="modal fade" id="groupPostDeleteModal">
@@ -685,21 +679,14 @@ function subMenuCommentDelete(e) {
              <c:if test="${comment.getG_comment_writer() eq member.getMemberEmail() }">
              <span><img class='commentProfile rounded-circle' src='${path }/resources/profileImg/${member.getMemberPFP() }'></span>
                <a href="javascript:void(0)" onclick="goMyPage(this)"><span class="goCommentWriter" style="color: #EE4035">${member.getMemberName() }</span></a>
+              
               <!-- 댓글 서브 메뉴 -->
+              <c:if test="${comment.getG_comment_writer() eq memberLoggedIn.getMemberEmail() or g.g_master eq memberLoggedIn.getMemberEmail()}">
                  <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" title="${comment.getG_comment_no() }" style="float: right; padding-top: 10px;"><i class="fas fa-angle-double-down subAwe" style="font-size: 1.1em;"></i></a>
-                 <c:choose>
-                    <c:when test="${comment.getG_comment_writer() eq memberLoggedIn.getMemberEmail() or g.g_master eq memberLoggedIn.getMemberEmail()}">
-                    <div class="subMenu-container dropdown-menu">
-                      <a href="javascript:void(0);" onclick="subMenuCommentDelete(this)" title="${comment.getG_comment_no() }" class="dropdown-item" data-toggle="modal" data-target="#commentDeleteModal">삭제하기</a>
-                    </div>
-                    </c:when>
-                    
-                    <c:otherwise>
-                    <div class="subMenu-container dropdown-menu">
-                      <a href="javascript:void(0);" onclick="subMenuCommentReport(this)" title="${comment.getG_comment_no() }" class="dropdown-item">신고하기</a>
-                    </div>
-                    </c:otherwise>
-                   </c:choose>
+                 <div class="subMenu-container dropdown-menu">
+                   <a href="javascript:void(0);" onclick="subMenuCommentDelete(this)" title="${comment.getG_comment_no() }" class="dropdown-item" data-toggle="modal" data-target="#commentDeleteModal">삭제하기</a>
+                 </div>
+              </c:if>
 
                     <!-- 댓글/답글 삭제 모달!! -->
                   <div class="modal fade" id="commentDeleteModal">
@@ -764,25 +751,15 @@ function subMenuCommentDelete(e) {
 	               <c:forEach items="${memberList }" var="member">
           			<c:if test="${comment.getG_comment_writer() eq member.getMemberEmail() }">
 	               <span><img class='replyProfile rounded-circle' src='${path }/resources/profileImg/${member.getMemberPFP() }'></span>
-	               <a href='javascript:void(0)' onclick="goMyPage(this)" title="${member.getMemberEmail() }"><span class='goCommentWriter' style="color: #EE4035">${memberLoggedIn.getMemberName() }</span></a>
+	               <a href='javascript:void(0)' onclick="goMyPage(this)" title="${member.getMemberEmail() }"><span class='goCommentWriter' style="color: #EE4035">${member.getMemberName() }</span></a>
 	               
 	               <!-- 답글 서브메뉴 -->
-                  <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" title="${comment.getG_comment_no() }" style="float: right; padding-top: 10px;"><i class="fas fa-angle-double-down subAwe" style="font-size: 1.1em;"></i></a>
-                    <c:choose>
-                       <c:when test="${comment.getG_comment_writer() eq memberLoggedIn.getMemberEmail() or g.g_master eq memberLoggedIn.getMemberEmail()}">
-                       <div class="subMenu-container dropdown-menu">
-                    
-                         <a href="javascript:void(0);" onclick="subMenuCommentDelete(this)" title="${comment.getG_comment_no() }" class="dropdown-item" data-toggle="modal" data-target="#commentDeleteModal">삭제하기</a>
-                         <%-- <a href="javascript:void(0);" onclick="subMenuCommentReport(this)" title="${comment.getCommentNo() }" class="dropdown-item">신고하기</a> --%>
-                       </div>
-                       </c:when>
-                       
-                       <c:otherwise>
-                       <div class="subMenu-container dropdown-menu">
-                         <a href="javascript:void(0);" onclick="subMenuCommentReport(this)" title="${comment.getG_comment_no() }" class="dropdown-item">신고하기</a>
-                       </div>
-                       </c:otherwise>
-                    </c:choose>
+	               		<c:if test="${comment.getG_comment_writer() eq memberLoggedIn.getMemberEmail() or g.g_master eq memberLoggedIn.getMemberEmail()}">
+	                  		<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" title="${comment.getG_comment_no() }" style="float: right; padding-top: 10px;"><i class="fas fa-angle-double-down subAwe" style="font-size: 1.1em;"></i></a>
+	                       <div class="subMenu-container dropdown-menu">
+	                         <a href="javascript:void(0);" onclick="subMenuCommentDelete(this)" title="${comment.getG_comment_no() }" class="dropdown-item" data-toggle="modal" data-target="#commentDeleteModal">삭제하기</a>
+	                       </div>
+	                    </c:if>
                     </c:if>
                     </c:forEach>
                     <span>&nbsp;&nbsp;${comment.getG_comment_contents() }</span>
@@ -827,35 +804,34 @@ function subMenuCommentDelete(e) {
 
 </div>
 <style>
-table td{
+.table td{
 	word-break:break-all;
+	padding: 0.10rem;
 }
 </style>
 <div class="w3-col m2">
-	<div class="w3-card w3-round w3-white" style="overflow-y: auto; height: 200px;">
-
-		<table class="table">
-			<thead>
-				<tr>
-					<th colspan="2" style="text-align: center;">가입 요청</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:if test="${g.g_master eq memberLoggedIn.getMemberEmail() }">
+	<c:if test="${g.g_master eq memberLoggedIn.getMemberEmail() }">
+		<div class="w3-card w3-round w3-white" style="overflow-y: auto; height: 200px;">
+			<table class="table">
+				<thead>
+					<tr>
+						<th colspan="2" style="text-align: center;">가입 요청</th>
+					</tr>
+				</thead>
+				<tbody>
 					<c:forEach items="${groupEnrollList }" var="memberEnroll">
 						<tr>
-							<td>${memberEnroll.MEMBER_EMAIL }</td>
-							<td>
+							<td>${memberEnroll.MEMBER_NAME }</br><sub>${memberEnroll.MEMBER_EMAIL }</sub></td>
+							<td style="width: 30%">
 								<button class="btn btn-outline-secondary btn-sm ac" title="이 버튼이 맞아요">수락</button>
 								<button class="btn btn-outline-secondary btn-sm re" title="이 버튼이 맞아요">거절</button>
 							</td>
 						</tr>
 					</c:forEach>
-				</c:if>
-			</tbody>
-		</table>
-	</div>
-	
+				</tbody>
+			</table>
+		</div>
+	</c:if>
 	<div class="w3-card w3-round w3-white mt-3" style="overflow-y: auto; height: 200px;">
 		<table class="table">
 			<thead>
@@ -870,10 +846,10 @@ table td{
 			<c:forEach items="${gmList }" var="gm" varStatus="a">
 				<tr>
 					<c:if test="${g.g_master ne memberLoggedIn.getMemberEmail() }">
-						<td colspan="3" align="center" id='master${a.index }'>${gm.MEMBER_NICKNAME } </td>
+						<td colspan="3" align="center" id='master${a.index }'><a href="javascript:void(0)" onclick="goMyPage(this)">${gm.MEMBER_NAME }</br><sub>${gm.MEMBER_EMAIL }</sub></a></td>
 					</c:if>
 					<c:if test="${g.g_master eq memberLoggedIn.getMemberEmail() }">
-						<td id='g_member'>${gm.MEMBER_NICKNAME } </td>
+						<td id='g_member'><a href="javascript:void(0)" onclick="goMyPage(this)">${gm.MEMBER_NAME }</br><sub>${gm.MEMBER_EMAIL }</sub></a></td>
 					</c:if>
 					<c:if test="${g.g_master eq memberLoggedIn.getMemberEmail() }">
 						<td style="text-align: center;">
@@ -892,18 +868,21 @@ table td{
 		<script>
 			$(function(){
 				$('.ac').on('click',function(){
-					var mEmail=$(this).parent().prev().html();
+					var mEmail=$(this).parent().prev().find("sub").html();
 					var event=$(this).parent();
+					var groupNo = ${groupNo};
 					console.log(mEmail);
 					console.log($(this).parent());
 					$.ajax({
 						url:"${path}/group/groupMemberAccept.do",
 						type:"GET",
-						data:{mEmail:mEmail},
+						data:{mEmail:mEmail, groupNo:groupNo},
 						dataType:"Json",
 						success : function(data){
+							alert(data);
 							if(data==1){
-								event.html('<span>수락 완료</span>');
+								
+								event.html('<span>수락</span>');
 							}
 						},
 						error:function(request,status,error)
@@ -914,18 +893,20 @@ table td{
 				});
 				
 				$('.re').on('click',function(){
-					var mEmail=$(this).parent().prev().html();
+					var mEmail=$(this).parent().prev().find("sub").html();
 					var event=$(this).parent();
+					var groupNo = ${groupNo};
 					console.log(mEmail);
 					console.log($(this).parent());
 					$.ajax({
 						url:"${path}/group/groupMemberReject.do",
 						type:"GET",
-						data:{mEmail:mEmail},
+						data:{mEmail:mEmail, groupNo:groupNo},
 						dataType:"Json",
 						success : function(data){
+							alert(data);
 							if(data==1){
-								event.html('<span>거절 완료</span>');
+								event.html('<span>거절</span>');
 							}
 						},
 						error:function(request,status,error)
@@ -947,19 +928,26 @@ table td{
 		</script>
 	</div>
 	<div class="w3-card w3-round w3-white mt-3">
-		<div class="form-group mb-0">
-			<div class="panel panel-default" id="scrollDiv" style="width:100%; margin: 0px;">
-				<div id="chatdata" class="panel-body" style=" height:300px; overflow-y: scroll;"></div>
+	<!-- <script>
+		/* $(".scrollDiv").scrollTop($(".scrollDiv")[0].scrollHeight); */
+		/* $('.scrollDiv').scrollTop($('.scrollDiv').prop('scrollHeight')); */
+		var divdiv = document.getElementsByClassName('scrollDiv');
+		divdiv.scrollTop = divdiv.scrollHeight;
+	</script> -->
+		<div class="pt-1" style="text-align: center;"><h5>그룹 채팅</h5></div>
+			<div class="form-group mb-0">
+				<div class="panel panel-default" id="scrollDiv" style="width:100%; margin: 0px;">
+					<div id="chatdata" class="panel-body scrollDiv" style=" height:300px; overflow-y: auto;"></div>
+				</div>
 			</div>
-		</div>
-		<div class="type_msg">
-			<div class="input_msg_write">
-				<input type="text" name="message" id="message" placeholder="메세지를 입력하세요..."/>
-				<button class="msg_send_btn" type="button" id="sendBtn">
-					<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
-				</button>
+			<div class="type_msg">
+				<div class="input_msg_write">
+					<input type="text" name="message" id="message" placeholder="메세지를 입력하세요..."/>
+					<button class="msg_send_btn" type="button" id="sendBtn">
+						<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+					</button>
+				</div>
 			</div>
-		</div>
 	</div>		
 </div>
 </c:if>
@@ -995,7 +983,7 @@ table td{
 				<div class="card-body">
 					<h4 class="card-title">${g.g_name }</h4>
 					<p class="card-text">${g.g_intro }</p>
-					<p>그룹 가입 승인 대기중입니다.~~ 기다려주세요.~~</p>
+					<p>가입 승인 대기중입니다.~~ 기다려주세요.~~</p>
 				</div>
 			</div>
 		</div>
