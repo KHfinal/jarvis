@@ -235,8 +235,7 @@ public class AdminController {
 		Notify n = service.selectNotifyInfo(nNo);
 		Post p = service.selectPostInfo(pNo);
 		List<Attachment> aList = service.selectAttachInfo(pNo);
-		logger.debug(n.toString());
-		logger.debug(p.toString());
+
 		
 		mv.addObject("notify", n);
 		mv.addObject("post", p);
