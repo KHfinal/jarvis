@@ -48,7 +48,7 @@ public class PostController {
 		Member m = (Member) s.getAttribute("memberLoggedIn");
 		List<Map<String, String>> categoryList = service.loadCategory();
 		model.addAttribute("categoryList", categoryList);
-		logger.debug(m.toString());
+		logger.debug(""+m.toString());
 		if (m.getAddInfo().equals("N")) {
 
 			return "member/memberInfoAdd";
