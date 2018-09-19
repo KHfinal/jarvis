@@ -17,4 +17,6 @@ public interface ChattingDao {
 	String lastChatting(SqlSessionTemplate sqlSession, Map<String,String> roomMap);
 	
 	List<Map<String,Object>> contentsList(SqlSessionTemplate sqlSession, int room_no);
+	int readCheck(SqlSessionTemplate sqlSession, Map<String,String> roomMap);
+	int countRead(SqlSessionTemplate sqlSession, String email);
 }

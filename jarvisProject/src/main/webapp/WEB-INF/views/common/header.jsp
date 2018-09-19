@@ -46,7 +46,7 @@
 	   
 	    </div>
 	  </div>
-	  <a href="${path }/chat/chattingView.do" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
+	  <a href="${path }/chat/chattingView.do" id="messanger" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>
 	  <c:if test="${memberLoggedIn.memberEmail  eq 'admin'}">
 	  <div class="w3-dropdown-hover w3-hide-small">
 	  <button class="w3-button w3-padding-large" title="Notifications">
@@ -226,7 +226,17 @@
 			$('#su').append(su);
 		}
 	});
+	$.ajax({
+		url:"${path}/chat/countRead",
+		type:"get",
+		data:{email,email},
+		dataType:"json",
+		success : function(data){
+			$('#messanger').html("<i class='fa fa-envelope'></i><span id='su' class='w3-badge w3-right w3-small w3-green'>"+data+"</span>");
+		}
+	});
 	};
+
 	function onMessage(evt){
 	var userId = evt.data;
 	var flag=evt.data.split("|");

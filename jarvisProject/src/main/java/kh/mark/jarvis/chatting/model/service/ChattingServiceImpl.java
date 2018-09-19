@@ -54,6 +54,16 @@ public class ChattingServiceImpl implements ChattingService {
 	public List<Map<String, Object>> contentsList(int room_no) {
 		return dao.contentsList(sqlSession, room_no);
 	}
+
+	@Override
+	public int readCheck(Map<String, String> roomMap) {
+		return dao.readCheck(sqlSession, roomMap);
+	}
+
+	@Override
+	public int countRead(String email) {
+		return dao.countRead(sqlSession, email);
+	}
 	
 	
 

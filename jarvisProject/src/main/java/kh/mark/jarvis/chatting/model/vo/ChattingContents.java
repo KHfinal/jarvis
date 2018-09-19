@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class ChattingContents {
 
+	private int chat_no;
 	private int room_no;
 	private String writer;
 	private String message;
@@ -12,13 +13,22 @@ public class ChattingContents {
 	
 	public ChattingContents() {}
 
-	public ChattingContents(int room_no, String writer, String message, Date write_date, String read) {
+	public ChattingContents(int chat_no, int room_no, String writer, String message, Date write_date, String read) {
 		super();
+		this.chat_no = chat_no;
 		this.room_no = room_no;
 		this.writer = writer;
 		this.message = message;
 		this.write_date = write_date;
 		this.read = read;
+	}
+
+	public int getChat_no() {
+		return chat_no;
+	}
+
+	public void setChat_no(int chat_no) {
+		this.chat_no = chat_no;
 	}
 
 	public int getRoom_no() {
@@ -63,12 +73,10 @@ public class ChattingContents {
 
 	@Override
 	public String toString() {
-		return "ChattingContents [room_no=" + room_no + ", writer=" + writer + ", message=" + message + ", write_date="
-				+ write_date + ", read=" + read + "]";
+		return "ChattingContents [chat_no=" + chat_no + ", room_no=" + room_no + ", writer=" + writer + ", message="
+				+ message + ", write_date=" + write_date + ", read=" + read + "]";
 	}
 
-	
-	
 	
 	
 }
