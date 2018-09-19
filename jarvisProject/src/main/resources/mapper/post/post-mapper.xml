@@ -11,8 +11,8 @@
    
    <!-- post, attachment 등록 -->
    <insert id="insertPost" parameterType="post">
-      INSERT INTO POST(POST_NO, POST_WRITER, POST_CONTENTS, PRIVACY_BOUND, POST_DATE)
-      VALUES(post_seq.nextval, #{postWriter}, #{postContents}, #{privacyBound}, systimestamp)
+      INSERT INTO POST(POST_NO, POST_WRITER, POST_CONTENTS, POST_DATE)
+      VALUES(post_seq.nextval, #{postWriter}, #{postContents}, systimestamp)
       <selectKey keyProperty="postNo" resultType="_int" order="AFTER">
          SELECT POST_SEQ.CURRVAL FROM DUAL
       </selectKey>
@@ -25,7 +25,7 @@
 
    <!-- post, comment 수정 및 삭제 -->
    <update id="updatePost" parameterType="post">
-      UPDATE POST SET POST_CONTENTS = #{postContents}, PRIVACY_BOUND = #{privacyBound}
+      UPDATE POST SET POST_CONTENTS = #{postContents}
       WHERE POST_NO = #{postNo}
    </update>
    
@@ -44,14 +44,13 @@
    <delete id="deleteComment" parameterType="int">
       DELETE FROM JARVIS_COMMENT WHERE COMMENT_NO = #{commentNo} OR COMMENT_REF = #{commentNo}
    </delete>
-   
+
    <select id="selectPostList" resultType="post" resultMap="postMap">
-      <!-- SELECT * FROM POST ORDER BY POST_DATE DESC -->
-      SELECT * 
-  	  FROM POST  
-	  WHERE POST_WRITER IN ((SELECT F1.F_FRIEND_EMAIL FROM FRIEND F1 WHERE F1.F_MEMBER_EMAIL = #{memberEmail}))
-	  OR POST_WRITER IN((SELECT F2.F_MEMBER_EMAIL FROM FRIEND F2 WHERE F2.F_FRIEND_EMAIL = #{memberEmail})) OR POST_WRITER = #{memberEmail}
-	  ORDER BY POST_DATE DESC
+      SELECT * FROM POST WHERE POST_WRITER 
+      IN (SELECT F1.F_FRIEND_EMAIL AS A FROM FRIEND F1 WHERE F1.F_MEMBER_EMAIL = #{memberEmail} AND F1.F_STATUS = 'Y' 
+          UNION SELECT F2.F_MEMBER_EMAIL AS A FROM FRIEND F2 WHERE F2.F_FRIEND_EMAIL = #{memberEmail} AND F2.F_STATUS = 'Y')
+      OR POST_WRITER IN((SELECT F2.F_MEMBER_EMAIL FROM FRIEND F2 WHERE F2.F_FRIEND_EMAIL = #{memberEmail} AND F2.F_STATUS='Y'))
+      OR POST_WRITER = #{memberEmail} ORDER BY POST_DATE DESC
    </select>
    
    <select id="selectAttachList" parameterType="attach" resultType="attach" resultMap="attachMap">
