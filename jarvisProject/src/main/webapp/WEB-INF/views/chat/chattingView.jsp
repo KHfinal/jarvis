@@ -318,7 +318,7 @@ img{ max-width:100%;}
 												</div>
 												<div class="chat_ib">
 													<h5>${r.MEMBER_NAME}
-														<span class="chat_date"></span>
+														<span class="chat_date">${r.WRITER_DATE }</span>
 													</h5>
 													<p>
 													<c:if test="${memberLoggedIn.getMemberEmail()==r.WRITER}">

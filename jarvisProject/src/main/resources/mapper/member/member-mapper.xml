@@ -34,10 +34,15 @@
      INSERT INTO MEMBER VALUES(member_seq.nextval,#{memberEmail},#{memberPw},#{memberName},#{memberNickname},#{phone},default,null,null,null,null,null,null,null,default,default,null)
       <!-- VO과 맞추면된다. #{approvalStatus},#{approvalKey},#{reg_date},#{log_data},#{memberPFP},#{memberConcern},#{memberGender},#{memberBirthday},#{addr1},#{addr2},#{addr3}-->
   </insert>
-  
   <select id="memberList" resultMap="memberMap">
   	SELECT * FROM MEMBER
   </select>
+  
+  <select id="memberFriendList" resultMap="memberMap" parameterType="string">
+  	SELECT MEMBER_PFP, MEMBER_EMAIL, MEMBER_NAME, MEMBER_NICKNAME FROM MEMBER MINUS
+  	SELECT MEMBER_PFP, MEMBER_EMAIL, MEMBER_NAME, MEMBER_NICKNAME FROM MEMBER M JOIN FRIEND F ON(M.MEMBER_EMAIL=F.F_FRIEND_EMAIL) WHERE F.F_MEMBER_EMAIL=#{email}
+  </select>
+  
   <select id="memberSelectOne" parameterType="string" resultType="string">
   	select member_email from member where member_email=#{userEmail}
   </select>

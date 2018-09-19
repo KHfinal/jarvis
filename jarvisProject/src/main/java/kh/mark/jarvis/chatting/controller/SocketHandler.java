@@ -53,6 +53,7 @@ public class SocketHandler extends TextWebSocketHandler {
 		Member login=(Member)session.getAttributes().get("memberLoggedIn");
 		
 		String[] message_div=message.getPayload().split(",");
+		
 		Map<String,String> map = new HashMap();
 		map.put("room_no", message_div[1]);
 		map.put("writer", login.getMemberEmail());

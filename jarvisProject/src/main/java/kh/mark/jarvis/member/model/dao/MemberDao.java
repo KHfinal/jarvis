@@ -18,6 +18,7 @@ public interface MemberDao {
 	
 	List<Map<String,String>> memberList(SqlSessionTemplate sqlSession);		//회원리스트
 
+	List<Map<String, String>> memberFriendList(SqlSessionTemplate sqlSession, String email);
 
 	Object memberSelectOne(SqlSessionTemplate sqlSession, String userEmail);
 

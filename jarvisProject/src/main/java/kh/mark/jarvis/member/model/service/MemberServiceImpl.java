@@ -35,6 +35,13 @@ public class MemberServiceImpl implements MemberService{
 		// TODO Auto-generated method stub
 		return memberDao.memberList(sqlSession);
 	}
+	
+
+	@Override
+	public List<Map<String, String>> memberFriendList(String email) {
+		// TODO Auto-generated method stub
+		return memberDao.memberFriendList(sqlSession,email);
+	}
 
 	@Override
 	public Object selectOne(String userEmail) {

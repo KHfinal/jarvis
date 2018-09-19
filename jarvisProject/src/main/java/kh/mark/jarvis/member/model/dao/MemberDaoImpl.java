@@ -31,6 +31,12 @@ public class MemberDaoImpl implements MemberDao{
 	}
 
 	@Override
+	public List<Map<String, String>> memberFriendList(SqlSessionTemplate sqlSession, String email) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("member.memberFriendList",email);
+	}
+
+	@Override
 	public Object memberSelectOne(SqlSessionTemplate sqlSession, String userEmail) {
 		return sqlSession.selectOne("member.memberSelectOne", userEmail);
 	}
