@@ -118,6 +118,8 @@ public class AdminController {
 	
 	@RequestMapping("/admin/warningContent.do")
 	public ModelAndView warningContentView(ModelAndView mv) {
+		
+		mv.setViewName("admin/warningContent");
 		return mv;
 	}
 	
