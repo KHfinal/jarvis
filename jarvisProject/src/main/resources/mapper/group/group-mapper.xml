@@ -155,9 +155,12 @@
        SELECT * FROM GROUP_MEMBER JOIN MEMBER USING(MEMBER_EMAIL) WHERE G_NO=#{groupNo} AND G_MEMBER_STATUS='Y'
     </select>
     
-    <update id="groupMemberAccept" parameterType="string">
-       UPDATE GROUP_MEMBER SET G_MEMBER_STATUS='Y' WHERE MEMBER_EMAIL=#{mEmail} 
+    <update id="groupMemberAccept" parameterType="map">
+       UPDATE GROUP_MEMBER SET G_MEMBER_STATUS='Y' WHERE MEMBER_EMAIL=#{mEmail} AND G_NO=#{groupNo}
     </update>
+    <delete id="groupMemberReject" parameterType="map">
+    	DELETE FROM GROUP_MEMBER WHERE MEMBER_EMAIL=#{mEmail} AND G_NO=#{groupNo}
+    </delete>
    
    <delete id="groupMemberDelete" parameterType="string">
       DELETE FROM GROUP_MEMBER WHERE MEMBER_EMAIL=#{mEmail}

@@ -129,7 +129,7 @@
                           
                           <div class="col-xs-6">
                             <label class="text-secondary">성별</label>
-	            			<input type="text" required class="form-control" name="memberNickname" id="nickname" readonly="readonly" value="${memberLoggedIn.memberGender }자"" placeholder=""/>
+	            			<input type="text" required class="form-control" name="memberNickname" id="nickname" readonly="readonly" value="${memberLoggedIn.memberGender }"" placeholder=""/>
                           </div>
                     
                       </div>

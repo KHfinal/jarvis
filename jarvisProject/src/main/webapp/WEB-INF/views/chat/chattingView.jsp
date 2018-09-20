@@ -134,12 +134,12 @@ sock.onclose = onClose;
 					alert("메세지를 입력하세요");
 			}
 		} else {
-			message = strArray[0];
+			/* message = strArray[0];
 			var printHTML = "<strong>" + message + "</strong>";
 			if (message == userName + "님이 접속중입니다")
 				$("#friend_join").html(printHTML).css("color", "green");
 			else
-				$("#friend_join").html(printHTML).css("color", "red");
+				$("#friend_join").html(printHTML).css("color", "red"); */
 		}
 	};
 	function onClose() {

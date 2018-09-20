@@ -59,9 +59,9 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public int groupMemberReject(String mEmail) {
+	public int groupMemberReject(Map rm) {
 		// TODO Auto-generated method stub
-		return dao.groupMemberReject(Session, mEmail);
+		return dao.groupMemberReject(Session, rm);
 	}
 
 	@Override
@@ -71,9 +71,9 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public int groupMemberAccept(String mEmail) {
+	public int groupMemberAccept(Map am) {
 		// TODO Auto-generated method stub
-		return dao.groupMemberAccept(Session, mEmail);
+		return dao.groupMemberAccept(Session, am);
 	}
 
 	@Override

@@ -13,59 +13,64 @@ import kh.mark.jarvis.chatting.model.vo.ChattingRoom;
 @Service
 public class ChattingServiceImpl implements ChattingService {
 
-	@Autowired
-	private ChattingDao dao;
-	
-	@Autowired
-	private SqlSessionTemplate sqlSession;
-	
-	
-	@Override
-	public List<Map<String, Object>> roomList(Map<String, String> roomMap) {
-		return dao.roomList(sqlSession, roomMap);
-	}
+   @Autowired
+   private ChattingDao dao;
+   
+   @Autowired
+   private SqlSessionTemplate sqlSession;
+   
+   
+   @Override
+   public List<Map<String, Object>> roomList(Map<String, String> roomMap) {
+      return dao.roomList(sqlSession, roomMap);
+   }
 
-	@Override
-	public ChattingRoom selectRoom(Map<String, String> roomMap) {
-		return dao.selectRoom(sqlSession, roomMap);
-	}
+   @Override
+   public ChattingRoom selectRoom(Map<String, String> roomMap) {
+      return dao.selectRoom(sqlSession, roomMap);
+   }
 
-	@Override
-	public int createRoom(Map<String, String> roomMap) {
-		return dao.createRoom(sqlSession, roomMap);
-	}
+   @Override
+   public int createRoom(Map<String, String> roomMap) {
+      return dao.createRoom(sqlSession, roomMap);
+   }
 
-	@Override
-	public int saveMessage(Map<String, String> map) {
-		return dao.saveMessage(sqlSession, map);
-	}
+   @Override
+   public int saveMessage(Map<String, String> map) {
+      return dao.saveMessage(sqlSession, map);
+   }
 
-	@Override
-	public List<Map<String, String>> chattingList(Map<String, String> map) {
-		return dao.chattingList(sqlSession, map);
-	}
+   @Override
+   public List<Map<String, String>> chattingList(Map<String, String> map) {
+      return dao.chattingList(sqlSession, map);
+   }
 
-	@Override
-	public String lastChatting(Map<String, String> roomMap) {
-		return dao.lastChatting(sqlSession, roomMap);
-	}
+   @Override
+   public String lastChatting(Map<String, String> roomMap) {
+      return dao.lastChatting(sqlSession, roomMap);
+   }
 
-	@Override
-	public List<Map<String, Object>> contentsList(int room_no) {
-		return dao.contentsList(sqlSession, room_no);
-	}
+   @Override
+   public List<Map<String, Object>> contentsList(int room_no) {
+      return dao.contentsList(sqlSession, room_no);
+   }
 
-	@Override
-	public int readCheck(Map<String, String> roomMap) {
-		return dao.readCheck(sqlSession, roomMap);
-	}
+   @Override
+   public int readCheck(Map<String, String> roomMap) {
+      return dao.readCheck(sqlSession, roomMap);
+   }
+
+   @Override
+   public String friendImg(String email) {
+      return dao.friendImg(sqlSession, email);
+   }
 
 
-	/*@Override
-	public int countRead(String fEmail) {
-		return dao.countRead(sqlSession, fEmail);
-	}*/
-	
-	
+   /*@Override
+   public int countRead(String fEmail) {
+      return dao.countRead(sqlSession, fEmail);
+   }*/
+   
+   
 
 }

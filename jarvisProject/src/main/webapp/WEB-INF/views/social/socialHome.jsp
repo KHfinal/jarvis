@@ -11,7 +11,7 @@
    <jsp:param value="social" name="title"/>
 </jsp:include>
 
-<link rel="stylesheet" href="${path }/resources/css/socialHome.css?ver=121">
+<link rel="stylesheet" href="${path }/resources/css/socialHome.css?ver=1212">
 
 <script>
 // 게시글 등록
@@ -52,7 +52,7 @@ $(function() {
        ext = $(this).val().split(".").pop().toLowerCase(); 
        
        if($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
-          resetFormElement($(this)) // resetFormElement실행
+          /* resetFormElement($(this)); */
           alert('이미지 파일이 아닙니다.');
        } else {
           readURL(this);   
@@ -64,7 +64,7 @@ $(function() {
        ext = $(this).val().split(".").pop().toLowerCase(); 
        
        if($.inArray(ext, ['gif', 'png', 'jpg', 'jpeg']) == -1) {
-          resetFormElement($(this)) // resetFormElement실행
+          /* resetFormElement($(this)); */
           alert('이미지 파일이 아닙니다.');
        } else {
           updateReadURL(this);   

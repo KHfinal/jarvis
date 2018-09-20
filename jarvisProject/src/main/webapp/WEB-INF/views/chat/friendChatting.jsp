@@ -5,7 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set value="<%=request.getContextPath()%>" var="path"/>
 <jsp:include page="/WEB-INF/views/common/header.jsp">
-	<jsp:param value="social" name="title"/>
+   <jsp:param value="social" name="title"/>
 </jsp:include>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="http://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
@@ -15,138 +15,139 @@ sock.onmessage = onMessage;
 sock.onclose = onClose;
 //sock.sendmessage=sendMessage;
 
-	var today=null;
+   var today=null;
 
-	$(function(){
-		//전송버튼을 눌렀을때 이벤트 처리
-		$('#sendBtn').click(function(){
-			sendMessage();//우리가 구현할 함수
-			$('#message').val('');
-			$("#message").focus();
-			$("#chatdata").animate({
-				scrollTop: $('#chatdata').get(0).scrollHeight
-			}, 10);
-		});
-		
-		$('#search').keyup(function(){
-			$.ajax({
-				url:"${path}/friend/autoFriendList",
-				type : "post",
-				data : "search=" + $("#search").val(),
-				dataType : "json",
-				success : function(data) {
-					var friendListTag="";
-					if(data.memberList!=null)
-					{
-						for (var i = 0; i < data.memberList.length; i++) {
-							friendListTag +=decodeURIComponent("<div class='chat_list p-0'><a href='${path}/chat/createRoom?fEmail="+data.memberList[i].MEMBER_EMAIL+"' class='p-0'><div class='chat_list'><div class='chat_people'><div class='chat_img'><img src='${path}/resources/profileImg/"+data.memberList[i].MEMBER_PFP+"' class='w3-circle' title='"+data.memberList[i].MEMBER_NAME+"'></div><div class='chat_ib'><h5>"+decodeURIComponent(data.memberList[i].MEMBER_NAME)+"<span class='chat_date'></span></h5><p>"+data.memberList[i].MEMBER_NAME+"님과 Messenger에서 메시지를 주고받을 수 있습니다.</p></div></div></div></a></div>");
-							console.log(decodeURIComponent(data.memberList[i].MEMBER_EMAIL));
-						}
-					}
-					$('#inbox_chat').html(friendListTag);
-				}
-			});
-		});
-	});
-	function leadingZeros(n, digits) {
-		var zero = '';
-		n = n.toString();
+   $(function(){
+      //전송버튼을 눌렀을때 이벤트 처리
+      $('#sendBtn').click(function(){
+         sendMessage();//우리가 구현할 함수
+         $('#message').val('');
+         $("#message").focus();
+         $("#chatdata").animate({
+            scrollTop: $('#chatdata').get(0).scrollHeight
+         }, 10);
+      });
+      
+      $('#search').keyup(function(){
+         $.ajax({
+            url:"${path}/friend/autoFriendList",
+            type : "post",
+            data : "search=" + $("#search").val(),
+            dataType : "json",
+            success : function(data) {
+               var friendListTag="";
+               if(data.memberList!=null)
+               {
+                  for (var i = 0; i < data.memberList.length; i++) {
+                     friendListTag +=decodeURIComponent("<div class='chat_list p-0'><a href='${path}/chat/createRoom?fEmail="+data.memberList[i].MEMBER_EMAIL+"' class='p-0'><div class='chat_list'><div class='chat_people'><div class='chat_img'><img src='${path}/resources/profileImg/"+data.memberList[i].MEMBER_PFP+"' class='w3-circle' title='"+data.memberList[i].MEMBER_NAME+"'></div><div class='chat_ib'><h5>"+decodeURIComponent(data.memberList[i].MEMBER_NAME)+"<span class='chat_date'></span></h5><p>"+data.memberList[i].MEMBER_NAME+"님과 Messenger에서 메시지를 주고받을 수 있습니다.</p></div></div></div></a></div>");
+                     console.log(decodeURIComponent(data.memberList[i].MEMBER_EMAIL));
+                  }
+               }
+               $('#inbox_chat').html(friendListTag);
+            }
+         });
+      });
+   });
+   function leadingZeros(n, digits) {
+      var zero = '';
+      n = n.toString();
 
-		if (n.length < digits) {
-			for (i = 0; i < digits - n.length; i++)
-				zero += '0';
-		}
-		return zero + n;
-	}
+      if (n.length < digits) {
+         for (i = 0; i < digits - n.length; i++)
+            zero += '0';
+      }
+      return zero + n;
+   }
 
-	function sendMessage() {
-		var message = new Array();
-		message[0] = $("#message").val();
-		message[1] = ${selectRoom.room_no};
-		
-		console.log("message : " + $("#message").val());
-		console.log("message 값 : "+message)
-		console.log("message1" + message[0]);
-		console.log("message2" + message[1]);
-		console.log("${selectRoom.room_no}");
-		sock.send(message);
+   function sendMessage() {
+      var message = new Array();
+      message[0] = $("#message").val();
+      message[1] = ${selectRoom.room_no};
+      
+      console.log("message : " + $("#message").val());
+      console.log("message 값 : "+message)
+      console.log("message1" + message[0]);
+      console.log("message2" + message[1]);
+      console.log("${selectRoom.room_no}");
+      sock.send(message);
 
-		//handler객체 거기의 handlerTextMessage메소드가 실행
-	};
-	function onMessage(evt) {
-		var data = evt.data;//TextMessage생성 매게변수(아이디|값|아이피)
-		var host = null;
-		var strArray = data.split("|");
-		var userName = null;
-		var message = null;
-		var room_no = null;
-		for (i = 0; i < strArray.length; i++) {
-			console.log("strArray[" + i + "] : " + strArray[i]);
-		}
+      //handler객체 거기의 handlerTextMessage메소드가 실행
+   };
+   function onMessage(evt) {
+      var data = evt.data;//TextMessage생성 매게변수(아이디|값|아이피)
+      var host = null;
+      var strArray = data.split("|");
+      var userName = null;
+      var message = null;
+      var room_no = null;
+      var member_pfp = null;
+      for (i = 0; i < strArray.length; i++) {
+         console.log("strArray[" + i + "] : " + strArray[i]);
+      }
 
-		if (strArray.length > 1) {
-			//실제 채팅메세지
-			userName = strArray[0];//접속자 아이디
-			message = strArray[1];//전송내용
-			host = strArray[2].substr(1, strArray[2].indexOf(":") - 1);//실제아이피주소만 남기기
-			room_no = strArray[3];//방번호
-			today = new Date();
-			printDate = today.getFullYear() + "-"
-					+ leadingZeros(today.getMonth()+1, 2) + "- "
-					+ today.getDate() + " " + leadingZeros(today.getHours(), 2) + ":"+ leadingZeros(today.getMinutes(), 2)+":"+leadingZeros(today.getSeconds(), 2);
-			printHour = leadingZeros(today.getHours(), 2) + ":"
-					+ leadingZeros(today.getMinutes(), 2);
-			console.log(printDate);
+      if (strArray.length > 1) {
+         //실제 채팅메세지
+         userName = strArray[0];//접속자 아이디
+         message = strArray[1];//전송내용
+         host = strArray[2].substr(1, strArray[2].indexOf(":") - 1);//실제아이피주소만 남기기
+         room_no = strArray[3];//방번호
+         today = new Date();
+         printDate = today.getFullYear() + "-"
+               + leadingZeros(today.getMonth()+1, 2) + "- "
+               + today.getDate() + " " + leadingZeros(today.getHours(), 2) + ":"+ leadingZeros(today.getMinutes(), 2)+":"+leadingZeros(today.getSeconds(), 2);
+         printHour = leadingZeros(today.getHours(), 2) + ":"
+               + leadingZeros(today.getMinutes(), 2);
+         console.log(printDate);
 
-			var ck_host = '${host}';
-			console.log("host" + host);
-			console.log("ck_host" + ck_host);
+         var ck_host = '${host}';
+         console.log("host" + host);
+         console.log("ck_host" + ck_host);
 
-			if (host == ck_host || (host == 0 && ck_host.includes('0:0:'))) {
-				if (message != null && message != "") {
-					if ('${selectRoom.room_no}' == room_no) {
-						var printHTML = "<div class='outgoing_msg m-1'>";
-						printHTML += "<div class='sent_msg'>";
-						printHTML += "<p>" + message + "</p>";
-						printHTML += "<span class='time_date'> ";
-						/* printHTML += "<img src='${path}/resources/img/read.jpg' class='w3-circle' style='width:15px;height:15px;'>"; */
-						printHTML += printDate + "</span>";
-						printHTML += "</div></div>";
-						$("#chatdata").append(printHTML);
-					}
-				} else
-					alert("메세지를 입력하세요");
-			} else {
-				if (message != null && message != "") {
-					//타인의 메세지
-					if ('${selectRoom.room_no}' == room_no) {
-						var printHTML = "<div class='incoming_msg m-1'>"
-						printHTML += "<div class='incoming_msg_img'>";
-						printHTML += "<img src='${path}/resources/profileImg/profileDefault.png' class='rounded-circle' title='"+userName+"'></div>";
-						printHTML += "<div class='received_msg'>";
-						printHTML += "<div class='received_withd_msg'>";
-						printHTML += "<p>" + message + "</p>";
-						printHTML += "<span class='time_date'> " + printDate + "</span>";
-						printHTML += "</div></div></div>";
-						$("#chatdata").append(printHTML);
-					}
-				} else
-					alert("메세지를 입력하세요");
-			}
-		} else {
-			message = strArray[0];
-			location.href='${path}/chat/chatReadCheck?roomNo='+${selectRoom.room_no};
-			var printHTML = "<strong>" + message + "</strong>";
-			if (message == userName + "님이 접속중입니다")
-				$("#friend_join").html(printHTML).css("color", "green");
-			else
-				$("#friend_join").html(printHTML).css("color", "red");
-		}
-	};
-	function onClose() {
-		location.href = '${pageContext.request.contextPath}';
-		self.close();
-	}
+         if (host == ck_host || (host == 0 && ck_host.includes('0:0:'))) {
+            if (message != null && message != "") {
+               if ('${selectRoom.room_no}' == room_no) {
+                  var printHTML = "<div class='outgoing_msg m-1'>";
+                  printHTML += "<div class='sent_msg'>";
+                  printHTML += "<p>" + message + "</p>";
+                  printHTML += "<span class='time_date'> ";
+                  /* printHTML += "<img src='${path}/resources/img/read.jpg' class='w3-circle' style='width:15px;height:15px;'>"; */
+                  printHTML += printDate + "</span>";
+                  printHTML += "</div></div>";
+                  $("#chatdata").append(printHTML);
+               }
+            } else
+               alert("메세지를 입력하세요");
+         } else {
+            if (message != null && message != "") {
+               //타인의 메세지
+               if ('${selectRoom.room_no}' == room_no) {
+                  var printHTML = "<div class='incoming_msg m-1'>"
+                  printHTML += "<div class='incoming_msg_img'>";
+                  printHTML += "<img src='${path}/resources/profileImg/"+strArray[4]+"' class='rounded-circle' title='"+userName+"'></div>";
+                  printHTML += "<div class='received_msg'>";
+                  printHTML += "<div class='received_withd_msg'>";
+                  printHTML += "<p>" + message + "</p>";
+                  printHTML += "<span class='time_date'> " + printDate + "</span>";
+                  printHTML += "</div></div></div>";
+                  $("#chatdata").append(printHTML);
+               }
+            } else
+               alert("메세지를 입력하세요");
+         }
+      } else {
+         message = strArray[0];
+         /* location.href='${path}/chat/chatReadCheck?roomNo='+${selectRoom.room_no}; */
+         var printHTML = "<strong>" + message + "</strong>";
+         if (message == userName + "님이 접속중입니다")
+            $("#friend_join").html(printHTML).css("color", "green");
+         else
+            $("#friend_join").html(printHTML).css("color", "red");
+      }
+   };
+   function onClose() {
+      location.href = '${pageContext.request.contextPath}';
+      self.close();
+   }
 </script>
 <style>
 .container{max-width:1170px; margin:auto;}
@@ -290,134 +291,134 @@ img{ max-width:100%;}
 </style>
 
 <div class="w3-col m9">
-	<div class="w3-card w3-round w3-white">
-		<div class="w3-container">
-			<div class="row" style="padding: 10px; height: 40px;">
-				<div class="col-2">
-					<strong>Messenger</strong>
-				</div>
-				<div id="friend_join" class="col-10">
-				</div>
-			</div>
-			<div class="messaging">
-				<div class="inbox_msg">
-					
-					
-					<!-- 채팅창 -->
-					<div class="mesgs">
-						<div class="msg_history">
-							<div id="chatdata" class="panel-body">
-							<!-- 받은 메세지 -->
-							<c:forEach items="${chat_contents }" var="chat">
-							<c:if test="${chat.MEMBER_EMAIL!=memberLoggedIn.getMemberEmail() }">
-								<div class="incoming_msg m-1">
-									<div class="incoming_msg_img">
-										<img src="${path}/resources/profileImg/${chat.MEMBER_PFP}" class="w3-circle" title="${chat.MEMBER_NAME }">
-									</div>
-									<div class="received_msg">
-										<div class="received_withd_msg">
-											<p>${chat.MESSAGE }</p>
-											<span class="time_date"> ${chat.WRITER_DATE}</span>
-										</div>
-									</div>
-								</div>
-							</c:if>
-								
-							<!-- 보낸 메세지 -->
-							<c:if test="${chat.MEMBER_EMAIL==memberLoggedIn.getMemberEmail() }">
-								<div class="outgoing_msg m-1">
-								
-									<div class="sent_msg">
-										<p>${chat.MESSAGE }</p>
-										<span class="time_date">
-										<c:if test="${chat.READ=='Y'}">
-											<img src="${path}/resources/img/read.jpg" class="w3-circle" style="width:15px;height:15px;">
-										</c:if> 
-										 ${chat.WRITER_DATE}</span>
-									</div>
-								</div>
-							</c:if>
-							</c:forEach>
-							</div>
-						</div>
-						<div class="type_msg">
-							<div class="input_msg_write">
-								<input type="text" class="write_msg" id="message" placeholder="메세지를 입력하세요..." />
-								<button class="msg_send_btn" type="button" id="sendBtn">
-									<i class="fa fa-paper-plane-o" aria-hidden="true"></i>
-								</button>
-							</div>
-						</div>
-					</div>
+   <div class="w3-card w3-round w3-white">
+      <div class="w3-container">
+         <div class="row" style="padding: 10px; height: 40px;">
+            <div class="col-2">
+               <strong>Messenger</strong>
+            </div>
+            <div id="friend_join" class="col-10">
+            </div>
+         </div>
+         <div class="messaging">
+            <div class="inbox_msg">
+               
+               
+               <!-- 채팅창 -->
+               <div class="mesgs">
+                  <div class="msg_history">
+                     <div id="chatdata" class="panel-body">
+                     <!-- 받은 메세지 -->
+                     <c:forEach items="${chat_contents }" var="chat">
+                     <c:if test="${chat.MEMBER_EMAIL!=memberLoggedIn.getMemberEmail() }">
+                        <div class="incoming_msg m-1">
+                           <div class="incoming_msg_img">
+                              <img src="${path}/resources/profileImg/${chat.MEMBER_PFP}" class="w3-circle" title="${chat.MEMBER_NAME }">
+                           </div>
+                           <div class="received_msg">
+                              <div class="received_withd_msg">
+                                 <p>${chat.MESSAGE }</p>
+                                 <span class="time_date"> ${chat.WRITER_DATE}</span>
+                              </div>
+                           </div>
+                        </div>
+                     </c:if>
+                        
+                     <!-- 보낸 메세지 -->
+                     <c:if test="${chat.MEMBER_EMAIL==memberLoggedIn.getMemberEmail() }">
+                        <div class="outgoing_msg m-1">
+                        
+                           <div class="sent_msg">
+                              <p>${chat.MESSAGE }</p>
+                              <span class="time_date">
+                              <c:if test="${chat.READ=='Y'}">
+                                 <img src="${path}/resources/img/read.jpg" class="w3-circle" style="width:15px;height:15px;">
+                              </c:if> 
+                               ${chat.WRITER_DATE}</span>
+                           </div>
+                        </div>
+                     </c:if>
+                     </c:forEach>
+                     </div>
+                  </div>
+                  <div class="type_msg">
+                     <div class="input_msg_write">
+                        <input type="text" class="write_msg" id="message" placeholder="메세지를 입력하세요..." />
+                        <button class="msg_send_btn" type="button" id="sendBtn">
+                           <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+                        </button>
+                     </div>
+                  </div>
+               </div>
 
-					<!-- 친구목록 -->
-					<div class="inbox_people">
-						<div class="headind_srch">
-							<div class="recent_heading">
-								<h4>Friend</h4>
-							</div>
-							<div class="srch_bar">
-								<div class="stylish-input-group">
-									<input type="text" id="search" name="search" class="search-bar" placeholder="Search" list="autoComplete">
-									<datalist id="autoComplete"></datalist>
-									<span class="input-group-addon">
-										<button type="button">
-											<i class="fa fa-search" aria-hidden="true"></i>
-										</button>
-									</span>
-								</div>
-							</div>
-						</div>
-						<div id="inbox_chat" class="inbox_chat p-0">
-							<c:forEach items="${roomListReal }" var="r">
-								<div class="chat_list active_chat p-0">
-									<a href="${path}/chat/createRoom?fEmail=${r.MEMBER_EMAIL}" class="p-0">
-										<div class="chat_list active_chat">
-											<div class="chat_people">
-												<div class="chat_img">
-													<img src="${path}/resources/profileImg/${r.MEMBER_PFP}" class="w3-circle" title="${r.MEMBER_NAME }">
-												</div>
-												<div class="chat_ib">
-													<h5>${r.MEMBER_NAME}
-														<span class="chat_date">${r.WRITER_DATE }</span>
-													</h5>
-													<p>
-													<c:if test="${memberLoggedIn.getMemberEmail()==r.WRITER}">
-														회원님의 메세지 : 
-													</c:if>
-														${r.MESSAGE }</p>
-												</div>
-											</div>
-										</div>
-									</a>
-								</div>
-							</c:forEach>
-							<%-- <c:forEach items="${roomList1 }" var="r1">
-								<div class="chat_list p-0">
-									<a href="${path}/chat/createRoom?fEmail=${r1.MEMBER_EMAIL}" class="p-0">
-										<div class="chat_list active_chat">
-											<div class="chat_people">
-												<div class="chat_img">
-													<img src="${path}/resources/profileImg/${r1.MEMBER_PFP}" class="w3-circle" title="${r1.MEMBER_NAME }">
-												</div>
-												<div class="chat_ib">
-													<h5>${r1.MEMBER_NAME}
-														<span class="chat_date">Dec 25</span>
-													</h5>
-													<p>Test, which is a new approach to have all solutions
-														astrology under one roof.</p>
-												</div>
-											</div>
-										</div>
-									</a>
-								</div>
-							</c:forEach> --%>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+               <!-- 친구목록 -->
+               <div class="inbox_people">
+                  <div class="headind_srch">
+                     <div class="recent_heading">
+                        <h4>Friend</h4>
+                     </div>
+                     <div class="srch_bar">
+                        <div class="stylish-input-group">
+                           <input type="text" id="search" name="search" class="search-bar" placeholder="Search" list="autoComplete">
+                           <datalist id="autoComplete"></datalist>
+                           <span class="input-group-addon">
+                              <button type="button">
+                                 <i class="fa fa-search" aria-hidden="true"></i>
+                              </button>
+                           </span>
+                        </div>
+                     </div>
+                  </div>
+                  <div id="inbox_chat" class="inbox_chat p-0">
+                     <c:forEach items="${roomListReal }" var="r">
+                        <div class="chat_list active_chat p-0">
+                           <a href="${path}/chat/createRoom?fEmail=${r.MEMBER_EMAIL}" class="p-0">
+                              <div class="chat_list active_chat">
+                                 <div class="chat_people">
+                                    <div class="chat_img">
+                                       <img src="${path}/resources/profileImg/${r.MEMBER_PFP}" class="w3-circle" title="${r.MEMBER_NAME }">
+                                    </div>
+                                    <div class="chat_ib">
+                                       <h5>${r.MEMBER_NAME}
+                                          <span class="chat_date">${r.WRITER_DATE }</span>
+                                       </h5>
+                                       <p>
+                                       <c:if test="${memberLoggedIn.getMemberEmail()==r.WRITER}">
+                                          회원님의 메세지 : 
+                                       </c:if>
+                                          ${r.MESSAGE }</p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </a>
+                        </div>
+                     </c:forEach>
+                     <%-- <c:forEach items="${roomList1 }" var="r1">
+                        <div class="chat_list p-0">
+                           <a href="${path}/chat/createRoom?fEmail=${r1.MEMBER_EMAIL}" class="p-0">
+                              <div class="chat_list active_chat">
+                                 <div class="chat_people">
+                                    <div class="chat_img">
+                                       <img src="${path}/resources/profileImg/${r1.MEMBER_PFP}" class="w3-circle" title="${r1.MEMBER_NAME }">
+                                    </div>
+                                    <div class="chat_ib">
+                                       <h5>${r1.MEMBER_NAME}
+                                          <span class="chat_date">Dec 25</span>
+                                       </h5>
+                                       <p>Test, which is a new approach to have all solutions
+                                          astrology under one roof.</p>
+                                    </div>
+                                 </div>
+                              </div>
+                           </a>
+                        </div>
+                     </c:forEach> --%>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
 </div>
 
 

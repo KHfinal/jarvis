@@ -35,31 +35,31 @@
       <!-- VO과 맞추면된다. #{approvalStatus},#{approvalKey},#{reg_date},#{log_data},#{memberPFP},#{memberConcern},#{memberGender},#{memberBirthday},#{addr1},#{addr2},#{addr3}-->
   </insert>
   <select id="memberList" resultMap="memberMap">
-  	SELECT * FROM MEMBER
+     SELECT * FROM MEMBER
   </select>
   
   <select id="memberFriendList" resultMap="memberMap" parameterType="string">
-  	SELECT MEMBER_PFP, MEMBER_EMAIL, MEMBER_NAME, MEMBER_NICKNAME FROM MEMBER MINUS
-  	SELECT MEMBER_PFP, MEMBER_EMAIL, MEMBER_NAME, MEMBER_NICKNAME FROM MEMBER M JOIN FRIEND F ON(M.MEMBER_EMAIL=F.F_FRIEND_EMAIL) WHERE F.F_MEMBER_EMAIL=#{email}
+     SELECT MEMBER_PFP, MEMBER_EMAIL, MEMBER_NAME, MEMBER_NICKNAME FROM MEMBER MINUS
+     SELECT MEMBER_PFP, MEMBER_EMAIL, MEMBER_NAME, MEMBER_NICKNAME FROM MEMBER M JOIN FRIEND F ON(M.MEMBER_EMAIL=F.F_FRIEND_EMAIL) WHERE F.F_MEMBER_EMAIL=#{email}
   </select>
   
   <select id="memberSelectOne" parameterType="string" resultType="string">
-  	select member_email from member where member_email=#{userEmail}
+     select member_email from member where member_email=#{userEmail}
   </select>
   <update id="memberVerify" parameterType="string">
-  	update member set verify='Y', reg_date=sysdate where member_email = #{memberEmail}
+     update member set verify='Y', reg_date=sysdate where member_email = #{memberEmail}
   </update>
     <update id="addInfoUpdate" parameterType="member">
-  	update member set member_pfp=#{memberPFP},member_concern=#{memberConcern,typeHandler=strArr},member_gender=#{memberGender},member_birth=#{memberBirthday},addr1=#{addr1},addr2=#{addr2},addr3=#{addr3},addinfo='Y' where member_email=#{memberEmail}
+     update member set member_pfp=#{memberPFP},member_concern=#{memberConcern,typeHandler=strArr},member_gender=#{memberGender},member_birth=#{memberBirthday},addr1=#{addr1},addr2=#{addr2},addr3=#{addr3},addinfo='Y' where member_email=#{memberEmail}
   </update>
   
   <!-- 한개의 값을 찾으려고 string으로, parameterType값을 alise값 -->
   <select id="emailSearch"  resultType="string" parameterType="member">
-  		<!-- 한개의 값을 찾으려고 string으로, parameterType값을 alise값 -->
-  		select member_email from member where member_name=#{memberName} and member_phone=#{phone}
+        <!-- 한개의 값을 찾으려고 string으로, parameterType값을 alise값 -->
+        select member_email from member where member_name=#{memberName} and member_phone=#{phone}
   </select>
 
-<!-- 패스워드 찾기- 메일로 전송 -->	
+<!-- 패스워드 찾기- 메일로 전송 -->   
  <select id="selectPw" resultMap="memberMap" parameterType="string">
       SELECT * FROM MEMBER WHERE MEMBER_EMAIL=#{memberEmail}
  </select>
@@ -67,38 +67,41 @@
 
 <!-- 패스워드 변경 -메일 전송 후-->
 <update id="pwUpdate"  parameterType="string" >
-  	update member set member_pw=#{memberPw} where member_email = #{memberEmail}
+     update member set member_pw=#{memberPw} where member_email = #{memberEmail}
  </update>
   <select id="loadSiteInfo" resultType="hashmap">
-  	select * from site_info
+     select * from site_info
   </select>
   
 <!-- 내정보 수정 -->
 <update id="myInfoUpdate" parameterType="member">
-	update member set 
-	member_name=#{memberName}, member_nickname=#{memberNickname}
-	,member_phone=#{phone}<!-- , member_gender=#{memberGender} -->
-	,member_concern=#{memberConcern,typeHandler=strArr}
-	,member_birth=#{memberBirthday}
-	,addr1=#{addr1}, addr2=#{addr2}, addr3=#{addr3} 	
-	where member_email=#{memberEmail} 
+   update member set 
+   member_name=#{memberName}, member_nickname=#{memberNickname}
+   ,member_phone=#{phone}<!-- , member_gender=#{memberGender} -->
+   ,member_concern=#{memberConcern,typeHandler=strArr}
+   ,member_birth=#{memberBirthday}
+   ,addr1=#{addr1}, addr2=#{addr2}, addr3=#{addr3}    
+   where member_email=#{memberEmail} 
 </update>  
     
  <!-- 내사진 수정 -->   
     <update id="myPFPupdate" parameterType="member">
-  		update member set member_pfp=#{memberPFP} where member_email=#{memberEmail}
+        update member set member_pfp=#{memberPFP} where member_email=#{memberEmail}
   </update>
       
   <select id="blockMember" parameterType="string" resultMap="memberMap">
-  	select * from member where member_email=#{memberEmail} and block_date &gt; sysdate
+     select * from member where member_email=#{memberEmail} and block_date &gt; sysdate
   </select>
   <select id="searchList" parameterType="map" resultMap="memberMap">
-  	select * from member where ${type} like '%'||#{keyword}||'%'
+     select * from member where ${type} like '%'||#{keyword}||'%'
   </select>
   <update id="memberNext" parameterType="_int">
-  	update member set addinfo='Y',member_pfp='profileDefault.png' where member_no = #{memberNo}
+     update member set addinfo='Y',member_pfp='profileDefault.png' where member_no = #{memberNo}
   </update>
   <select id="selectMemberNo" parameterType="_int" resultMap="memberMap">
-  	select * from member where member_no=#{memberNo}
+     select * from member where member_no=#{memberNo}
+  </select>
+  <select id="friendImg" resultType="string" parameterType="string">
+     select member_pfp from member where member_email=#{email}
   </select>
 </mapper>

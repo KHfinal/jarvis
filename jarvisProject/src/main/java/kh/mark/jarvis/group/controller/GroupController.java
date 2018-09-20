@@ -573,24 +573,32 @@ public class GroupController {
       }
 
       @RequestMapping("/group/groupMemberAccept.do")
-      public void groupMemberAccept(String mEmail, HttpServletResponse response) throws IOException {
+      public void groupMemberAccept(String mEmail, int groupNo, HttpServletResponse response) throws IOException {
          ModelAndView mv=new ModelAndView();
          
-         logger.debug(mEmail);
+         logger.debug("ajax 데이터 : " + mEmail);
+         logger.debug("그룹 넘버 : " + groupNo);
+         Map am = new HashMap();
+         am.put("mEmail", mEmail);
+         am.put("groupNo", groupNo);
          
-         int result = service.groupMemberAccept(mEmail);
+         int result = service.groupMemberAccept(am);
          
          response.setContentType("application/json;charset=utf-8");
          
          response.getWriter().println(result); 
       }
       @RequestMapping("/group/groupMemberReject.do")
-      public void groupMemberReject(String mEmail, HttpServletResponse response) throws IOException {
+      public void groupMemberReject(String mEmail, int groupNo, HttpServletResponse response) throws IOException {
          ModelAndView mv=new ModelAndView();
          
-         logger.debug(mEmail);
+         logger.debug("ajax 데이터 : " + mEmail);
+         logger.debug("그룹 넘버 : " + groupNo);
+         Map rm = new HashMap();
+         rm.put("mEmail", mEmail);
+         rm.put("groupNo", groupNo);
          
-         int result = service.groupMemberDelete(mEmail);
+         int result = service.groupMemberReject(rm);
          
          response.setContentType("application/json;charset=utf-8");
          

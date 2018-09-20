@@ -50,9 +50,9 @@ public class GroupDaoImpl implements GroupDao {
 	}
 
 	@Override
-	public int groupMemberReject(SqlSessionTemplate Session, String mEmail) {
+	public int groupMemberReject(SqlSessionTemplate Session, Map rm) {
 		// TODO Auto-generated method stub
-		return Session.delete("group.groupMemberReject", mEmail);
+		return Session.delete("group.groupMemberReject", rm);
 	}
 
 	@Override
@@ -62,9 +62,9 @@ public class GroupDaoImpl implements GroupDao {
 	}
 
 	@Override
-	public int groupMemberAccept(SqlSessionTemplate Session, String mEmail) {
+	public int groupMemberAccept(SqlSessionTemplate Session, Map am) {
 		// TODO Auto-generated method stub
-		return Session.update("group.groupMemberAccept", mEmail);
+		return Session.update("group.groupMemberAccept", am);
 	}
 
 	@Override
