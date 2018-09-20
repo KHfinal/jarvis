@@ -7,15 +7,15 @@ import kh.mark.jarvis.chatting.model.vo.ChattingRoom;
 
 public interface ChattingService {
 
-	List<Map<String,Object>> roomList(Map<String,String> roomMap);
-	ChattingRoom selectRoom(Map<String,String> roomMap);
-	int createRoom(Map<String,String> roomMap);
-	int saveMessage(Map<String,String> map);
-	List<Map<String,String>> chattingList(Map<String,String> map);
-	String lastChatting(Map<String,String> roomMap);
-	
-	List<Map<String,Object>> contentsList(int room_no);
-	int readCheck(Map<String,String> roomMap);
-
-	/*int countRead(String fEmail);*/
+   List<Map<String,Object>> roomList(Map<String,String> roomMap);
+   ChattingRoom selectRoom(Map<String,String> roomMap);
+   int createRoom(Map<String,String> roomMap);
+   int saveMessage(Map<String,String> map);
+   List<Map<String,String>> chattingList(Map<String,String> map);
+   String lastChatting(Map<String,String> roomMap);
+   
+   List<Map<String,Object>> contentsList(int room_no);
+   int readCheck(Map<String,String> roomMap);
+   String friendImg(String email);
+   /*int countRead(String fEmail);*/
 }

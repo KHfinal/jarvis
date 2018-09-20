@@ -199,7 +199,7 @@
 					console.log("userIdList[k] : "+userIdList[k]);
 				    if(fList==userIdList[k]){																																			
 						friendListTag = "<a  href='javascript:void(0)' onclick='goMyPage(this)'title='"+item.memberEmail+"'  style=' padding-right:0%;padding-left:2%; margin-top:5%;font-size: 17px;'><img src='${path}/resources/profileImg/"+item.memberPFP+"' class='rounded-circle' style='height:50px;width:50px;' >&nbsp;&nbsp;&nbsp;"+item.memberEmail+"<i style='float:right; margin-top:6% ;background: rgb(66, 183, 42); border-radius: 50%; display: inline-block; height: 10px; width: 10px;'/></a><br>";
-						su=size-1;
+						su++;
 						break;
 				    }else{
 				    	friendListTag = "<a  href='javascript:void(0)' onclick='goMyPage(this)'title='"+item.memberEmail+"'  style=' padding-right:0%;padding-left:2%; margin-top:5%;font-size: 17px;'><img src='${path}/resources/profileImg/"+item.memberPFP+"' class='rounded-circle' style='height:50px;width:50px;' >&nbsp;&nbsp;&nbsp;"+item.memberEmail+"</a><br>";

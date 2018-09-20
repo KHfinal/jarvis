@@ -268,9 +268,12 @@ a {
 
 /* SubMenu */
 .subMenu-container {
-   background-color: red;
-   color: white;
+   background-color: rgb(7, 48, 110);
    z-index: 100;
+}
+
+.subMenu-container a {
+   color: white;	
 }
 
 
